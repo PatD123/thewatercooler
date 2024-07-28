@@ -98,7 +98,14 @@ export default function Welcome({ buildProfile }: { buildProfile: any }) {
           <div className="grid grid-rows-2 grid-cols-1 gap-y-[2.75rem]">
             <div className="relative">
               <figure className="absolute">
-                <img className="rounded-lg" src="/pulp.webp" alt="TV/Movie" />
+                <Image
+                  className="rounded-lg"
+                  src="/pulp.webp"
+                  height={500}
+                  width={500}
+                  alt="TV/Movie"
+                  priority
+                />
               </figure>
               <div className="avatar ml-5 mt-5 absolute">
                 <div className="w-12 rounded-full">
@@ -119,7 +126,14 @@ export default function Welcome({ buildProfile }: { buildProfile: any }) {
           <div className="grid grid-rows-2 grid-cols-1 gap-y-[2.75rem]">
             <div className="relative">
               <figure className="absolute">
-                <img className="rounded-lg" src="/pulp.webp" alt="TV/Movie" />
+                <Image
+                  className="rounded-lg"
+                  src="/pulp.webp"
+                  height={500}
+                  width={500}
+                  alt="TV/Movie"
+                  priority
+                />
               </figure>
               <div className="avatar ml-5 mt-5 absolute">
                 <div className="w-12 rounded-full">
