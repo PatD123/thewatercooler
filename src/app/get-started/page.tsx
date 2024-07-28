@@ -17,5 +17,5 @@ export default function GetStarted() {
     <BuildProfile />,
   ];
 
-  return <div>{}</div>;
+  return <div>{getStartedComps[currComp]}</div>;
 }
