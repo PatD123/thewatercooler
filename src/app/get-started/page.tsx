@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Welcome from "@/app/get-started/Welcome";
 import BuildProfile from "@/app/get-started/BuildProfile";
 import { useState } from "react";

@@ -4,11 +4,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="justify-center">
+    <section className="justify-center bg-gradient-to-r from-amber-500 to-pink-500">
       {/* Include shared UI here e.g. a header or sidebar */}
       <div className="flex justify-center">
         <progress
-          className="progress progress-info w-1/3 h-5 mt-20"
+          className="progress progress-primary w-1/3 h-5 mt-20"
           value="10"
           max="100"
         ></progress>

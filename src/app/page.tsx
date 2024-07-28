@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
               className="btn btn-primary"
               onClick={() => router.push("/get-started")}
             >
+              <Link href="/get-started"></Link>
               Get Started
             </button>
           </div>

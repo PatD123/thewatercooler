@@ -29,7 +29,7 @@ export default function RootLayout({
               </h1>
               <Image
                 className="object-fill"
-                src="/favicon.ico"
+                src="/icon.ico"
                 width={35}
                 height={35}
                 alt="Picture of the author"
