@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Welcome({ buildProfile }: { buildProfile: any }) {
+export default function Welcome({ nextStep }: { nextStep: any }) {
   return (
     <div className="flex flex-col space-y-4 items-center">
       <div className="py-8 text-3xl font-bold">
@@ -9,7 +9,7 @@ export default function Welcome({ buildProfile }: { buildProfile: any }) {
         <span className="text-teal-700">watercooler!</span>
       </div>
 
-      <div className="carousel rounded-box max-w-7xl">
+      <div className="carousel rounded-box max-w-5xl">
         <div className="carousel-item px-8">
           <div className="grid grid-rows-2 grid-cols-1 gap-y-[2.75rem]">
             <div className="relative">
@@ -34,6 +34,7 @@ export default function Welcome({ buildProfile }: { buildProfile: any }) {
                 <h2 className="card-title">Jane Doe</h2>
                 <p>Favorite TV Show: New girl</p>
                 <p>Favorite Movie: Pulp Fiction</p>
+                <p>Current Tv Show: Downton Abbey</p>
               </div>
             </div>
           </div>
@@ -153,7 +154,11 @@ export default function Welcome({ buildProfile }: { buildProfile: any }) {
       </div>
 
       <div className="py-8">
-        <button className="btn btn-primary" onClick={buildProfile}>
+        In the next steps, you'll be building a profile like the ones above
+      </div>
+
+      <div className="py-8">
+        <button className="btn btn-primary" onClick={nextStep}>
           Build Profile
         </button>
       </div>
