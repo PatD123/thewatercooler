@@ -49,7 +49,9 @@ export default function RootLayout({
           </div>
 
           <div className="navbar-end">
-            <a className="btn">Sign In</a>
+            <a className="btn" onClick={() => router.push("/login")}>
+              Sign In
+            </a>
           </div>
         </div>
         {children}
