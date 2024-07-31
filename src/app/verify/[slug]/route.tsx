@@ -10,6 +10,10 @@ export async function GET(
   if (user) {
     user.isValid = true;
     await user.save();
+    const myBlob = new Blob();
+    const myOptions = { status: 200, statusText: "SuperSmashingGreat!" };
+    const myResponse = new Response(myBlob, myOptions);
+    return myResponse;
   } else {
     // Fill in here.
   }

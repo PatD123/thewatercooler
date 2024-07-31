@@ -21,6 +21,8 @@ export const authOptions: NextAuthOptions = {
 
         if (!user) throw new Error("Wrong Email");
 
+        if (!user.verifStr) throw new Error("Please validate your email.");
+
         const passwordMatch = await bcrypt.compare(
           credentials!.password,
           user.password
