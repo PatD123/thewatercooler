@@ -9,6 +9,8 @@ export interface UserDocument {
   image: string;
   createdAt: Date;
   updatedAt: Date;
+  isValid: boolean;
+  verifStr: string;
 }
 
 const UserSchema = new Schema<UserDocument>(
@@ -29,6 +31,14 @@ const UserSchema = new Schema<UserDocument>(
     name: {
       type: String,
       required: [true, "Name is required"],
+    },
+    isValid: {
+      type: Boolean,
+      required: true,
+    },
+    verifStr: {
+      type: String,
+      required: true,
     },
   },
   {
