@@ -11,10 +11,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { FormEvent, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import User from "@/models/User";
+import { fetchProfile, editProfile } from "@/app/actions/fetchProfile";
 
 export default function SidebarDemo() {
   const links = [
@@ -130,22 +128,36 @@ export const LogoIcon = () => {
 };
 
 // Dummy dashboard component with content
-export const Dashboard = async () => {
-  // GET ALL FROM DATABASE FIRST AND PRE-FILL
-  // ALL PLACEHOLDERS SHOULD BE FROM DATABASE
-  const { data: session, status } = useSession();
-  console.log(session?.user.email);
-
+export const Dashboard = () => {
   const [fullName, setFullName] = useState(""); // Could be username
   const [favMovie, setFavMovie] = useState("");
   const [favTVShow, setFavTVShow] = useState("");
-  const [currTVShow, setCurTVShow] = useState("");
+  const [currTVShow, setCurrTVShow] = useState("");
+  const [initFetch, setInitFetch] = useState(0);
+  const [userEmail, setUserEmail] = useState("");
+
+  // GET ALL FROM DATABASE FIRST AND PRE-FILL
+  // ALL PLACEHOLDERS SHOULD BE FROM DATABASE
+  const { data: session, status } = useSession();
+
+  if (session && !initFetch) {
+    console.log(session?.user);
+    const email = session?.user?.email as string;
+    fetchProfile(email).then((response) => {
+      setFullName(response[0]);
+      setFavMovie(response[1]);
+      setFavTVShow(response[2]);
+      setCurrTVShow(response[3]);
+    });
+    setInitFetch(1);
+    setUserEmail(email);
+  }
 
   const cardMap = new Map();
   cardMap.set("name", setFullName);
   cardMap.set("favTVShow", setFavTVShow);
   cardMap.set("favMovie", setFavMovie);
-  cardMap.set("currTVShow", setCurTVShow);
+  cardMap.set("currTVShow", setCurrTVShow);
 
   function updateCard(event: any) {
     const updateFunc = cardMap.get(event.target["name"]);
@@ -186,20 +198,43 @@ export const Dashboard = async () => {
             </div>
           </div>
           <div className="divider divider-horizontal"></div>
-          <EditProfile updateCard={updateCard} />
+          <EditProfile
+            updateCard={updateCard}
+            fullName={fullName}
+            favMovie={favMovie}
+            favTVShow={favTVShow}
+            currTVShow={currTVShow}
+            userEmail={userEmail}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-export const EditProfile = ({ updateCard }: { updateCard: any }) => {
+export const EditProfile = ({
+  updateCard,
+  fullName,
+  favMovie,
+  favTVShow,
+  currTVShow,
+  userEmail,
+}: {
+  updateCard: any;
+  fullName: string;
+  favMovie: string;
+  favTVShow: string;
+  currTVShow: string;
+  userEmail: string;
+}) => {
   const [error, setError] = useState<string>();
+  const editProfileWithEmail = editProfile.bind(null, userEmail);
   return (
     <section className="flex items-center justify-center">
       <form
         className="p-6 w-full flex flex-col justify-center items-center gap-2 
             border border-solid border-black bg-white rounded"
+        action={editProfileWithEmail}
       >
         {error && <div className="">{error}</div>}
         <h1 className="mb-5 min-w-full text-2xl font-bold">Edit Profile</h1>
@@ -207,7 +242,7 @@ export const EditProfile = ({ updateCard }: { updateCard: any }) => {
         <label className="w-full text-sm">Full Name</label>
         <input
           type="text"
-          placeholder="Full Name"
+          placeholder={fullName}
           className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
           name="name"
           onChange={updateCard}
@@ -216,7 +251,7 @@ export const EditProfile = ({ updateCard }: { updateCard: any }) => {
         <label className="w-full text-sm">Favorite TV Show</label>
         <input
           type="text"
-          placeholder="Favorite TV Show"
+          placeholder={favTVShow}
           className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
           name="favTVShow"
           onChange={updateCard}
@@ -226,7 +261,7 @@ export const EditProfile = ({ updateCard }: { updateCard: any }) => {
         <div className="flex w-full">
           <input
             type="text"
-            placeholder="Favorite Movie"
+            placeholder={favMovie}
             className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
             name="favMovie"
             onChange={updateCard}
@@ -237,7 +272,7 @@ export const EditProfile = ({ updateCard }: { updateCard: any }) => {
         <div className="flex w-full">
           <input
             type="text"
-            placeholder="Current TV Show"
+            placeholder={currTVShow}
             className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
             name="currTVShow"
             onChange={updateCard}
@@ -247,16 +282,10 @@ export const EditProfile = ({ updateCard }: { updateCard: any }) => {
         <button
           className="w-full border border-solid border-black py-1.5 mt-2.5 rounded
             transition duration-150 ease hover:bg-sky-200"
+          type="submit"
         >
-          Sign up
+          Edit
         </button>
-
-        <Link
-          href="/login"
-          className="text-sm text-[#888] transition duration-150 ease hover:text-sky-200"
-        >
-          Already have an account?
-        </Link>
       </form>
     </section>
   );
