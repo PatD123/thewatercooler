@@ -1,8 +1,8 @@
 "use client";
 
-import Welcome from "@/app/get-started/Welcome";
-import BuildProfile from "@/app/get-started/BuildProfile";
-import PreviewProfile from "@/app/get-started/PreviewProfile";
+import Welcome from "@/app/(landing)/get-started/Welcome";
+import BuildProfile from "@/app/(landing)/get-started/BuildProfile";
+import PreviewProfile from "@/app/(landing)/get-started/PreviewProfile";
 import { useState } from "react";
 
 export default function GetStarted() {

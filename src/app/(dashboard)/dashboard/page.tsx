@@ -11,6 +11,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { FormEvent, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SidebarDemo() {
   const links = [
@@ -115,7 +117,7 @@ export const LogoIcon = () => {
   return (
     <Image
       className="object-fill"
-      src="/icon.ico"
+      src="/dashboard_icon.ico"
       width={35}
       height={35}
       alt="Picture of the author"
@@ -125,26 +127,130 @@ export const LogoIcon = () => {
 
 // Dummy dashboard component with content
 const Dashboard = () => {
+  // GET ALL FROM DATABASE FIRST AND PRE-FILL
+  // ALL PLACEHOLDERS SHOULD BE FROM DATABASE
+  const [fullName, setFullName] = useState(""); // Could be username
+  const [favMovie, setFavMovie] = useState("");
+  const [favTVShow, setFavTVShow] = useState("");
+  const [currTVShow, setCurTVShow] = useState("");
+
+  const cardMap = new Map();
+  cardMap.set("name", setFullName);
+  cardMap.set("favTVShow", setFavTVShow);
+  cardMap.set("favMovie", setFavMovie);
+  cardMap.set("currTVShow", setCurTVShow);
+
+  function updateCard(event: any) {
+    const updateFunc = cardMap.get(event.target["name"]);
+    updateFunc(event.target.value);
+  }
+
   return (
     <div className="flex flex-1">
       <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
-        <div className="flex gap-2">
-          {[...new Array(4)].map((i) => (
-            <div
-              key={"first-array" + i}
-              className="h-20 w-full rounded-lg  bg-gray-100 dark:bg-neutral-800 animate-pulse"
-            ></div>
-          ))}
-        </div>
-        <div className="flex gap-2 flex-1">
-          {[...new Array(2)].map((i) => (
-            <div
-              key={"second-array" + i}
-              className="h-full w-full rounded-lg  bg-gray-100 dark:bg-neutral-800 animate-pulse"
-            ></div>
-          ))}
+        <div className="flex w-full h-full justify-center">
+          <div className="place-content-center">
+            <div className="grid grid-rows-2 grid-cols-1 gap-y-[2.75rem]">
+              <div className="relative">
+                <figure className="absolute">
+                  <Image
+                    className="rounded-lg"
+                    src="/pulp.webp"
+                    height={500}
+                    width={500}
+                    alt="TV/Movie"
+                    priority
+                  />
+                </figure>
+                <div className="avatar ml-5 mt-5 absolute">
+                  <div className="w-12 rounded-full">
+                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                  </div>
+                </div>
+              </div>
+              <div className="card bg-base-100 w-96 shadow-xl">
+                <div className="card-body">
+                  <h2 className="card-title">{fullName}</h2>
+                  <p>Favorite TV Show: {favTVShow}</p>
+                  <p>Favorite Movie: {favMovie}</p>
+                  <p>Current Tv Show: {currTVShow}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="divider divider-horizontal"></div>
+          <EditProfile updateCard={updateCard} />
         </div>
       </div>
     </div>
+  );
+};
+
+export const EditProfile = ({ updateCard }: { updateCard: any }) => {
+  const [error, setError] = useState<string>();
+  return (
+    <section className="flex items-center justify-center">
+      <form
+        className="p-6 w-full flex flex-col justify-center items-center gap-2 
+            border border-solid border-black bg-white rounded"
+      >
+        {error && <div className="">{error}</div>}
+        <h1 className="mb-5 min-w-full text-2xl font-bold">Edit Profile</h1>
+
+        <label className="w-full text-sm">Full Name</label>
+        <input
+          type="text"
+          placeholder="Full Name"
+          className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
+          name="name"
+          onChange={updateCard}
+        />
+
+        <label className="w-full text-sm">Favorite TV Show</label>
+        <input
+          type="text"
+          placeholder="Favorite TV Show"
+          className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
+          name="favTVShow"
+          onChange={updateCard}
+        />
+
+        <label className="w-full text-sm">Favorite Movie</label>
+        <div className="flex w-full">
+          <input
+            type="text"
+            placeholder="Favorite Movie"
+            className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
+            name="favMovie"
+            onChange={updateCard}
+          />
+        </div>
+
+        <label className="w-full text-sm">Current TV Show</label>
+        <div className="flex w-full">
+          <input
+            type="text"
+            placeholder="Current TV Show"
+            className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
+            name="currTVShow"
+            onChange={updateCard}
+          />
+        </div>
+
+        <button
+          className="w-full border border-solid border-black py-1.5 mt-2.5 rounded
+            transition duration-150 ease hover:bg-sky-200"
+        >
+          Sign up
+        </button>
+
+        <Link
+          href="/login"
+          className="text-sm text-[#888] transition duration-150 ease hover:text-sky-200"
+        >
+          Already have an account?
+        </Link>
+      </form>
+    </section>
   );
 };
