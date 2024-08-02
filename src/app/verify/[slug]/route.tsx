@@ -1,3 +1,5 @@
+"use server";
+
 import User from "@/models/User";
 import { redirect } from "next/navigation";
 

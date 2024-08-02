@@ -11,6 +11,9 @@ export interface UserDocument {
   updatedAt: Date;
   isValid: boolean;
   verifStr: string;
+  favMovie: string;
+  favTVShow: string;
+  currTVShow?: string;
 }
 
 const UserSchema = new Schema<UserDocument>(
@@ -39,6 +42,18 @@ const UserSchema = new Schema<UserDocument>(
     verifStr: {
       type: String,
       required: true,
+    },
+    favMovie: {
+      type: String,
+      required: true,
+    },
+    favTVShow: {
+      type: String,
+      required: true,
+    },
+    currTVShow: {
+      type: String,
+      required: false,
     },
   },
   {

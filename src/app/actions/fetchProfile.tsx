@@ -1,11 +1,12 @@
 "use server";
 import { connectDB } from "@/app/lib/mongodb";
 import User from "@/models/User";
-import bcrypt from "bcryptjs";
-import nodemailer from "nodemailer";
-const { EMAIL_FROM, EMAIL_TO, EMAIL_PASS } = process.env;
 
-export const register = async (values: any) => {
+type Props = {
+  email: string;
+};
+
+export const fetchProfile = async ({ email }: Props) => {
   const { email, password, name } = values;
 
   const randString = () => {
@@ -63,17 +64,13 @@ export const register = async (values: any) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const uniqueStr = randString();
     const user = new User({
-      name: name,
-      email: email,
+      name,
+      email,
       password: hashedPassword,
       isValid: false,
       verifStr: uniqueStr,
-      favMovie: "Pulp Fiction",
-      favTVShow: "Downton Abbey",
-      currTVShow: "Downton Abbey",
     });
     const savedUser = await user.save();
-    console.log(name);
 
     sendEmail(email, uniqueStr);
   } catch (e) {

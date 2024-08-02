@@ -5,6 +5,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { SessionProvider } from "next-auth/react";
 
 const poppins = Poppins({ weight: "500", subsets: ["latin"] });
 
@@ -16,7 +17,9 @@ export default function RootLayout({
   const router = useRouter();
   return (
     <html lang="en">
-      <body className={poppins.className}>{children}</body>
+      <SessionProvider>
+        <body className={poppins.className}>{children}</body>
+      </SessionProvider>
     </html>
   );
 }

@@ -13,6 +13,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { FormEvent, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import User from "@/models/User";
 
 export default function SidebarDemo() {
   const links = [
@@ -93,6 +95,7 @@ export default function SidebarDemo() {
     </div>
   );
 }
+
 export const Logo = () => {
   return (
     <Link
@@ -113,6 +116,7 @@ export const Logo = () => {
     </Link>
   );
 };
+
 export const LogoIcon = () => {
   return (
     <Image
@@ -126,9 +130,12 @@ export const LogoIcon = () => {
 };
 
 // Dummy dashboard component with content
-const Dashboard = () => {
+export const Dashboard = async () => {
   // GET ALL FROM DATABASE FIRST AND PRE-FILL
   // ALL PLACEHOLDERS SHOULD BE FROM DATABASE
+  const { data: session, status } = useSession();
+  console.log(session?.user.email);
+
   const [fullName, setFullName] = useState(""); // Could be username
   const [favMovie, setFavMovie] = useState("");
   const [favTVShow, setFavTVShow] = useState("");
