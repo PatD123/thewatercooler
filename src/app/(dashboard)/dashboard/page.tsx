@@ -12,7 +12,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
-import { fetchProfile, editProfile } from "@/app/actions/fetchProfile";
+import { fetchProfile } from "@/app/actions/fetchProfile";
+import { EditProfile } from "@/components/ui/editProfile";
 
 export default function SidebarDemo() {
   const links = [
@@ -167,7 +168,7 @@ export const Dashboard = () => {
   return (
     <div className="flex flex-1">
       <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
-        <div className="flex w-full h-full justify-center">
+        <div className="flex w-full h-full justify-evenly">
           <div className="place-content-center">
             <div className="grid grid-rows-2 grid-cols-1 gap-y-[2.75rem]">
               <div className="relative">
@@ -198,95 +199,63 @@ export const Dashboard = () => {
             </div>
           </div>
           <div className="divider divider-horizontal"></div>
-          <EditProfile
-            updateCard={updateCard}
-            fullName={fullName}
-            favMovie={favMovie}
-            favTVShow={favTVShow}
-            currTVShow={currTVShow}
-            userEmail={userEmail}
-          />
+
+          <form className="flex flex-col w-1/2 mx-auto my-8">
+            <div className="join w-full">
+              <div className="dropdown dropdown-hover join-item">
+                <div
+                  tabindex="0"
+                  role="button"
+                  className="btn btn-primary join-item h-full w-full"
+                >
+                  Hover
+                </div>
+                <ul
+                  tabindex="0"
+                  class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+                >
+                  <li>
+                    <a>Item 1</a>
+                  </li>
+                  <li>
+                    <a>Item 2</a>
+                  </li>
+                </ul>
+              </div>
+              <div className="relative w-full join">
+                <input
+                  type="search"
+                  id="search-dropdown"
+                  className="p-4 w-full join-item text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300"
+                  placeholder="What are you watching at the moment?"
+                  required
+                />
+                <button
+                  type="submit"
+                  className="join-item top-0 end-0 p-4 font-medium text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                  <span className="sr-only">Search</span>
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-  );
-};
-
-export const EditProfile = ({
-  updateCard,
-  fullName,
-  favMovie,
-  favTVShow,
-  currTVShow,
-  userEmail,
-}: {
-  updateCard: any;
-  fullName: string;
-  favMovie: string;
-  favTVShow: string;
-  currTVShow: string;
-  userEmail: string;
-}) => {
-  const [error, setError] = useState<string>();
-  const editProfileWithEmail = editProfile.bind(null, userEmail);
-  return (
-    <section className="flex items-center justify-center">
-      <form
-        className="p-6 w-full flex flex-col justify-center items-center gap-2 
-            border border-solid border-black bg-white rounded"
-        action={editProfileWithEmail}
-      >
-        {error && <div className="">{error}</div>}
-        <h1 className="mb-5 min-w-full text-2xl font-bold">Edit Profile</h1>
-
-        <label className="w-full text-sm">Full Name</label>
-        <input
-          type="text"
-          placeholder={fullName}
-          className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
-          name="name"
-          onChange={updateCard}
-        />
-
-        <label className="w-full text-sm">Favorite TV Show</label>
-        <input
-          type="text"
-          placeholder={favTVShow}
-          className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
-          name="favTVShow"
-          onChange={updateCard}
-        />
-
-        <label className="w-full text-sm">Favorite Movie</label>
-        <div className="flex w-full">
-          <input
-            type="text"
-            placeholder={favMovie}
-            className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
-            name="favMovie"
-            onChange={updateCard}
-          />
-        </div>
-
-        <label className="w-full text-sm">Current TV Show</label>
-        <div className="flex w-full">
-          <input
-            type="text"
-            placeholder={currTVShow}
-            className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
-            name="currTVShow"
-            onChange={updateCard}
-          />
-        </div>
-
-        <button
-          className="w-full border border-solid border-black py-1.5 mt-2.5 rounded
-            transition duration-150 ease hover:bg-sky-200"
-          type="submit"
-        >
-          Edit
-        </button>
-      </form>
-    </section>
   );
 };
