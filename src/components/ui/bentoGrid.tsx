@@ -55,12 +55,20 @@ export const BentoGridItem = ({
     >
       {header}
       <div className="group-hover/bento:translate-x-2 transition duration-200">
-        <Image
-          src={`https://image.tmdb.org/t/p/original${icon}`}
-          height={500}
-          width={500}
-          alt="TV/Movie"
-        />
+        <div
+          className="object-cover"
+          style={{ position: "relative", width: "200px", height: "300px" }}
+        >
+          <Image
+            className="rounded-lg"
+            src={`https://image.tmdb.org/t/p/original${icon}`}
+            alt="Picture of the author"
+            fill
+            style={{
+              objectFit: "contain",
+            }}
+          />
+        </div>
         <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-2 mt-2">
           {title}
         </div>
@@ -73,31 +81,41 @@ export const BentoGridItem = ({
 };
 
 export function BentoGridSearch({ query }: { query: string }) {
-  const [currPage, setCurrpage] = useState(1);
+  const [currPage, setCurrPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [data, setData] = useState([]);
-  const [loaded, setLoaded] = useState(0);
+
+  function handlePagination(page: number) {
+    if (page < 1) setCurrPage(1);
+    else if (page > totalPages) setCurrPage(totalPages);
+    else setCurrPage(page);
+    setData([]);
+  }
+
   useEffect(() => {
     async function getData() {
       const response = await fetchTMDBPage(query, currPage);
       setTotalPages(response["total_pages"]);
       setData(response["results"]);
-      console.log(response);
-      setLoaded(1);
     }
     getData();
   }, [query, currPage]);
+
   return data ? (
     <BentoGrid className="max-h-[75%] p-5 border-2 rounded-lg shadow-lg shadow-cyan-500/50 overflow-y-auto">
       {data.map((item, i) => (
         <BentoGridItem
           key={i}
           title={item["original_name"]}
-          icon={item["backdrop_path"]}
+          icon={item["poster_path"]}
         />
       ))}
       {totalPages > 1 && (
-        <Pagination totalPages={totalPages} setCurrPage={setCurrpage} />
+        <Pagination
+          totalPages={totalPages}
+          currPage={currPage}
+          handlePagination={handlePagination}
+        />
       )}
     </BentoGrid>
   ) : null;
