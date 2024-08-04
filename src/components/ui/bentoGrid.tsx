@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import {
   IconArrowWaveRightUp,
@@ -7,7 +9,10 @@ import {
   IconSignature,
   IconTableColumn,
 } from "@tabler/icons-react";
-import { fetchTotalPages } from "@/app/lib/data";
+import { fetchTMDBPage } from "@/app/lib/data";
+import Pagination from "@/components/ui/pagination";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export const BentoGrid = ({
   className,
@@ -19,7 +24,7 @@ export const BentoGrid = ({
   return (
     <div
       className={cn(
-        "grid md:auto-rows-[18rem] grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto drop-shadow-lg",
+        "grid md:auto-rows-min grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto drop-shadow-lg",
         className
       )}
     >
@@ -39,7 +44,7 @@ export const BentoGridItem = ({
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
   header?: React.ReactNode;
-  icon?: React.ReactNode;
+  icon?: string | React.ReactNode;
 }) => {
   return (
     <div
@@ -50,7 +55,12 @@ export const BentoGridItem = ({
     >
       {header}
       <div className="group-hover/bento:translate-x-2 transition duration-200">
-        {icon}
+        <Image
+          src={`https://image.tmdb.org/t/p/original${icon}`}
+          height={500}
+          width={500}
+          alt="TV/Movie"
+        />
         <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-2 mt-2">
           {title}
         </div>
@@ -62,21 +72,35 @@ export const BentoGridItem = ({
   );
 };
 
-export async function BentoGridSearch({ query }: { query: string }) {
-  const totalPages = await fetchTotalPages(query);
-  return (
+export function BentoGridSearch({ query }: { query: string }) {
+  const [currPage, setCurrpage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [data, setData] = useState([]);
+  const [loaded, setLoaded] = useState(0);
+  useEffect(() => {
+    async function getData() {
+      const response = await fetchTMDBPage(query, currPage);
+      setTotalPages(response["total_pages"]);
+      setData(response["results"]);
+      console.log(response);
+      setLoaded(1);
+    }
+    getData();
+  }, [query, currPage]);
+  return data ? (
     <BentoGrid className="max-h-[75%] p-5 border-2 rounded-lg shadow-lg shadow-cyan-500/50 overflow-y-auto">
-      {items.map((item, i) => (
+      {data.map((item, i) => (
         <BentoGridItem
           key={i}
-          title={item.title}
-          description={item.description}
-          header={item.header}
-          icon={item.icon}
+          title={item["original_name"]}
+          icon={item["backdrop_path"]}
         />
       ))}
+      {totalPages > 1 && (
+        <Pagination totalPages={totalPages} setCurrPage={setCurrpage} />
+      )}
     </BentoGrid>
-  );
+  ) : null;
 }
 const Skeleton = () => (
   <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
