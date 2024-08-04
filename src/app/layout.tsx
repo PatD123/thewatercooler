@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   const router = useRouter();
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <SessionProvider>
         <body className={poppins.className}>{children}</body>
       </SessionProvider>

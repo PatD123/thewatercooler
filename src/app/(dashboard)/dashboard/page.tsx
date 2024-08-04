@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import {
-  IconArrowLeft,
   IconBrandTabler,
-  IconSettings,
   IconUserBolt,
+  IconSettings,
+  IconArrowLeft,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -13,7 +13,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { fetchProfile } from "@/app/actions/fetchProfile";
-import { EditProfile } from "@/components/ui/editProfile";
+import { BentoGridSearch } from "@/components/ui/bentoGrid";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function SidebarDemo() {
   const links = [
@@ -137,6 +138,9 @@ export const Dashboard = () => {
   const [initFetch, setInitFetch] = useState(0);
   const [userEmail, setUserEmail] = useState("");
 
+  const [bento, setBento] = useState(0);
+  const [query, setQuery] = useState("");
+
   // GET ALL FROM DATABASE FIRST AND PRE-FILL
   // ALL PLACEHOLDERS SHOULD BE FROM DATABASE
   const { data: session, status } = useSession();
@@ -164,6 +168,11 @@ export const Dashboard = () => {
     const updateFunc = cardMap.get(event.target["name"]);
     updateFunc(event.target.value);
   }
+
+  const updateBento = useDebouncedCallback((event: any) => {
+    event.target.value === "" ? setBento(0) : setBento(1);
+    setQuery(event.target.value);
+  }, 300);
 
   return (
     <div className="flex flex-1">
@@ -199,61 +208,69 @@ export const Dashboard = () => {
             </div>
           </div>
           <div className="divider divider-horizontal"></div>
-
-          <form className="flex flex-col w-1/2 mx-auto my-8">
-            <div className="join w-full">
-              <div className="dropdown dropdown-hover join-item">
-                <div
-                  tabindex="0"
-                  role="button"
-                  className="btn btn-primary join-item h-full w-full"
-                >
-                  Hover
-                </div>
-                <ul
-                  tabindex="0"
-                  class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-                >
-                  <li>
-                    <a>Item 1</a>
-                  </li>
-                  <li>
-                    <a>Item 2</a>
-                  </li>
-                </ul>
-              </div>
-              <div className="relative w-full join">
-                <input
-                  type="search"
-                  id="search-dropdown"
-                  className="p-4 w-full join-item text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300"
-                  placeholder="What are you watching at the moment?"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="join-item top-0 end-0 p-4 font-medium text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 20"
+          <div className="w-3/5 max-h-3/4 p-5">
+            {/* Search Bar */}
+            <div className="w-full mx-auto my-8">
+              <div className="join w-full">
+                <div className="dropdown dropdown-hover join-item">
+                  <div
+                    role="button"
+                    className="btn btn-info rounded-full join-item h-full w-full"
                   >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                    />
-                  </svg>
-                  <span className="sr-only">Search</span>
-                </button>
+                    Hover
+                  </div>
+                  <ul className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                    <li>
+                      <a>Item 1</a>
+                    </li>
+                    <li>
+                      <a>Item 2</a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="relative w-full join">
+                  <input
+                    type="search"
+                    id="search-dropdown"
+                    className="p-4 w-full join-item text-sm text-gray-900 bg-gray-50 rounded-e-full border-s-gray-50 border-s-2 border border-gray-300"
+                    placeholder="What are you watching at the moment?"
+                    onChange={updateBento}
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="join-item top-0 end-0 p-4 font-medium text-white bg-info rounded-e-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                      />
+                    </svg>
+                    <span className="sr-only">Search</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </form>
+
+            {bento ? (
+              // NEED SKELETONS
+              <Suspense fallback={<p>Loading feed...</p>}>
+                {" "}
+                {/* @ts-expect-error Server Component */}
+                <BentoGridSearch query={query} />
+              </Suspense>
+            ) : null}
+          </div>
         </div>
       </div>
     </div>
