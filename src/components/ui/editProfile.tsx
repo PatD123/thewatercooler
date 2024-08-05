@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { editProfile } from "@/app/actions/fetchProfile";
+import { editProfile } from "@/app/actions/editProfile";
 
 export const EditProfile = ({
   updateCard,

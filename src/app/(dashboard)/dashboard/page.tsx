@@ -12,7 +12,12 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
-import { fetchProfile } from "@/app/actions/fetchProfile";
+import {
+  fetchProfile,
+  editCurrTVShow,
+  editFavMovie,
+  editFavTVShow,
+} from "@/app/actions/editProfile";
 import { BentoGridSearch } from "@/components/ui/bentoGrid";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -172,12 +177,17 @@ export const Dashboard = () => {
   function updateCard(event: any) {
     if (cineName === "") return;
 
-    console.log(cineCategory);
-
     let cat = "";
-    if (cineCategory === "Favorite TV Show") cat = "favTVShow";
-    else if (cineCategory === "Favorite Movie") cat = "favMovie";
-    else if (cineCategory === "Current TV Show") cat = "currTVShow";
+    if (cineCategory === "Favorite TV Show") {
+      cat = "favTVShow";
+      editFavTVShow(userEmail, cineName);
+    } else if (cineCategory === "Favorite Movie") {
+      cat = "favMovie";
+      editFavMovie(userEmail, cineName);
+    } else if (cineCategory === "Current TV Show") {
+      cat = "currTVShow";
+      editCurrTVShow(userEmail, cineName);
+    }
     const updateFunc = cardMap.get(cat);
     updateFunc(cineName);
   }
