@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, Suspense } from "react";
+import React, { useState, Suspense, useRef, useEffect } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import {
   IconBrandTabler,
@@ -141,6 +141,11 @@ export const Dashboard = () => {
   const [bento, setBento] = useState(0);
   const [query, setQuery] = useState("");
 
+  const [cineName, setCineName] = useState("");
+  const [cineCategory, setCineCategory] = useState("Favorite TV Show");
+
+  const bentoRef = useRef<any>(null);
+
   // GET ALL FROM DATABASE FIRST AND PRE-FILL
   // ALL PLACEHOLDERS SHOULD BE FROM DATABASE
   const { data: session, status } = useSession();
@@ -165,15 +170,36 @@ export const Dashboard = () => {
   cardMap.set("currTVShow", setCurrTVShow);
 
   function updateCard(event: any) {
-    const updateFunc = cardMap.get(event.target["name"]);
-    updateFunc(event.target.value);
+    if (cineName === "") return;
+
+    console.log(cineCategory);
+
+    let cat = "";
+    if (cineCategory === "Favorite TV Show") cat = "favTVShow";
+    else if (cineCategory === "Favorite Movie") cat = "favMovie";
+    else if (cineCategory === "Current TV Show") cat = "currTVShow";
+    const updateFunc = cardMap.get(cat);
+    updateFunc(cineName);
   }
 
   const updateBento = useDebouncedCallback((event: any) => {
     event.target.value === "" ? setBento(0) : setBento(1);
     setQuery(event.target.value);
-    console.log("hi");
   }, 300);
+
+  const handleOutsideClick = (e: any) => {
+    if (bentoRef.current && !bentoRef.current.contains(e.target)) {
+      setBento(0);
+    }
+  };
+
+  useEffect(() => {
+    console.log(cineName);
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  });
 
   return (
     <div className="flex flex-1">
@@ -216,16 +242,19 @@ export const Dashboard = () => {
                 <div className="dropdown dropdown-hover join-item">
                   <div
                     role="button"
-                    className="btn btn-info rounded-full join-item h-full w-full"
+                    className="btn btn-info rounded-full join-item h-full w-full hover:bg-blue-800"
                   >
-                    Hover
+                    {cineCategory}
                   </div>
                   <ul className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                    <li>
-                      <a>Item 1</a>
+                    <li onClick={() => setCineCategory("Favorite TV Show")}>
+                      <a>Favorite TV Show</a>
                     </li>
-                    <li>
-                      <a>Item 2</a>
+                    <li onClick={() => setCineCategory("Favorite Movie")}>
+                      <a>Favorite Movie</a>
+                    </li>
+                    <li onClick={() => setCineCategory("Current TV Show")}>
+                      <a>Current TV Show</a>
                     </li>
                   </ul>
                 </div>
@@ -236,41 +265,30 @@ export const Dashboard = () => {
                     className="p-4 w-full join-item text-sm text-gray-900 bg-gray-50 rounded-e-full border-s-gray-50 border-s-2 border border-gray-300"
                     placeholder="What are you watching at the moment?"
                     onChange={updateBento}
+                    onClick={updateBento}
                     required
                   />
                   <button
                     type="submit"
                     className="join-item top-0 end-0 p-4 font-medium text-white bg-info rounded-e-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    onClick={updateCard}
                   >
-                    <svg
-                      className="w-4 h-4"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                      />
-                    </svg>
+                    Edit
                     <span className="sr-only">Search</span>
                   </button>
                 </div>
               </div>
             </div>
-
-            {bento ? (
-              // NEED SKELETONS
-              <Suspense fallback={<p>Loading feed...</p>}>
-                {" "}
-                {/* @ts-expect-error Server Component */}
-                <BentoGridSearch query={query} />
-              </Suspense>
-            ) : null}
+            <div className="h-full w-full" ref={bentoRef}>
+              {bento ? (
+                // NEED SKELETONS
+                <Suspense fallback={<p>Loading feed...</p>}>
+                  {" "}
+                  {/* @ts-expect-error Server Component */}
+                  <BentoGridSearch query={query} setCineName={setCineName} />
+                </Suspense>
+              ) : null}
+            </div>
           </div>
         </div>
       </div>

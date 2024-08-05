@@ -39,12 +39,14 @@ export const BentoGridItem = ({
   description,
   header,
   icon,
+  setCineName,
 }: {
   className?: string;
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
   header?: React.ReactNode;
   icon?: string | React.ReactNode;
+  setCineName: any;
 }) => {
   return (
     <div
@@ -52,6 +54,10 @@ export const BentoGridItem = ({
         "relative row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-4 dark:bg-black dark:border-white/[0.2] bg-white border border-transparent justify-between flex flex-col space-y-4",
         className
       )}
+      onClick={() => {
+        document.getElementById("search-dropdown")!.value = title;
+        setCineName(title);
+      }}
     >
       {header}
       <div className="group-hover/bento:translate-x-2 transition duration-200">
@@ -80,7 +86,13 @@ export const BentoGridItem = ({
   );
 };
 
-export function BentoGridSearch({ query }: { query: string }) {
+export function BentoGridSearch({
+  query,
+  setCineName,
+}: {
+  query: string;
+  setCineName: any;
+}) {
   const [currPage, setCurrPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [data, setData] = useState([]);
@@ -108,6 +120,7 @@ export function BentoGridSearch({ query }: { query: string }) {
           key={i}
           title={item["original_name"]}
           icon={item["poster_path"]}
+          setCineName={setCineName}
         />
       ))}
       {totalPages > 1 && (
