@@ -71,6 +71,7 @@ export const register = async (values: any) => {
       favMovie: "Pulp Fiction",
       favTVShow: "Downton Abbey",
       currTVShow: "Downton Abbey",
+      cineImgSrc: "",
     });
     const savedUser = await user.save();
     console.log(name);

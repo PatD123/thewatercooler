@@ -40,6 +40,7 @@ export const BentoGridItem = ({
   header,
   icon,
   setCineName,
+  setCineImgSrc,
 }: {
   className?: string;
   title?: string | React.ReactNode;
@@ -47,6 +48,7 @@ export const BentoGridItem = ({
   header?: React.ReactNode;
   icon?: string | React.ReactNode;
   setCineName: any;
+  setCineImgSrc: any;
 }) => {
   return (
     <div
@@ -57,6 +59,7 @@ export const BentoGridItem = ({
       onClick={() => {
         document.getElementById("search-dropdown")!.value = title;
         setCineName(title);
+        setCineImgSrc(icon);
       }}
     >
       {header}
@@ -89,9 +92,11 @@ export const BentoGridItem = ({
 export function BentoGridSearch({
   query,
   setCineName,
+  setCineImgSrc,
 }: {
   query: string;
   setCineName: any;
+  setCineImgSrc: any;
 }) {
   const [currPage, setCurrPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -121,6 +126,7 @@ export function BentoGridSearch({
           title={item["original_name"]}
           icon={item["poster_path"]}
           setCineName={setCineName}
+          setCineImgSrc={setCineImgSrc}
         />
       ))}
       {totalPages > 1 && (

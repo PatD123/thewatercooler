@@ -148,6 +148,7 @@ export const Dashboard = () => {
 
   const [cineName, setCineName] = useState("");
   const [cineCategory, setCineCategory] = useState("Favorite TV Show");
+  const [cineImgSrc, setCineImgSrc] = useState("");
 
   const bentoRef = useRef<any>(null);
 
@@ -163,6 +164,7 @@ export const Dashboard = () => {
       setFavMovie(response[1]);
       setFavTVShow(response[2]);
       setCurrTVShow(response[3]);
+      setCineImgSrc(response[4]);
     });
     setInitFetch(1);
     setUserEmail(email);
@@ -186,7 +188,7 @@ export const Dashboard = () => {
       editFavMovie(userEmail, cineName);
     } else if (cineCategory === "Current TV Show") {
       cat = "currTVShow";
-      editCurrTVShow(userEmail, cineName);
+      editCurrTVShow(userEmail, cineName, cineImgSrc);
     }
     const updateFunc = cardMap.get(cat);
     updateFunc(cineName);
@@ -221,7 +223,7 @@ export const Dashboard = () => {
                 <figure className="absolute">
                   <Image
                     className="rounded-lg"
-                    src="/pulp.webp"
+                    src={`https://image.tmdb.org/t/p/original${cineImgSrc}`}
                     height={500}
                     width={500}
                     alt="TV/Movie"
@@ -295,7 +297,11 @@ export const Dashboard = () => {
                 <Suspense fallback={<p>Loading feed...</p>}>
                   {" "}
                   {/* @ts-expect-error Server Component */}
-                  <BentoGridSearch query={query} setCineName={setCineName} />
+                  <BentoGridSearch
+                    query={query}
+                    setCineName={setCineName}
+                    setCineImgSrc={setCineImgSrc}
+                  />
                 </Suspense>
               ) : null}
             </div>

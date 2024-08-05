@@ -7,7 +7,13 @@ import { getServerSession } from "next-auth";
 
 export const fetchProfile = async (email: string) => {
   const user = await User.findOne({ email });
-  return [user.name, user.favMovie, user.favTVShow, user.currTVShow];
+  return [
+    user.name,
+    user.favMovie,
+    user.favTVShow,
+    user.currTVShow,
+    user.cineImgSrc,
+  ];
 };
 
 export const editFavMovie = async (email: string, favMovie: string) => {
@@ -26,10 +32,15 @@ export const editFavTVShow = async (email: string, favTVShow: string) => {
   }
 };
 
-export const editCurrTVShow = async (email: string, currTVShow: string) => {
+export const editCurrTVShow = async (
+  email: string,
+  currTVShow: string,
+  cineImgSrc: string
+) => {
   const user = await User.findOne({ email });
   if (user) {
     user.currTVShow = currTVShow;
+    user.cineImgSrc = cineImgSrc;
     await user.save();
   }
 };

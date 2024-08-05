@@ -13,7 +13,8 @@ export interface UserDocument {
   verifStr: string;
   favMovie: string;
   favTVShow: string;
-  currTVShow?: string;
+  currTVShow: string;
+  cineImgSrc: string;
 }
 
 const UserSchema = new Schema<UserDocument>(
@@ -52,6 +53,10 @@ const UserSchema = new Schema<UserDocument>(
       required: true,
     },
     currTVShow: {
+      type: String,
+      required: false,
+    },
+    cineImgSrc: {
       type: String,
       required: false,
     },
