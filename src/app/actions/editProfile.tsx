@@ -1,9 +1,6 @@
 "use server";
 
-import { connectDB } from "@/app/lib/mongodb";
 import User from "@/models/User";
-import { FormEvent } from "react";
-import { getServerSession } from "next-auth";
 
 export const fetchProfile = async (email: string) => {
   const user = await User.findOne({ email });

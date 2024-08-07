@@ -7,11 +7,10 @@ import {
   IconSettings,
   IconArrowLeft,
 } from "@tabler/icons-react";
-import Link from "next/link";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
+import { Logo, LogoIcon } from "@/components/ui/logo";
 import {
   fetchProfile,
   editCurrTVShow,
@@ -101,45 +100,13 @@ export default function SidebarDemo() {
   );
 }
 
-export const Logo = () => {
-  return (
-    <Link
-      href="/"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-    >
-      <LogoIcon />
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium text-black dark:text-white whitespace-pre"
-      >
-        <h1 className="text-xl font-bold text-info">
-          <span className="text-teal-900">the</span>
-          <span className="text-teal-700">watercooler</span>
-        </h1>
-      </motion.span>
-    </Link>
-  );
-};
-
-export const LogoIcon = () => {
-  return (
-    <Image
-      className="object-fill"
-      src="/dashboard_icon.ico"
-      width={35}
-      height={35}
-      alt="Picture of the author"
-    />
-  );
-};
-
 // Dummy dashboard component with content
 export const Dashboard = () => {
   const [fullName, setFullName] = useState(""); // Could be username
   const [favMovie, setFavMovie] = useState("");
   const [favTVShow, setFavTVShow] = useState("");
   const [currTVShow, setCurrTVShow] = useState("");
+  const [currTVShowImg, setCurrTVShowImg] = useState("");
   const [initFetch, setInitFetch] = useState(0);
   const [userEmail, setUserEmail] = useState("");
 
@@ -164,7 +131,7 @@ export const Dashboard = () => {
       setFavMovie(response[1]);
       setFavTVShow(response[2]);
       setCurrTVShow(response[3]);
-      setCineImgSrc(response[4]);
+      setCurrTVShowImg(response[4]);
     });
     setInitFetch(1);
     setUserEmail(email);
@@ -189,6 +156,7 @@ export const Dashboard = () => {
     } else if (cineCategory === "Current TV Show") {
       cat = "currTVShow";
       editCurrTVShow(userEmail, cineName, cineImgSrc);
+      setCurrTVShowImg(cineImgSrc);
     }
     const updateFunc = cardMap.get(cat);
     updateFunc(cineName);
@@ -206,7 +174,6 @@ export const Dashboard = () => {
   };
 
   useEffect(() => {
-    console.log(cineName);
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
@@ -217,33 +184,31 @@ export const Dashboard = () => {
     <div className="flex flex-1">
       <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
         <div className="flex w-full h-full justify-evenly">
-          <div className="place-content-center">
-            <div className="grid grid-rows-2 grid-cols-1 gap-y-[2.75rem]">
-              <div className="relative">
-                <figure className="absolute">
-                  <Image
-                    className="rounded-lg"
-                    src={`https://image.tmdb.org/t/p/original${cineImgSrc}`}
-                    height={500}
-                    width={500}
-                    alt="TV/Movie"
-                    priority
-                  />
-                </figure>
-                <div className="avatar ml-5 mt-5 absolute">
-                  <div className="w-12 rounded-full">
-                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                  </div>
-                </div>
-              </div>
-              <div className="card bg-base-100 w-96 shadow-xl">
-                <div className="card-body">
-                  <h2 className="card-title">{fullName}</h2>
-                  <p>Favorite TV Show: {favTVShow}</p>
-                  <p>Favorite Movie: {favMovie}</p>
-                  <p>Current Tv Show: {currTVShow}</p>
-                </div>
-              </div>
+          <div
+            className="flex rounded-2xl overflow-hidden bg-white/20 shadow-lg ring-1 ring-black/5"
+            style={{ position: "relative", width: "500px", height: "300px" }}
+          >
+            <div
+              className="fixed inset-0"
+              style={{ position: "relative", width: "200px", height: "300px" }}
+            >
+              <Image
+                src={`https://image.tmdb.org/t/p/original${currTVShowImg}`}
+                alt="Picture of the author"
+                fill
+                style={{
+                  objectFit: "contain",
+                }}
+              />
+            </div>
+            <div
+              className="card-body"
+              style={{ position: "relative", width: "200px", height: "300px" }}
+            >
+              <h2 className="card-title">{fullName}</h2>
+              <a>Favorite TV Show: {favTVShow}</a>
+              <a>Favorite Movie: {favMovie}</a>
+              <a>Current Tv Show: {currTVShow}</a>
             </div>
           </div>
           <div className="divider divider-horizontal"></div>
@@ -253,12 +218,16 @@ export const Dashboard = () => {
               <div className="join w-full">
                 <div className="dropdown dropdown-hover join-item">
                   <div
+                    tabindex="0"
                     role="button"
                     className="btn btn-info rounded-full join-item h-full w-full hover:bg-blue-800"
                   >
                     {cineCategory}
                   </div>
-                  <ul className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                  <ul
+                    tabindex="0"
+                    className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+                  >
                     <li onClick={() => setCineCategory("Favorite TV Show")}>
                       <a>Favorite TV Show</a>
                     </li>
@@ -296,7 +265,6 @@ export const Dashboard = () => {
                 // NEED SKELETONS
                 <Suspense fallback={<p>Loading feed...</p>}>
                   {" "}
-                  {/* @ts-expect-error Server Component */}
                   <BentoGridSearch
                     query={query}
                     setCineName={setCineName}
