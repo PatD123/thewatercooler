@@ -119,7 +119,7 @@ export function BentoGridSearch({
   }, [query, currPage]);
 
   return data ? (
-    <BentoGrid className="max-h-[75%] p-5 border-2 rounded-lg shadow-lg shadow-cyan-500/50 overflow-y-auto">
+    <BentoGrid className="absolute max-h-[75%] p-5 border-2 rounded-lg shadow-lg shadow-cyan-500/50 overflow-y-auto z-40">
       {data.map((item, i) => (
         <BentoGridItem
           key={i}
