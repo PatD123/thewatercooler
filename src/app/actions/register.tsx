@@ -64,6 +64,7 @@ export const register = async (values: any) => {
     const uniqueStr = randString();
     const user = new User({
       name: name,
+      username: "thebigjuicyd",
       email: email,
       password: hashedPassword,
       isValid: false,
@@ -72,6 +73,7 @@ export const register = async (values: any) => {
       favTVShow: "Downton Abbey",
       currTVShow: "Downton Abbey",
       cineImgSrc: "",
+      bio: "I got to UCLA, 26'",
     });
     const savedUser = await user.save();
     console.log(name);
