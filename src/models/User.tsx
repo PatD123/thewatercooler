@@ -12,9 +12,13 @@ export interface UserDocument {
   isValid: boolean;
   verifStr: string;
   favMovie: string;
+  favMovieSrc: string;
   favTVShow: string;
+  favTVShowSrc: string;
   currTVShow: string;
   cineImgSrc: string;
+  username: string;
+  bio: string;
 }
 
 const UserSchema = new Schema<UserDocument>(
@@ -36,6 +40,14 @@ const UserSchema = new Schema<UserDocument>(
       type: String,
       required: [true, "Name is required"],
     },
+    username: {
+      type: String,
+      required: true,
+    },
+    bio: {
+      type: String,
+      required: true,
+    },
     isValid: {
       type: Boolean,
       required: true,
@@ -48,9 +60,17 @@ const UserSchema = new Schema<UserDocument>(
       type: String,
       required: true,
     },
+    favMovieSrc: {
+      type: String,
+      required: false,
+    },
     favTVShow: {
       type: String,
       required: true,
+    },
+    favTVShowSrc: {
+      type: String,
+      required: false,
     },
     currTVShow: {
       type: String,

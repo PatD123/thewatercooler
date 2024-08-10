@@ -59,7 +59,7 @@ export const BentoGridItem = ({
       onClick={() => {
         document.getElementById("search-dropdown")!.value = title;
         setCineName(title);
-        setCineImgSrc(icon);
+        setCineImgSrc(`https://image.tmdb.org/t/p/original${icon}`);
       }}
     >
       {header}
