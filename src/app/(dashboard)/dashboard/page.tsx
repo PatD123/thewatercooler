@@ -132,6 +132,8 @@ export const Dashboard = () => {
       setFavTVShow(response[2]);
       setCurrTVShow(response[3]);
       setCurrTVShowImg(response[4]);
+      setUsername(response[5]);
+      setBio(response[6]);
     });
     setInitFetch(1);
     setUserEmail(email);
@@ -160,6 +162,21 @@ export const Dashboard = () => {
     }
     const updateFunc = cardMap.get(cat);
     updateFunc(cineName);
+  }
+
+  function updateUserInfo(event: any) {
+    event.preventDefault();
+    const newUsername = document.getElementById("username")?.value.trim();
+    const newBio = document.getElementById("about")?.value.trim();
+    console.log(newBio);
+    if (!(newUsername === "")) {
+      editUsername(userEmail, newUsername);
+      setUsername(newUsername);
+    }
+    if (!(newBio.trim() === "")) {
+      setBio(newBio);
+      editBio(userEmail, newBio);
+    }
   }
 
   const updateBento = useDebouncedCallback((event: any) => {
@@ -222,8 +239,7 @@ export const Dashboard = () => {
                 </div>
                 <div className="relative w-full h-1/2 py-3">
                   <h2 className="card-title">Bio</h2>
-                  <p>UCLA '26</p>
-                  <p>Movies way better than tv shows</p>
+                  <p className="whitespace-pre-wrap">{bio}</p>
                 </div>
               </div>
             </div>
@@ -367,9 +383,17 @@ export const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="relative h-full w-full" ref={bentoRef}>
-              {bento ? (
-                // NEED SKELETONS
+            <div className="absolute w-full bottom-0 flex justify-center">
+              <button
+                className="btn btn-block bg-info"
+                onClick={updateUserInfo}
+              >
+                Submit
+              </button>
+            </div>
+
+            {bento ? (
+              <div className="relative h-full w-full" ref={bentoRef}>
                 <Suspense fallback={<p>Loading feed...</p>}>
                   {" "}
                   <BentoGridSearch
