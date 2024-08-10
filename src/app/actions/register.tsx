@@ -72,6 +72,8 @@ export const register = async (values: any) => {
       favMovie: "Pulp Fiction",
       favTVShow: "Downton Abbey",
       currTVShow: "Downton Abbey",
+      favMovieSrc: "",
+      favTVShowSrc: "",
       cineImgSrc: "",
       bio: "I got to UCLA, 26'",
     });

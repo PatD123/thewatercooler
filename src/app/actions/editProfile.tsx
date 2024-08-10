@@ -12,21 +12,33 @@ export const fetchProfile = async (email: string) => {
     user.cineImgSrc,
     user.username,
     user.bio,
+    user.favMovieSrc,
+    user.favTVShowSrc,
   ];
 };
 
-export const editFavMovie = async (email: string, favMovie: string) => {
+export const editFavMovie = async (
+  email: string,
+  favMovie: string,
+  favMovieSrc: string
+) => {
   const user = await User.findOne({ email });
   if (user) {
     user.favMovie = favMovie;
+    user.favMovieSrc = favMovieSrc;
     await user.save();
   }
 };
 
-export const editFavTVShow = async (email: string, favTVShow: string) => {
+export const editFavTVShow = async (
+  email: string,
+  favTVShow: string,
+  favTVShowSrc: string
+) => {
   const user = await User.findOne({ email });
   if (user) {
     user.favTVShow = favTVShow;
+    user.favTVShowSrc = favTVShowSrc;
     await user.save();
   }
 };
