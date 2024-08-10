@@ -170,7 +170,7 @@ export const Dashboard = () => {
     } else if (cineCategory === "Favorite Movie") {
       cat = "favMovie";
       editFavMovie(userEmail, cineName, cineImgSrc);
-      setFavMovie(cineImgSrc);
+      setFavMovieSrc(cineImgSrc);
     } else if (cineCategory === "Current TV Show") {
       cat = "currTVShow";
       editCurrTVShow(userEmail, cineName, cineImgSrc);
@@ -232,12 +232,8 @@ export const Dashboard = () => {
       setInitFetch(1);
       setUserEmail(email);
     }
-    pins[0].name = favMovie;
-    pins[0].image = favMovieSrc;
-    pins[1].name = favTVShow;
-    pins[1].image = favTVShowSrc;
-    pins[2].name = currTVShow;
-    pins[2].image = currTVShowSrc;
+
+    console.log("here");
 
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
@@ -442,6 +438,7 @@ export const Dashboard = () => {
                     {" "}
                     <BentoGridSearch
                       query={query}
+                      qtype={cineCategory}
                       setCineName={setCineName}
                       setCineImgSrc={setCineImgSrc}
                     />
