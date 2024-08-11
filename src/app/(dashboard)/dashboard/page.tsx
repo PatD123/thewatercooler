@@ -151,6 +151,12 @@ export const Dashboard = () => {
       designation: "Current TV Show",
       image: currTVShowSrc,
     },
+    {
+      id: 4,
+      name: "Avatar",
+      designation: "",
+      image: "/pulp.webp",
+    },
   ];
 
   const cardMap = new Map();
@@ -274,17 +280,17 @@ export const Dashboard = () => {
                 </div>
                 <div className="card-body">
                   <div className="w-full h-1/2">
-                    <h2 className="card-title text-sky-600 text-2xl">
+                    <h2 className="card-title text-sky-600 text-2xl mt-5">
                       {username}
                       <p className="text-xs">({fullName})</p>
                     </h2>
-                    <AnimatedTooltipPreview pins={pins} />
                   </div>
 
-                  <div className="w-full h-1/2">
+                  <div className="w-full h-1/2 flex-none">
                     <h2 className="card-title">Bio</h2>
-                    <p className="whitespace-pre-wrap">{bio}</p>
+                    <p className="whitespace-pre-wrap text-xs">{bio}</p>
                   </div>
+                  <AnimatedTooltipPreview pins={pins} />
                 </div>
               </div>
             </div>
@@ -302,10 +308,7 @@ export const Dashboard = () => {
                     >
                       {cineCategory}
                     </div>
-                    <ul
-                      tabindex="0"
-                      className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow"
-                    >
+                    <ul className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow">
                       <li onClick={() => setCineCategory("Favorite TV Show")}>
                         <a>Favorite TV Show</a>
                       </li>
@@ -464,7 +467,7 @@ export function AnimatedTooltipPreview({
   }[];
 }) {
   return (
-    <div className="flex flex-row items-center justify-center mb-10 mt-5 w-full">
+    <div className="relative flex flex-row items-center justify-start w-full mb-3">
       <AnimatedTooltip items={pins} />
     </div>
   );
