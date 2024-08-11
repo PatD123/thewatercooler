@@ -21,6 +21,7 @@ import {
   editBio,
 } from "@/app/actions/editProfile";
 import { BentoGridSearch } from "@/components/ui/bentoGrid";
+import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import { useDebouncedCallback } from "use-debounce";
 
 export default function SidebarDemo() {
@@ -249,8 +250,8 @@ export const Dashboard = () => {
 
   return (
     fullName && (
-      <div className="flex flex-1">
-        <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+      <div className="flex flex-1 z-10 bg-white/10">
+        <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white/20 dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
           <div className="flex w-full h-full justify-evenly">
             <div className="place-content-center">
               <div
