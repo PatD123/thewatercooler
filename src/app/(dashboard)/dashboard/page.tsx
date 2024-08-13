@@ -2,7 +2,7 @@
 import React, { useState, Suspense, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
+import { AnimatedTooltipPreview } from "@/components/ui/animated-tooltip";
 import {
   fetchProfile,
   editCurrTVShow,
@@ -364,22 +364,5 @@ export default function Dashboard() {
         </div>
       </div>
     )
-  );
-}
-
-export function AnimatedTooltipPreview({
-  pins,
-}: {
-  pins: {
-    id: number;
-    name: string;
-    designation: string;
-    image: string;
-  }[];
-}) {
-  return (
-    <div className="relative flex flex-row items-center justify-start w-full mb-3">
-      <AnimatedTooltip items={pins} />
-    </div>
   );
 }

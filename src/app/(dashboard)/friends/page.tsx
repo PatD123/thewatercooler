@@ -9,7 +9,8 @@ export default function Friends() {
   const [haveUserList, setHaveUserList] = useState(0);
   const [queryUser, setQueryUser] = useState("");
 
-  const [showingUser, setShowingUser] = useState(0);
+  // EMAIL
+  const [showingUser, setShowingUser] = useState("");
 
   const updateUserList = useDebouncedCallback((event: any) => {
     event.target.value === "" ? setHaveUserList(0) : setHaveUserList(1);
@@ -45,7 +46,7 @@ export default function Friends() {
       {/* SHOWING USER */}
       {showingUser ? (
         <div className="absolute w-full h-full z-40 p-11">
-          <ShowingUser user={showingUser} />
+          <ShowingUser showingUser={showingUser} />
         </div>
       ) : null}
     </div>

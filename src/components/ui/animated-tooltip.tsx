@@ -37,12 +37,15 @@ export const AnimatedTooltip = ({
     x.set(event.nativeEvent.offsetX - halfWidth); // set the x value, which is then used in transform and rotate
   };
 
+  const [reveal, setReveal] = useState(false);
+  const visibility = reveal ? "visible" : "hidden";
+
   return (
     <>
       {items.map((item, idx) => (
         <div
           className="-mr-4 relative group"
-          key={item.name}
+          key={idx}
           onMouseEnter={() => setHoveredIndex(item.id)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
@@ -75,19 +78,52 @@ export const AnimatedTooltip = ({
               </motion.div>
             )}
           </AnimatePresence>
-          <Image
-            onMouseMove={handleMouseMove}
-            height={100}
-            width={100}
-            src={item.image}
-            alt={item.name}
-            className={`object-cover !m-0 !p-0 object-top rounded-full ${
-              item.name === "Avatar" ? "h-20 w-20" : "h-14 w-14"
-            } border-2 group-hover:scale-105 group-hover:z-30 border-white  relative transition duration-500`}
-            priority
-          />
+          {visibility ? (
+            <Image
+              key={idx}
+              onMouseMove={handleMouseMove}
+              height={100}
+              width={100}
+              src={item.image}
+              alt={item.name}
+              style={{ visibility }}
+              onLoad={() => setReveal(true)}
+              className={`object-cover !m-0 !p-0 object-top rounded-full ${
+                item.name === "Avatar" ? "h-20 w-20" : "h-14 w-14"
+              } border-2 group-hover:scale-105 group-hover:z-30 border-white  relative transition duration-500`}
+            />
+          ) : (
+            <Image
+              key={idx}
+              onMouseMove={handleMouseMove}
+              height={100}
+              width={100}
+              src="/pulp.webp"
+              alt={item.name}
+              className={`object-cover !m-0 !p-0 object-top rounded-full ${
+                item.name === "Avatar" ? "h-20 w-20" : "h-14 w-14"
+              } border-2 group-hover:scale-105 group-hover:z-30 border-white  relative transition duration-500`}
+            />
+          )}
         </div>
       ))}
     </>
   );
 };
+
+export function AnimatedTooltipPreview({
+  pins,
+}: {
+  pins: {
+    id: number;
+    name: string;
+    designation: string;
+    image: string;
+  }[];
+}) {
+  return (
+    <div className="relative flex flex-row items-center justify-start w-full mb-3">
+      <AnimatedTooltip items={pins} />
+    </div>
+  );
+}

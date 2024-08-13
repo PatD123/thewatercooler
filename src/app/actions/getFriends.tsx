@@ -10,3 +10,9 @@ export const getPossibleUsers = async (name: string) => {
     users[i] = JSON.parse(JSON.stringify(users[i]));
   return users;
 };
+
+export const getShowingUser = async (showingUser: string) => {
+  console.log(showingUser);
+  const user = await User.findOne({ email: showingUser });
+  return JSON.parse(JSON.stringify(user));
+};

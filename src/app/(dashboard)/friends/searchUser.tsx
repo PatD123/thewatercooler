@@ -11,8 +11,8 @@ export default function SearchUser({
 }) {
   const [users, setUsers] = useState([]);
 
-  function showUser(username: string) {
-    setShowingUser(username);
+  function showUser(email: string) {
+    setShowingUser(email);
     return <p className="z-40">Hi</p>;
   }
 
@@ -30,7 +30,7 @@ export default function SearchUser({
         <div
           key={i}
           className="flex w-full h-12 rounded-md px-2 my-1 bg-gray-300 hover:bg-gray-200"
-          onClick={() => showUser(user["username"])}
+          onClick={() => showUser(user["email"])}
         >
           <div className="content-center">
             <div className="relative w-10 h-10">
