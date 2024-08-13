@@ -54,7 +54,7 @@ export default function ShowingUser({ showingUser }: { showingUser: string }) {
 
   return user ? (
     <div className="w-full h-full bg-gray-300/30 border-2 border-gray-300 backdrop-blur-2xl overflow-hidden rounded-lg shadow-xl">
-      <CardContainer className="inter-var">
+      <CardContainer className="inter-var w-full h-full">
         <CardBody className="flex bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-4 border">
           <CardItem translateZ="50" className="flex-none w-2/5">
             <Image
