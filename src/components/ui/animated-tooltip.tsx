@@ -60,7 +60,7 @@ export const AnimatedTooltip = ({
                   transition: {
                     type: "spring",
                     stiffness: 260,
-                    damping: 10,
+                    damping: 70,
                   },
                 }}
                 exit={{ opacity: 0, y: 20, scale: 0.6 }}
@@ -99,7 +99,7 @@ export const AnimatedTooltip = ({
               height={100}
               width={100}
               src="/pulp.webp"
-              alt={item.name}
+              alt="default"
               className={`object-cover !m-0 !p-0 object-top rounded-full ${
                 item.name === "Avatar" ? "h-20 w-20" : "h-14 w-14"
               } border-2 group-hover:scale-105 group-hover:z-30 border-white  relative transition duration-500`}

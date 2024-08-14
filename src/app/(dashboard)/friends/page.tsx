@@ -45,7 +45,7 @@ export default function Friends() {
       </div>
       {/* SHOWING USER */}
       {showingUser ? (
-        <div className="absolute w-full h-full z-40 p-11">
+        <div className="absolute w-full h-full z-40 py-32 px-72">
           <ShowingUser showingUser={showingUser} />
         </div>
       ) : null}
