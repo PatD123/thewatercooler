@@ -1,7 +1,7 @@
 "use client";
 
 import { useDebouncedCallback } from "use-debounce";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import UserList from "@/app/(dashboard)/friends/searchUser";
 import ShowingUser from "@/app/(dashboard)/friends/showingUser";
 
@@ -11,6 +11,22 @@ export default function Friends() {
 
   // EMAIL
   const [showingUser, setShowingUser] = useState("");
+
+  // Click out of show user
+  const showUserRef = useRef<any>(null);
+
+  const handleOutsideClick = (e: any) => {
+    if (showUserRef.current && !showUserRef.current.contains(e.target)) {
+      setShowingUser("");
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  });
 
   const updateUserList = useDebouncedCallback((event: any) => {
     event.target.value === "" ? setHaveUserList(0) : setHaveUserList(1);
@@ -46,7 +62,9 @@ export default function Friends() {
       {/* SHOWING USER */}
       {showingUser ? (
         <div className="absolute w-full h-full z-40 py-32 px-72">
-          <ShowingUser showingUser={showingUser} />
+          <div ref={showUserRef} className="w-full h-full">
+            <ShowingUser showingUser={showingUser} />
+          </div>
         </div>
       ) : null}
     </div>

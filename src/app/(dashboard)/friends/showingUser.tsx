@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { getShowingUser } from "@/app/actions/getFriends";
+import { getShowingUser, followUser } from "@/app/actions/getFriends";
 import Image from "next/image";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import Link from "next/link";
 import User from "@/models/User";
+import { useSession } from "next-auth/react";
 import { AnimatedTooltipPreview } from "@/components/ui/animated-tooltip";
 
 export default function ShowingUser({ showingUser }: { showingUser: string }) {
+  // The user you want to show
   const [user, setUser] = useState<(typeof User)[]>([]);
+  // The logged-in user
+  const [seshUserEmail, setSeshUserEmail] = useState("");
+  const { data: session, status } = useSession();
 
   let pins = [
     {
@@ -37,6 +42,15 @@ export default function ShowingUser({ showingUser }: { showingUser: string }) {
   ];
 
   useEffect(() => {
+    console.log("Status of session:" + status);
+    // You get returned email and name
+    // Map this to the user id and then get friends.
+    // {name: 'Patrick Dai', email: 'thetofulion@gmail.com'}
+    if (session) {
+      const email = session?.user?.email;
+      setSeshUserEmail(email);
+    }
+
     async function getUser(showingUser: string) {
       const user = await getShowingUser(showingUser);
       if (user) {
@@ -51,6 +65,16 @@ export default function ShowingUser({ showingUser }: { showingUser: string }) {
     }
     getUser(showingUser);
   }, [showingUser]);
+
+  async function onFollow() {
+    // Of session user
+    const seshUser = await getShowingUser(seshUserEmail);
+    if (seshUser) {
+      console.log(seshUser["_id"]);
+      console.log(user["_id"]);
+      await followUser(seshUser["_id"], user["_id"]);
+    }
+  }
 
   return user ? (
     <div className="w-full h-full bg-gray-300/30 border-2 border-gray-300 backdrop-blur-2xl overflow-hidden rounded-lg shadow-xl pb-16">
@@ -112,7 +136,10 @@ export default function ShowingUser({ showingUser }: { showingUser: string }) {
       </CardContainer>
 
       <div className="flex justify-center">
-        <button className="shadow-[0_4px_14px_0_rgb(0,118,255,39%)] hover:shadow-[0_6px_20px_rgba(0,118,255,23%)] hover:text-black hover:bg-[rgba(150,118,255,0.9)] px-8 py-2 bg-[#0070f3] rounded-lg text-white text-sm font-light transition duration-200 ease-linear">
+        <button
+          className="shadow-[0_4px_14px_0_rgb(0,118,255,39%)] hover:shadow-[0_6px_20px_rgba(0,118,255,23%)] hover:text-black hover:bg-[rgba(150,118,255,0.9)] px-8 py-2 bg-[#0070f3] rounded-lg text-white text-sm font-light transition duration-200 ease-linear"
+          onClick={onFollow}
+        >
           Follow
         </button>
       </div>

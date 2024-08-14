@@ -12,7 +12,11 @@ export const getPossibleUsers = async (name: string) => {
 };
 
 export const getShowingUser = async (showingUser: string) => {
-  console.log(showingUser);
   const user = await User.findOne({ email: showingUser });
   return JSON.parse(JSON.stringify(user));
+};
+
+export const followUser = async (fromID: string, toID: string) => {
+  console.log(fromID);
+  await User.findByIdAndUpdate(toID, { $addToSet: { followers: fromID } });
 };
