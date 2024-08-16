@@ -1,18 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { getPossibleUsers } from "@/app/actions/getFriends";
 import Image from "next/image";
 
 export default function SearchUser({
   queryUser,
   setShowingUser,
+  setHaveUserList,
 }: {
   queryUser: string;
   setShowingUser: any;
+  setHaveUserList: any;
 }) {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const showUsersRef = useRef<any>(null);
+
+  const handleOutsideClick = (e: any) => {
+    if (showUsersRef.current && !showUsersRef.current.contains(e.target)) {
+      setHaveUserList(0);
+      setUsers([]);
+    }
+  };
 
   function showUser(email: string) {
     setShowingUser(email);
+    setHaveUserList(0);
     return <p className="z-40">Hi</p>;
   }
 
@@ -22,10 +33,18 @@ export default function SearchUser({
       if (users) setUsers(users);
     }
     getUsers();
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
   }, [queryUser]);
 
   return users ? (
-    <div className="flex-grow my-2 max-h-lg bg-gray-300 border-2 border-gray-300 backdrop-blur-2xl overflow-hidden rounded-lg shadow-xl px-2 py-1 overflow-y-auto">
+    <div
+      className="flex-grow my-2 max-h-lg bg-gray-300 border-2 border-gray-300 backdrop-blur-2xl overflow-hidden rounded-lg shadow-xl px-2 py-1 overflow-y-auto"
+      ref={showUsersRef}
+    >
       {users.map((user, i) => (
         <div
           key={i}

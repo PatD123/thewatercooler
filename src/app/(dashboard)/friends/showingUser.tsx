@@ -69,11 +69,7 @@ export default function ShowingUser({ showingUser }: { showingUser: string }) {
   async function onFollow() {
     // Of session user
     const seshUser = await getShowingUser(seshUserEmail);
-    if (seshUser) {
-      console.log(seshUser["_id"]);
-      console.log(user["_id"]);
-      await followUser(seshUser["_id"], user["_id"]);
-    }
+    if (seshUser) await followUser(seshUser["_id"], user["_id"]);
   }
 
   return user ? (

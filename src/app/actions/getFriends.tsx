@@ -16,7 +16,12 @@ export const getShowingUser = async (showingUser: string) => {
   return JSON.parse(JSON.stringify(user));
 };
 
+export const getFriendCarousel = async (id: string) => {
+  const user = await User.findOne({ _id: id });
+  return user.cineImgSrc;
+};
+
 export const followUser = async (fromID: string, toID: string) => {
-  console.log(fromID);
+  await User.findByIdAndUpdate(fromID, { $addToSet: { following: toID } });
   await User.findByIdAndUpdate(toID, { $addToSet: { followers: fromID } });
 };

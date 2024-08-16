@@ -19,6 +19,7 @@ export interface UserDocument {
   cineImgSrc: string;
   username: string;
   bio: string;
+  following: [{ type: Schema.Types.ObjectId; ref: "User" }];
   followers: [{ type: Schema.Types.ObjectId; ref: "User" }];
 }
 
@@ -49,6 +50,7 @@ const UserSchema = new Schema<UserDocument>(
       type: String,
       required: true,
     },
+    following: [{ type: Schema.Types.ObjectId, ref: "User" }],
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
     isValid: {
       type: Boolean,
