@@ -5,23 +5,20 @@ import { getShowingUser, getFriendCarousel } from "@/app/actions/getFriends";
 
 export default function FriendsCarousel() {
   const [followingUsers, setFollowingUsers] = useState([]);
-  const [userImgs, setUserImgs] = useState([]);
 
   // For current session user
   const [seshUserEmail, setSeshUserEmail] = useState("");
   const { data: session, status } = useSession();
 
   const fetchUserImgs = async (users: any[]) => {
-    console.log("Fetching user imgs ...");
-    console.log(users);
-    const imgs = Array(3).fill("");
-    const allImgs = await Promise.all(
+    console.log("Fetching followed users ...");
+    const followingUsers = await Promise.all(
       users.map(async (id, i) => {
-        const img = await getFriendCarousel(id);
-        return img;
+        const user = await getFriendCarousel(id);
+        return user;
       })
     );
-    return allImgs;
+    return followingUsers;
   };
 
   useEffect(() => {
@@ -34,17 +31,18 @@ export default function FriendsCarousel() {
         .then((user) => {
           return user["following"];
         })
-        .then((users) => fetchUserImgs(users))
-        .then((imgs) => setUserImgs(imgs));
+        .then((resp) => fetchUserImgs(resp))
+        .then((users) => setFollowingUsers(users));
     }
   }, []);
 
   return followingUsers ? (
     <div className="carousel carousel-center rounded-box">
-      {userImgs.map((img, i) => (
+      {followingUsers.map((user, i) => (
         <div className="carousel-item" key={i}>
           <div className="flex w-full h-full p-16 justify-center">
-            <img src={img} alt="Pizza" className="rounded-lg" />
+            <img src={user["cineImgSrc"]} alt="Pizza" className="rounded-lg" />
+            <div>{user["favMovie"]}</div>
           </div>
         </div>
       ))}
