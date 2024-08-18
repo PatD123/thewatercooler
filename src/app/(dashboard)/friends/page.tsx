@@ -37,7 +37,7 @@ export default function Friends() {
 
   return (
     <div className="w-screen h-screen">
-      <div className="flex relative w-full h-[12%] justify-center">
+      <div className="flex relative w-full h-[12%] justify-center z-20">
         {/* SEARCH FOR USERS HERE */}
         <div className="flex-grow max-w-md my-3">
           <div className="flex px-4 py-3 rounded-lg border-2 overflow-hidden mx-auto font-[sans-serif]">
@@ -76,7 +76,7 @@ export default function Friends() {
           </div>
         ) : null}
       </div>
-      <div className="flex w-full h-full justify-center pb-32">
+      <div className="flex w-full h-full justify-center pb-32 z-10">
         <FriendsCarousel />
       </div>
     </div>
