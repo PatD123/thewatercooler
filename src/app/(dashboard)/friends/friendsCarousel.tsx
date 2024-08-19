@@ -13,6 +13,16 @@ export default function FriendsCarousel() {
   const [seshUserEmail, setSeshUserEmail] = useState("");
   const { data: session, status } = useSession();
 
+  function slideWindow(dir: number) {
+    if (dir) {
+      setLeft(left + 1);
+      setRight(right + 1);
+    } else {
+      setLeft(left - 1);
+      setRight(right - 1);
+    }
+  }
+
   // Get users in seshUser's following list
   const fetchUsers = async (users: any[]) => {
     console.log("Fetching followed users ...");
@@ -57,6 +67,7 @@ export default function FriendsCarousel() {
         .then((users) => {
           shuffle(users);
           users.unshift(null, null);
+          users.push(null, null);
           setFollowingUsers(users);
         });
     }
@@ -111,32 +122,63 @@ export default function FriendsCarousel() {
     <div className="flex w-full h-full justify-around">
       {followingUsers.slice(left, right).map((user, i) =>
         i === 2 ? (
-          <div className="relative w-96 h-full">
-            <Image
-              src={user["cineImgSrc"]}
-              alt="Pizza"
-              className="rounded-lg object-cover"
-              fill
-            />
-            <div className="flex absolute">
+          <div className="flex">
+            {followingUsers[left + 1] ? (
+              <button
+                className="flex place-self-center"
+                onClick={() => slideWindow(0)}
+              >
+                <Image
+                  src="/right-arrow.svg"
+                  className="h-5 w-5 rounded-full m-2 rotate-180 transition duration-300 hover:ease-out hover:scale-125"
+                  width={30}
+                  height={30}
+                  alt="Avatar"
+                />
+              </button>
+            ) : null}
+
+            <div className="relative w-96 h-full">
               <Image
-                src="/pulp.webp"
-                className="h-10 w-10 rounded-full m-2"
-                width={50}
-                height={50}
-                alt="Avatar"
+                src={user["cineImgSrc"]}
+                alt="Pizza"
+                className="rounded-lg object-cover"
+                fill
               />
-              <div className="flex self-center text-sm text-stone-200">
-                {user["username"]}
+              <div className="flex absolute">
+                <Image
+                  src="/pulp.webp"
+                  className="h-10 w-10 rounded-full m-2"
+                  width={50}
+                  height={50}
+                  alt="Avatar"
+                />
+                <div className="flex self-center text-sm text-stone-200">
+                  {user["username"]}
+                </div>
+                <Image
+                  src="/right-arrow.svg"
+                  className="h-10 w-10 rounded-full m-2"
+                  width={50}
+                  height={50}
+                  alt="Avatar"
+                />
               </div>
-              <Image
-                src="/right-arrow.svg"
-                className="h-10 w-10 rounded-full m-2"
-                width={50}
-                height={50}
-                alt="Avatar"
-              />
             </div>
+            {followingUsers[right - 2] ? (
+              <button
+                className="flex place-self-center"
+                onClick={() => slideWindow(1)}
+              >
+                <Image
+                  src="/right-arrow.svg"
+                  className="h-5 w-5 rounded-full m-2 transition duration-200 hover:ease-out hover:scale-150"
+                  width={30}
+                  height={30}
+                  alt="Avatar"
+                />
+              </button>
+            ) : null}
           </div>
         ) : (
           <>
@@ -155,8 +197,8 @@ export default function FriendsCarousel() {
                 />
 
                 <div className="flex absolute justify-center w-full h-full">
-                  <div className="flex place-content-center">
-                    <div className="w-full h-full">
+                  <div className="w-full h-full bg-black/50 rounded-lg">
+                    <div className="w-full h-full place-content-center">
                       <div className="flex justify-center w-full">
                         <Image
                           src="/pulp.webp"
@@ -167,22 +209,17 @@ export default function FriendsCarousel() {
                         />
                       </div>
 
-                      <div className="flex self-center text-sm text-stone-200">
-                        {user["username"]}
+                      <div className="flex justify-center">
+                        <div className="text-sm text-stone-200">
+                          {user["username"]}
+                        </div>
                       </div>
-                      <Image
-                        src="/right-arrow.svg"
-                        className="h-5 w-5 rounded-full m-2"
-                        width={30}
-                        height={30}
-                        alt="Avatar"
-                      />
                     </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="flex relative w-32 h-64 place-self-center"></div>
+              <div className="flex relative w-48 h-64 place-self-center"></div>
             )}
           </>
         )
