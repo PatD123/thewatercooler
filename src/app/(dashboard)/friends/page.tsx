@@ -77,7 +77,7 @@ export default function Friends() {
         ) : null}
       </div>
       <div className="flex w-full h-full justify-center pb-32 z-10">
-        <FriendsCarousel />
+        <FriendsCarousel setShowingUser={setShowingUser} />
       </div>
     </div>
   );

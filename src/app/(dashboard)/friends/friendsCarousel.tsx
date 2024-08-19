@@ -3,7 +3,11 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { getShowingUser, getFriendCarousel } from "@/app/actions/getFriends";
 
-export default function FriendsCarousel() {
+export default function FriendsCarousel({
+  setShowingUser,
+}: {
+  setShowingUser: any;
+}) {
   // Sliding window with left and right pointers.
   const [followingUsers, setFollowingUsers] = useState([]);
   const [left, setLeft] = useState(0);
@@ -13,13 +17,15 @@ export default function FriendsCarousel() {
   const [seshUserEmail, setSeshUserEmail] = useState("");
   const { data: session, status } = useSession();
 
-  function slideWindow(dir: number) {
+  function slideWindow(dir: number, steps: number = 1) {
     if (dir) {
-      setLeft(left + 1);
-      setRight(right + 1);
+      // Slide window right
+      setLeft(left + steps);
+      setRight(right + steps);
     } else {
-      setLeft(left - 1);
-      setRight(right - 1);
+      // Slide window left
+      setLeft(left - steps);
+      setRight(right - steps);
     }
   }
 
@@ -74,51 +80,6 @@ export default function FriendsCarousel() {
   }, []);
 
   return followingUsers ? (
-    // <div className="carousel carousel-center rounded-box">
-    // {followingUsers.slice(left, right).map((user, i) => (
-    //   <div className="carousel-item" key={i}>
-    //     {user ? (
-    //       <div className="flex relative w-full h-full px-8">
-    //         <img
-    //           src={user["cineImgSrc"]}
-    //           alt="Pizza"
-    //           className="rounded-lg"
-    //         />
-    //         <div className="flex absolute">
-    //           <Image
-    //             src="/pulp.webp"
-    //             className="h-10 w-10 rounded-full m-2"
-    //             width={50}
-    //             height={50}
-    //             alt="Avatar"
-    //           />
-    //           <div className="flex self-center text-sm text-stone-200">
-    //             {user["username"]}
-    //           </div>
-    //           <Image
-    //             src="/right-arrow.svg"
-    //             className="h-10 w-10 rounded-full m-2"
-    //             width={50}
-    //             height={50}
-    //             alt="Avatar"
-    //           />
-    //         </div>
-    //       </div>
-    //     ) : (
-    //       <div className="flex-none relative w-full h-full px-8">
-    //         <Image
-    //           src="/pulp.webp"
-    //           className="h-10 w-10 rounded-full m-2"
-    //           width={50}
-    //           height={50}
-    //           alt="Avatar"
-    //         />
-    //       </div>
-    //     )}
-    //   </div>
-    // ))}
-    // </div>
-
     <div className="flex w-full h-full justify-around">
       {followingUsers.slice(left, right).map((user, i) =>
         i === 2 ? (
@@ -130,14 +91,15 @@ export default function FriendsCarousel() {
               >
                 <Image
                   src="/right-arrow.svg"
-                  className="h-5 w-5 rounded-full m-2 rotate-180 transition duration-300 hover:ease-out hover:scale-125"
+                  className="h-5 w-5 rounded-full m-2 rotate-180 transition duration-300 hover:ease-out hover:scale-150"
                   width={30}
                   height={30}
                   alt="Avatar"
                 />
               </button>
-            ) : null}
-
+            ) : (
+              <p className="flex place-self-center w-5 h-5 m-2"></p>
+            )}
             <div className="relative w-96 h-full">
               <Image
                 src={user["cineImgSrc"]}
@@ -145,7 +107,10 @@ export default function FriendsCarousel() {
                 className="rounded-lg object-cover"
                 fill
               />
-              <div className="flex absolute">
+              <button
+                className="flex absolute"
+                onClick={() => setShowingUser(user["email"])}
+              >
                 <Image
                   src="/pulp.webp"
                   className="h-10 w-10 rounded-full m-2"
@@ -156,14 +121,7 @@ export default function FriendsCarousel() {
                 <div className="flex self-center text-sm text-stone-200">
                   {user["username"]}
                 </div>
-                <Image
-                  src="/right-arrow.svg"
-                  className="h-10 w-10 rounded-full m-2"
-                  width={50}
-                  height={50}
-                  alt="Avatar"
-                />
-              </div>
+              </button>
             </div>
             {followingUsers[right - 2] ? (
               <button
@@ -178,7 +136,9 @@ export default function FriendsCarousel() {
                   alt="Avatar"
                 />
               </button>
-            ) : null}
+            ) : (
+              <p className="flex place-self-center w-5 h-5 m-2"></p>
+            )}
           </div>
         ) : (
           <>
@@ -196,7 +156,10 @@ export default function FriendsCarousel() {
                   }}
                 />
 
-                <div className="flex absolute justify-center w-full h-full">
+                <button
+                  className="flex absolute justify-center w-full h-full"
+                  onClick={() => slideWindow(i < 2 ? 0 : 1, Math.abs(i - 2))}
+                >
                   <div className="w-full h-full bg-black/50 rounded-lg">
                     <div className="w-full h-full place-content-center">
                       <div className="flex justify-center w-full">
@@ -216,7 +179,7 @@ export default function FriendsCarousel() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </button>
               </div>
             ) : (
               <div className="flex relative w-48 h-64 place-self-center"></div>
