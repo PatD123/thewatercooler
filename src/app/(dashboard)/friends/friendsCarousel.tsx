@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { getShowingUser, getFriendCarousel } from "@/app/actions/getFriends";
+import { motion, Variants, AnimatePresence } from "framer-motion";
 
 export default function FriendsCarousel({
   setShowingUser,
@@ -12,6 +13,10 @@ export default function FriendsCarousel({
   const [followingUsers, setFollowingUsers] = useState([]);
   const [left, setLeft] = useState(0);
   const [right, setRight] = useState(5);
+
+  const [appear, setAppear] = useState(0);
+
+  const [flag, setFlag] = useState(0);
 
   // For current session user
   const [seshUserEmail, setSeshUserEmail] = useState("");
@@ -27,6 +32,7 @@ export default function FriendsCarousel({
       setLeft(left - steps);
       setRight(right - steps);
     }
+    setAppear(0);
   }
 
   // Get users in seshUser's following list
@@ -60,30 +66,47 @@ export default function FriendsCarousel({
   };
 
   useEffect(() => {
-    console.log("Status of session:" + status);
-    if (session) {
-      const email = session?.user?.email;
-      setSeshUserEmail(email as string);
+    if (!appear) setAppear(1);
+    if (!flag) {
+      setFlag(1);
+      console.log("Status of session:" + status);
+      if (session) {
+        const email = session?.user?.email;
+        setSeshUserEmail(email as string);
 
-      getShowingUser(email as string)
-        .then((user) => {
-          return user["following"];
-        })
-        .then((resp) => fetchUsers(resp))
-        .then((users) => {
-          shuffle(users);
-          users.unshift(null, null);
-          users.push(null, null);
-          setFollowingUsers(users);
-        });
+        getShowingUser(email as string)
+          .then((user) => {
+            return user["following"];
+          })
+          .then((resp) => fetchUsers(resp))
+          .then((users) => {
+            shuffle(users);
+            users.unshift(null, null);
+            users.push(null, null);
+            setFollowingUsers(users);
+          });
+      }
     }
-  }, []);
+  }, [appear]);
+
+  const variants: Variants = {
+    enter: { opacity: 0, scale: 1 },
+    visible: { opacity: 1, x: 0, rotate: 360 },
+    exit: { scale: 0, x: -100 },
+  };
 
   return followingUsers ? (
     <div className="flex w-full h-full justify-around">
       {followingUsers.slice(left, right).map((user, i) =>
-        i === 2 ? (
-          <div className="flex">
+        i === 2 && appear ? (
+          <motion.div
+            className="flex"
+            variants={variants}
+            initial="enter"
+            animate="visible"
+            exit="exit"
+          >
+            {/* Left arrow */}
             {followingUsers[left + 1] ? (
               <button
                 className="flex place-self-center"
@@ -100,6 +123,7 @@ export default function FriendsCarousel({
             ) : (
               <p className="flex place-self-center w-5 h-5 m-2"></p>
             )}
+            {/* Main card */}
             <div className="relative w-96 h-full">
               <Image
                 src={user["cineImgSrc"]}
@@ -123,6 +147,7 @@ export default function FriendsCarousel({
                 </div>
               </button>
             </div>
+            {/* Right arrow */}
             {followingUsers[right - 2] ? (
               <button
                 className="flex place-self-center"
@@ -139,7 +164,7 @@ export default function FriendsCarousel({
             ) : (
               <p className="flex place-self-center w-5 h-5 m-2"></p>
             )}
-          </div>
+          </motion.div>
         ) : (
           <>
             {user ? (
