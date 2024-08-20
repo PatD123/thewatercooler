@@ -14,9 +14,13 @@ export default function FriendsCarousel({
   const [left, setLeft] = useState(0);
   const [right, setRight] = useState(5);
 
+  // Used to get motion.div animations
   const [appear, setAppear] = useState(0);
 
+  // Initial render
   const [flag, setFlag] = useState(0);
+
+  const [moveDir, setMoveDir] = useState(0);
 
   // For current session user
   const [seshUserEmail, setSeshUserEmail] = useState("");
@@ -27,10 +31,12 @@ export default function FriendsCarousel({
       // Slide window right
       setLeft(left + steps);
       setRight(right + steps);
+      setMoveDir(1);
     } else {
       // Slide window left
       setLeft(left - steps);
       setRight(right - steps);
+      setMoveDir(0);
     }
     setAppear(0);
   }
@@ -89,10 +95,17 @@ export default function FriendsCarousel({
     }
   }, [appear]);
 
-  const variants: Variants = {
-    enter: { opacity: 0, scale: 1 },
-    visible: { opacity: 1, x: 0, rotate: 360 },
-    exit: { scale: 0, x: -100 },
+  // If you want to slide window right, everything looks like it flows left
+  const variantsMoveRight: Variants = {
+    enter: { opacity: 0, scale: 1, x: -75 },
+    visible: { opacity: 1, x: 0 },
+    exit: { scale: 0 },
+  };
+  // If you want to slide window left, everything looks like it flows right
+  const variantsMoveLeft: Variants = {
+    enter: { opacity: 0, scale: 1, x: 75 },
+    visible: { opacity: 1, x: 0 },
+    exit: { scale: 1 },
   };
 
   return followingUsers ? (
@@ -101,10 +114,11 @@ export default function FriendsCarousel({
         i === 2 && appear ? (
           <motion.div
             className="flex"
-            variants={variants}
+            variants={moveDir ? variantsMoveRight : variantsMoveLeft}
             initial="enter"
             animate="visible"
             exit="exit"
+            transition={{ type: "spring", stiffnes: 100 }}
           >
             {/* Left arrow */}
             {followingUsers[left + 1] ? (
