@@ -21,3 +21,10 @@ export const fetchTMDBPage = async (
   const json = await response.json();
   return json;
 };
+
+export const getPopular = async () => {
+  const url = "https://api.themoviedb.org/3/trending/tv/week?language=en-US";
+  const response = await fetch(url, options);
+  const json = await response.json();
+  return json;
+};

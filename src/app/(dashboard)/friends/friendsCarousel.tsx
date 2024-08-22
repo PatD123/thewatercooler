@@ -44,18 +44,19 @@ export default function FriendsCarousel({
   // Get users in seshUser's following list
   const fetchUsers = async (users: any[]) => {
     console.log("Fetching followed users ...");
-    const followingUsers = await Promise.all(
+    const profiles = await Promise.all(
       users.map(async (id, i) => {
         const user = await getFriendCarousel(id);
         return user;
       })
     );
-    return followingUsers;
+    return profiles;
   };
 
   // Shuffle following list
   const shuffle = (users: any[]) => {
     let currentIndex = users.length;
+    console.log("HI");
 
     // While there remain elements to shuffle...
     while (currentIndex != 0) {
@@ -105,7 +106,7 @@ export default function FriendsCarousel({
   const variantsMoveLeft: Variants = {
     enter: { opacity: 0, scale: 1, x: 75 },
     visible: { opacity: 1, x: 0 },
-    exit: { scale: 1 },
+    exit: { scale: 1, animationDuration: "4" },
   };
 
   return followingUsers ? (
@@ -118,7 +119,7 @@ export default function FriendsCarousel({
             initial="enter"
             animate="visible"
             exit="exit"
-            transition={{ type: "spring", stiffnes: 100 }}
+            transition={{ type: "spring", stiffness: 100 }}
           >
             {/* Left arrow */}
             {followingUsers[left + 1] ? (
