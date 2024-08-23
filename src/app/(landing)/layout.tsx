@@ -16,7 +16,7 @@ export default function RootLayout({
   const router = useRouter();
   return (
     <div>
-      <div className="navbar">
+      {/* <div className="navbar">
         <div className="navbar-start">
           <a className="btn btn-ghost text-xl" onClick={() => router.push("/")}>
             <h1 className="text-xl font-bold text-info">
@@ -49,7 +49,7 @@ export default function RootLayout({
             Sign In
           </a>
         </div>
-      </div>
+      </div> */}
       {children}
     </div>
   );
