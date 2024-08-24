@@ -64,9 +64,29 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="mt-72">
-        <div className="text-4xl text-white">Build a Profile</div>
+      <div className="divider mt-72 divider-info text-black">Easter Egg</div>
+      <div className="mt-20">
+        <div className="text-3xl text-white">
+          <p>
+            You're reconnecting with a college friend you haven't seen in years.
+          </p>
+          <p className="mt-2">
+            You're hitting it off with a person you've just met at a pickup
+            game.
+          </p>
+          <p className="mt-2">
+            Or perhaps, you're hanging out with a person you met only just last
+            week.
+          </p>
+          <div className="flex mt-2">
+            <p>Never need to ask the question, </p>
+            <p className="ml-1 italic">"What have you been watching lately?"</p>
+          </div>
+          <p className="text-5xl text-cyan-500">You'll just know.</p>
+        </div>
       </div>
+      <div className="divider mt-20 divider-info text-black">Easter Egg</div>
+      <div className="text-6xl mt-5 text-white">Build a Profile</div>
     </div>
   );
 }
