@@ -96,7 +96,7 @@ export function Accordion() {
   const { scrollYProgress } = useScroll({
     target: targetRef,
   });
-  const escale = useTransform(scrollYProgress, [0.5, 0], [0.35, 1.3]);
+  const escale = useTransform(scrollYProgress, [0.9, 0.3], [0.35, 2]);
   const physics = { stiffness: 100, damping: 30, restDelta: 0.001, mass: 2 }; // easing of smooth scroll
   const spring = useSpring(escale, physics);
 
@@ -119,7 +119,7 @@ export function Accordion() {
             <div className="grid grid-cols-10 z-1">
               {shows.map((show, i) => (
                 <div
-                  className="mx-32"
+                  className="mx-10"
                   style={{
                     position: "relative",
                     width: "150px",
