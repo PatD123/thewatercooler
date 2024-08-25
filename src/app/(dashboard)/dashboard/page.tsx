@@ -150,8 +150,6 @@ export default function Dashboard() {
       setUserEmail(email);
     }
 
-    console.log("here");
-
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
@@ -163,54 +161,54 @@ export default function Dashboard() {
       <div className="flex flex-1 z-10 bg-white/10">
         <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white/20 dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
           <div className="flex w-full h-full justify-evenly">
-            <div className="place-content-center">
-              <div
-                className="flex rounded-2xl overflow-hidden bg-white/20 shadow-lg ring-1 ring-black/5"
-                style={{
-                  position: "relative",
-                  width: "500px",
-                  height: "300px",
-                }}
-              >
+            <div className="w-1/2 overflow-y-auto overflow-x-hidden no-scrollbar scrollbar-w">
+              {/* Profile Card */}
+              <div className="flex place-content-center">
                 <div
-                  className="fixed flex-none inset-0"
+                  className="flex rounded-2xl overflow-hidden bg-white/20 shadow-lg ring-1 ring-black/5"
                   style={{
                     position: "relative",
-                    width: "200px",
+                    width: "500px",
                     height: "300px",
                   }}
                 >
-                  <Image
-                    src={`https://image.tmdb.org/t/p/original${currTVShowSrc}`}
-                    alt="Picture of the author"
-                    fill
+                  <div
+                    className="fixed flex-none inset-0"
                     style={{
-                      objectFit: "contain",
+                      position: "relative",
+                      width: "200px",
+                      height: "300px",
                     }}
-                  />
-                </div>
-                <div className="card-body">
-                  <div className="w-full h-1/2">
-                    <h2 className="card-title text-sky-600 text-2xl mt-5">
-                      {username}
-                      <p className="text-xs">({fullName})</p>
-                    </h2>
+                  >
+                    <Image
+                      src={`https://image.tmdb.org/t/p/original${currTVShowSrc}`}
+                      alt="Picture of the author"
+                      fill
+                      style={{
+                        objectFit: "contain",
+                      }}
+                    />
                   </div>
+                  <div className="card-body">
+                    <div className="w-full h-1/2">
+                      <h2 className="card-title text-sky-600 text-2xl mt-5">
+                        {username}
+                        <p className="text-xs">({fullName})</p>
+                      </h2>
+                    </div>
 
-                  <div className="w-full h-1/2 flex-none">
-                    <h2 className="card-title">Bio</h2>
-                    <p className="whitespace-pre-wrap text-xs">{bio}</p>
+                    <div className="w-full h-1/2 flex-none">
+                      <h2 className="card-title">Bio</h2>
+                      <p className="whitespace-pre-wrap text-xs">{bio}</p>
+                    </div>
+                    <AnimatedTooltipPreview pins={pins} />
                   </div>
-                  <AnimatedTooltipPreview pins={pins} />
                 </div>
               </div>
-            </div>
-
-            <div className="divider divider-horizontal"></div>
-            <div className="relative w-3/5 max-h-3/4 p-5 flex-col">
               {/* Search Bar */}
               <div className="w-full mx-auto my-8">
                 <div className="join w-full">
+                  {/* Dropdown */}
                   <div className="dropdown dropdown-hover join-item">
                     <div
                       tabindex="0"
@@ -219,7 +217,10 @@ export default function Dashboard() {
                     >
                       {cineCategory}
                     </div>
-                    <ul className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow">
+                    <ul
+                      tabindex="0"
+                      className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow"
+                    >
                       <li onClick={() => setCineCategory("Favorite TV Show")}>
                         <a>Favorite TV Show</a>
                       </li>
@@ -243,7 +244,7 @@ export default function Dashboard() {
                     />
                     <button
                       type="submit"
-                      className="join-item top-0 end-0 p-4 font-medium text-white bg-info rounded-e-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      className="join-item top-0 end-0 p-4 font-medium text-white bg-info rounded-e-full hover:bg-blue-800 focus:ring-2"
                       onClick={updateCine}
                     >
                       Edit
@@ -252,6 +253,24 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
+              {bento ? (
+                <div className="relative h-full w-full" ref={bentoRef}>
+                  <Suspense fallback={<p>Loading feed...</p>}>
+                    {" "}
+                    <BentoGridSearch
+                      query={query}
+                      qtype={cineCategory}
+                      setCineName={setCineName}
+                      setCineImgSrc={setCineImgSrc}
+                    />
+                  </Suspense>
+                </div>
+              ) : null}
+            </div>
+            {/*  Divider */}
+            <div className="divider divider-horizontal"></div>
+            {/*  Other side of profile */}
+            <div className="relative w-3/5 max-h-3/4 p-5 flex-col">
               <div className="absolute flex mt-10 w-full h-96">
                 <div className="relative flex-none h-96">
                   <div className="sm:col-span-4">
@@ -345,20 +364,6 @@ export default function Dashboard() {
                   Submit
                 </button>
               </div>
-
-              {bento ? (
-                <div className="relative h-full w-full" ref={bentoRef}>
-                  <Suspense fallback={<p>Loading feed...</p>}>
-                    {" "}
-                    <BentoGridSearch
-                      query={query}
-                      qtype={cineCategory}
-                      setCineName={setCineName}
-                      setCineImgSrc={setCineImgSrc}
-                    />
-                  </Suspense>
-                </div>
-              ) : null}
             </div>
           </div>
         </div>
