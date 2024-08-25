@@ -24,7 +24,7 @@ export const BentoGrid = ({
   return (
     <div
       className={cn(
-        "grid md:auto-rows-min grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto bg-white/20 backdrop-blur-sm drop-shadow-lg",
+        "grid md:auto-rows-min grid-cols-1 md:grid-cols-3 gap-4 max-w-8xl mx-auto bg-white/20 backdrop-blur-sm drop-shadow-lg",
         className
       )}
     >
@@ -53,7 +53,7 @@ export const BentoGridItem = ({
   return (
     <div
       className={cn(
-        "relative row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-4 dark:bg-black dark:border-white/[0.2] bg-white border border-transparent justify-between flex flex-col space-y-4",
+        "relative row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input p-4 bg-white border border-transparent",
         className
       )}
       onClick={() => {
@@ -63,21 +63,17 @@ export const BentoGridItem = ({
       }}
     >
       {header}
-      <div className="group-hover/bento:translate-x-2 transition duration-200">
-        <div
-          className="object-cover"
-          style={{ position: "relative", width: "200px", height: "300px" }}
-        >
-          <Image
-            className="rounded-lg"
-            src={`https://image.tmdb.org/t/p/original${icon}`}
-            alt="Picture of the author"
-            fill
-            style={{
-              objectFit: "contain",
-            }}
-          />
-        </div>
+      <div className="w-full group-hover/bento:translate-x-2 transition duration-200">
+        <Image
+          className="rounded-lg"
+          src={`https://image.tmdb.org/t/p/original${icon}`}
+          alt="Picture of the author"
+          height={250}
+          width={150}
+          style={{
+            objectFit: "contain",
+          }}
+        />
         <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-2 mt-2">
           {title}
         </div>
