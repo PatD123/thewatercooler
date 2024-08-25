@@ -1,8 +1,17 @@
 "use client";
 import React, { useState, Suspense, useRef, useEffect } from "react";
+import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
+import {
+  IconBrandTabler,
+  IconUserBolt,
+  IconSettings,
+  IconArrowLeft,
+} from "@tabler/icons-react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
-import { AnimatedTooltipPreview } from "@/components/ui/animated-tooltip";
+import { Logo, LogoIcon } from "@/components/ui/logo";
+import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import {
   fetchProfile,
   editCurrTVShow,
@@ -12,6 +21,7 @@ import {
   editBio,
 } from "@/app/actions/editProfile";
 import { BentoGridSearch } from "@/components/ui/bentoGrid";
+import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import { useDebouncedCallback } from "use-debounce";
 
 // Dummy dashboard component with content
@@ -29,6 +39,8 @@ export default function Dashboard() {
   const [favTVShowSrc, setFavTVShowSrc] = useState("");
   const [currTVShow, setCurrTVShow] = useState("");
   const [currTVShowSrc, setCurrTVShowImg] = useState("");
+  const [currTVShowPosterSrc, setCurrTVShowPosterSrc] = useState("");
+  const [backdropSrc, setBackdropSrc] = useState("");
 
   const [bento, setBento] = useState(0);
   const [query, setQuery] = useState("");
@@ -90,8 +102,9 @@ export default function Dashboard() {
       setFavMovieSrc(cineImgSrc);
     } else if (cineCategory === "Current TV Show") {
       cat = "currTVShow";
-      editCurrTVShow(userEmail, cineName, cineImgSrc);
+      editCurrTVShow(userEmail, cineName, cineImgSrc, currTVShowPosterSrc);
       setCurrTVShowImg(cineImgSrc);
+      setBackdropSrc(currTVShowPosterSrc);
     }
     const updateFunc = cardMap.get(cat);
     updateFunc(cineName);
@@ -143,8 +156,7 @@ export default function Dashboard() {
         setBio(response[6]);
         setFavMovieSrc(response[7]);
         setFavTVShowSrc(response[8]);
-        console.log("asdfasdfasdf");
-        console.log(favMovieSrc);
+        setBackdropSrc(response[9]);
       });
       setInitFetch(1);
       setUserEmail(email);
@@ -158,9 +170,10 @@ export default function Dashboard() {
 
   return (
     fullName && (
-      <div className="flex flex-1 z-10 bg-white/10">
-        <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white/20 dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+      <div className="flex flex-1 z-10 bg-white">
+        <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 gap-2 flex-1 w-full h-full">
           <div className="flex w-full h-full justify-evenly">
+            {/* Left Side */}
             <div className="w-1/2 overflow-y-auto overflow-x-hidden no-scrollbar scrollbar-w">
               {/* Profile Card */}
               <div className="flex place-content-center">
@@ -262,6 +275,7 @@ export default function Dashboard() {
                       qtype={cineCategory}
                       setCineName={setCineName}
                       setCineImgSrc={setCineImgSrc}
+                      setCurrTVShowPosterSrc={setCurrTVShowPosterSrc}
                     />
                   </Suspense>
                 </div>
@@ -269,9 +283,52 @@ export default function Dashboard() {
             </div>
             {/*  Divider */}
             <div className="divider divider-horizontal"></div>
-            {/*  Other side of profile */}
-            <div className="relative w-3/5 max-h-3/4 p-5 flex-col">
-              <div className="absolute flex mt-10 w-full h-96">
+            {/*  Right Side */}
+            <div className="w-3/5 max-h-3/4 bg-slate-900 rounded-lg ">
+              <div
+                className="rounded-lg"
+                style={{ position: "relative", height: "300px" }}
+              >
+                <Image
+                  src={backdropSrc}
+                  alt="currTVShowPosterSrc"
+                  className="rounded-lg"
+                  fill
+                  style={{ objectFit: "cover" }}
+                />
+                <div className="absolute rounded-lg inset-0 bg-gradient-to-r from-slate-900 via-transparent to-slate-900" />
+                <div className="absolute rounded-lg inset-0 bg-gradient-to-t from-slate-900 via-transparent to-slate-900" />
+              </div>
+              <div className="flex">
+                <div
+                  className="flex-none rounded-log ml-3"
+                  style={{
+                    position: "relative",
+                    height: "60px",
+                    width: "60px",
+                  }}
+                >
+                  <Image
+                    src="/pulp.webp"
+                    className="rounded-full"
+                    fill
+                    alt="Avatar"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+                <div className="flex-none text-slate-300 p-2 text-2xl">
+                  Patrick Dai
+                </div>
+                <div className="flex w-full justify-end pb-6 mr-3">
+                  <div className="text-lg text-white"># of TV Shows</div>
+                  <div className="divider divider-horizontal divider-info"></div>
+                  <div className="text-lg text-white">Hi</div>
+                  <div className="divider divider-horizontal divider-info"></div>
+                  <div className="text-lg text-white">Hi</div>
+                </div>
+              </div>
+
+              {/* <div className="flex mt-10 w-full h-96">
                 <div className="relative flex-none h-96">
                   <div className="sm:col-span-4">
                     <label
@@ -356,14 +413,14 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
-              <div className="absolute w-full bottom-0 flex justify-center">
+              <div className="w-full bottom-0 flex justify-center">
                 <button
                   className="btn btn-block bg-info"
                   onClick={updateUserInfo}
                 >
                   Submit
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -371,3 +428,43 @@ export default function Dashboard() {
     )
   );
 }
+
+export function AnimatedTooltipPreview({
+  pins,
+}: {
+  pins: {
+    id: number;
+    name: string;
+    designation: string;
+    image: string;
+  }[];
+}) {
+  return (
+    <div className="relative flex flex-row items-center justify-start w-full mb-3">
+      <AnimatedTooltip items={pins} />
+    </div>
+  );
+}
+const people = [
+  {
+    id: 1,
+    name: "John Doe",
+    designation: "Software Engineer",
+    image:
+      "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
+  },
+  {
+    id: 2,
+    name: "Robert Johnson",
+    designation: "Product Manager",
+    image:
+      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    id: 3,
+    name: "Jane Smith",
+    designation: "Data Scientist",
+    image:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+  },
+];

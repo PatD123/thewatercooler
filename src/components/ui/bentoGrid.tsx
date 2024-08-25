@@ -39,16 +39,20 @@ export const BentoGridItem = ({
   description,
   header,
   icon,
+  wideIcon,
   setCineName,
   setCineImgSrc,
+  setCurrTVShowPosterSrc,
 }: {
   className?: string;
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
   header?: React.ReactNode;
   icon?: string | React.ReactNode;
+  wideIcon?: string | React.ReactNode;
   setCineName: any;
   setCineImgSrc: any;
+  setCurrTVShowPosterSrc: any;
 }) => {
   return (
     <div
@@ -60,6 +64,9 @@ export const BentoGridItem = ({
         document.getElementById("search-dropdown")!.value = title;
         setCineName(title);
         setCineImgSrc(`https://image.tmdb.org/t/p/original${icon}`);
+        setCurrTVShowPosterSrc(
+          `https://image.tmdb.org/t/p/original${wideIcon}`
+        );
       }}
     >
       {header}
@@ -90,11 +97,13 @@ export function BentoGridSearch({
   qtype,
   setCineName,
   setCineImgSrc,
+  setCurrTVShowPosterSrc,
 }: {
   query: string;
   qtype: string;
   setCineName: any;
   setCineImgSrc: any;
+  setCurrTVShowPosterSrc: any;
 }) {
   const [currPage, setCurrPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -127,8 +136,10 @@ export function BentoGridSearch({
               : item["original_title"]
           }
           icon={item["poster_path"]}
+          wideIcon={item["backdrop_path"]}
           setCineName={setCineName}
           setCineImgSrc={setCineImgSrc}
+          setCurrTVShowPosterSrc={setCurrTVShowPosterSrc}
         />
       ))}
       {totalPages > 1 && (

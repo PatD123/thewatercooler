@@ -14,6 +14,7 @@ export const fetchProfile = async (email: string) => {
     user.bio,
     user.favMovieSrc,
     user.favTVShowSrc,
+    user.currTVShowBackdropSrc,
   ];
 };
 
@@ -46,12 +47,14 @@ export const editFavTVShow = async (
 export const editCurrTVShow = async (
   email: string,
   currTVShow: string,
-  cineImgSrc: string
+  cineImgSrc: string,
+  currTVShowBackdropSrc: string
 ) => {
   const user = await User.findOne({ email });
   if (user) {
     user.currTVShow = currTVShow;
     user.cineImgSrc = cineImgSrc;
+    user.currTVShowBackdropSrc = currTVShowBackdropSrc;
     await user.save();
   }
 };
