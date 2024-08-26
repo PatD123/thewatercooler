@@ -11,7 +11,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { Logo, LogoIcon } from "@/components/ui/logo";
-import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
+import { AnimatedTooltipPreview } from "@/components/ui/animated-tooltip";
 import {
   fetchProfile,
   editCurrTVShow,
@@ -23,16 +23,18 @@ import {
 import { BentoGridSearch } from "@/components/ui/bentoGrid";
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import { useDebouncedCallback } from "use-debounce";
+import OnProfile from "@/app/(dashboard)/dashboard/onProfile";
 
 // Dummy dashboard component with content
 export default function Dashboard() {
   const [initFetch, setInitFetch] = useState(0);
 
+  // User important info
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [bio, setBio] = useState("");
-
+  // User profile info
   const [favMovie, setFavMovie] = useState("");
   const [favMovieSrc, setFavMovieSrc] = useState("");
   const [favTVShow, setFavTVShow] = useState("");
@@ -42,12 +44,21 @@ export default function Dashboard() {
   const [currTVShowPosterSrc, setCurrTVShowPosterSrc] = useState("");
   const [backdropSrc, setBackdropSrc] = useState("");
 
+  // Editing Right-side Profile
+  const [onProfile, setOnProfile] = useState(1);
+  const [onAllShows, setOnAllShows] = useState(0);
+  const [onRecs, setOnRecs] = useState(0);
+
+  // For Search Bento Boxes
   const [bento, setBento] = useState(0);
   const [query, setQuery] = useState("");
 
   const [cineName, setCineName] = useState("");
   const [cineCategory, setCineCategory] = useState("Favorite TV Show");
   const [cineImgSrc, setCineImgSrc] = useState("");
+
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
 
   const bentoRef = useRef<any>(null);
 
@@ -157,6 +168,8 @@ export default function Dashboard() {
         setFavMovieSrc(response[7]);
         setFavTVShowSrc(response[8]);
         setBackdropSrc(response[9]);
+        setFollowers(response[10]);
+        setFollowing(response[11]);
       });
       setInitFetch(1);
       setUserEmail(email);
@@ -174,7 +187,7 @@ export default function Dashboard() {
         <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 gap-2 flex-1 w-full h-full">
           <div className="flex w-full h-full justify-evenly">
             {/* Left Side */}
-            <div className="w-1/2 overflow-y-auto overflow-x-hidden no-scrollbar scrollbar-w">
+            <div className="w-1/2 overflow-y-auto overflow-x-hidden no-scrollbar">
               {/* Profile Card */}
               <div className="flex place-content-center">
                 <div
@@ -284,7 +297,7 @@ export default function Dashboard() {
             {/*  Divider */}
             <div className="divider divider-horizontal"></div>
             {/*  Right Side */}
-            <div className="w-3/5 max-h-3/4 bg-slate-900 rounded-lg ">
+            <div className="w-3/5 max-h-3/4 bg-slate-900 rounded-lg overflow-y-auto no-scrollbar">
               <div
                 className="rounded-lg"
                 style={{ position: "relative", height: "300px" }}
@@ -319,108 +332,53 @@ export default function Dashboard() {
                 <div className="flex-none text-slate-300 p-2 text-2xl">
                   Patrick Dai
                 </div>
-                <div className="flex w-full justify-end pb-6 mr-3">
-                  <div className="text-lg text-white"># of TV Shows</div>
+                <div className="flex w-full justify-end pb-7 pt-3 mr-3">
+                  <div className="text-sm text-white">23 TV Shows</div>
                   <div className="divider divider-horizontal divider-info"></div>
-                  <div className="text-lg text-white">Hi</div>
+                  <div className="text-sm text-white">
+                    {followers.length} Followers
+                  </div>
                   <div className="divider divider-horizontal divider-info"></div>
-                  <div className="text-lg text-white">Hi</div>
+                  <div className="text-sm text-white">
+                    {following.length} Following
+                  </div>
                 </div>
               </div>
-
-              {/* <div className="flex mt-10 w-full h-96">
-                <div className="relative flex-none h-96">
-                  <div className="sm:col-span-4">
-                    <label
-                      htmlFor="username"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Username
-                    </label>
-                    <div className="mt-2">
-                      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        <input
-                          type="text"
-                          name="username"
-                          id="username"
-                          className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                          placeholder="Input username"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-span-full py-10 h-full">
-                    <label
-                      htmlFor="about"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      About
-                    </label>
-                    <div className="mt-2 h-96 w-72">
-                      <textarea
-                        id="about"
-                        name="about"
-                        rows={11}
-                        placeholder="Write a bio!"
-                        className="block w-full rounded-md border-5 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      ></textarea>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="px-10 w-full h-96">
-                  <label
-                    htmlFor="cover-photo"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+              <div className="text-white w-full pl-20 pr-20 mt-3">
+                <div className="flex justify-around border border-cyan-700 rounded-lg">
+                  <button
+                    className="text-slate-500 hover:text-cyan-500"
+                    onClick={() => {
+                      setOnProfile(1);
+                      setOnAllShows(0);
+                      setOnRecs(0);
+                    }}
                   >
-                    Avatar
-                  </label>
-                  <div className="mt-2 w-full h-full justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                    <div className="text-center">
-                      <svg
-                        className="mx-auto h-12 w-12 text-gray-300"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                      <div className="mt-4 justify-center flex text-sm leading-6 text-gray-600">
-                        <div className="flex">
-                          <label
-                            htmlFor="file-upload"
-                            className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                          >
-                            <span>Upload a file or drag and drop</span>
-                            <input
-                              id="file-upload"
-                              name="file-upload"
-                              type="file"
-                              className="sr-only"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <p className="text-xs leading-5 text-gray-600">
-                        PNG, JPG, GIF up to 10MB
-                      </p>
-                    </div>
-                  </div>
+                    Profile
+                  </button>
+                  <button
+                    className="text-slate-500 ml-2 hover:text-cyan-500"
+                    onClick={() => {
+                      setOnProfile(0);
+                      setOnAllShows(1);
+                      setOnRecs(0);
+                    }}
+                  >
+                    All TV Shows
+                  </button>
+                  <button
+                    className="text-slate-500 ml-2 hover:text-cyan-500"
+                    onClick={() => {
+                      setOnProfile(0);
+                      setOnAllShows(0);
+                      setOnRecs();
+                    }}
+                  >
+                    Your Recommendations
+                  </button>
                 </div>
               </div>
-              <div className="w-full bottom-0 flex justify-center">
-                <button
-                  className="btn btn-block bg-info"
-                  onClick={updateUserInfo}
-                >
-                  Submit
-                </button>
-              </div> */}
+              {onProfile ? <OnProfile /> : null}
             </div>
           </div>
         </div>
@@ -428,43 +386,3 @@ export default function Dashboard() {
     )
   );
 }
-
-export function AnimatedTooltipPreview({
-  pins,
-}: {
-  pins: {
-    id: number;
-    name: string;
-    designation: string;
-    image: string;
-  }[];
-}) {
-  return (
-    <div className="relative flex flex-row items-center justify-start w-full mb-3">
-      <AnimatedTooltip items={pins} />
-    </div>
-  );
-}
-const people = [
-  {
-    id: 1,
-    name: "John Doe",
-    designation: "Software Engineer",
-    image:
-      "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
-  },
-  {
-    id: 2,
-    name: "Robert Johnson",
-    designation: "Product Manager",
-    image:
-      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    id: 3,
-    name: "Jane Smith",
-    designation: "Data Scientist",
-    image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
-  },
-];

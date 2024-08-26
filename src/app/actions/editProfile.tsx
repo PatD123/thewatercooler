@@ -15,6 +15,8 @@ export const fetchProfile = async (email: string) => {
     user.favMovieSrc,
     user.favTVShowSrc,
     user.currTVShowBackdropSrc,
+    user.followers,
+    user.following,
   ];
 };
 

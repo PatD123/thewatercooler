@@ -91,6 +91,7 @@ export default function FriendsCarousel({
             users.unshift(null, null);
             users.push(null, null);
             setFollowingUsers(users);
+            console.log(users);
           });
       }
     }
@@ -109,7 +110,7 @@ export default function FriendsCarousel({
     exit: { scale: 1, animationDuration: "4" },
   };
 
-  return followingUsers ? (
+  return followingUsers.length > 4 ? (
     <div className="flex w-full h-full justify-around">
       {followingUsers.slice(left, right).map((user, i) =>
         i === 2 && appear ? (
