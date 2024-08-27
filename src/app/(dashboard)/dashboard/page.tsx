@@ -297,7 +297,7 @@ export default function Dashboard() {
             {/*  Divider */}
             <div className="divider divider-horizontal"></div>
             {/*  Right Side */}
-            <div className="w-3/5 max-h-3/4 bg-slate-900 rounded-lg overflow-y-auto no-scrollbar">
+            <div className="w-3/5 h-[95%] bg-slate-900 rounded-lg overflow-y-auto no-scrollbar">
               <div
                 className="rounded-lg"
                 style={{ position: "relative", height: "300px" }}
@@ -329,8 +329,8 @@ export default function Dashboard() {
                     style={{ objectFit: "cover" }}
                   />
                 </div>
-                <div className="flex-none text-slate-300 p-2 text-2xl">
-                  Patrick Dai
+                <div className="flex-none text-slate-200 font-bold p-2 text-2xl">
+                  {username}
                 </div>
                 <div className="flex w-full justify-end pb-7 pt-3 mr-3">
                   <div className="text-sm text-white">23 TV Shows</div>
@@ -347,7 +347,9 @@ export default function Dashboard() {
               <div className="text-white w-full pl-20 pr-20 mt-3">
                 <div className="flex justify-around border border-cyan-700 rounded-lg">
                   <button
-                    className="text-slate-500 hover:text-cyan-500"
+                    className={`${
+                      onProfile ? "text-cyan-500" : "text-slate-500"
+                    } hover:text-cyan-500`}
                     onClick={() => {
                       setOnProfile(1);
                       setOnAllShows(0);
@@ -357,7 +359,9 @@ export default function Dashboard() {
                     Profile
                   </button>
                   <button
-                    className="text-slate-500 ml-2 hover:text-cyan-500"
+                    className={`${
+                      onAllShows ? "text-cyan-500" : "text-slate-500"
+                    } hover:text-cyan-500`}
                     onClick={() => {
                       setOnProfile(0);
                       setOnAllShows(1);
@@ -367,18 +371,22 @@ export default function Dashboard() {
                     All TV Shows
                   </button>
                   <button
-                    className="text-slate-500 ml-2 hover:text-cyan-500"
+                    className={`${
+                      onRecs ? "text-cyan-500" : "text-slate-500"
+                    } hover:text-cyan-500`}
                     onClick={() => {
                       setOnProfile(0);
                       setOnAllShows(0);
-                      setOnRecs();
+                      setOnRecs(1);
                     }}
                   >
                     Your Recommendations
                   </button>
                 </div>
               </div>
-              {onProfile ? <OnProfile /> : null}
+              {onProfile ? (
+                <OnProfile favTVShowSrc={currTVShowSrc} bio={bio} />
+              ) : null}
             </div>
           </div>
         </div>
