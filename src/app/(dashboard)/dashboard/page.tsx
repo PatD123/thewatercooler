@@ -60,6 +60,9 @@ export default function Dashboard() {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
 
+  // Adding Fav Shows and Movies on Right Side
+  const [showSearch, setShowSearch] = useState(0);
+
   const bentoRef = useRef<any>(null);
 
   // GET ALL FROM DATABASE FIRST AND PRE-FILL
@@ -183,9 +186,14 @@ export default function Dashboard() {
 
   return (
     fullName && (
-      <div className="flex flex-1 z-10 bg-white">
-        <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 gap-2 flex-1 w-full h-full">
-          <div className="flex w-full h-full justify-evenly">
+      <div className="flex justify-center bg-white">
+        {/* Adding fav movies and tv shows Search */}
+        {showSearch ? (
+          <div className="absolute w-96 h-96 bg-gray-300/30 border-2 border-gray-300 backdrop-blur-2xl rounded-lg shadow-xl z-10"></div>
+        ) : null}
+        {/* PROFILE */}
+        <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 gap-2 flex-1 w-full h-full z-0">
+          <div className="flex w-full h-full justify-evenly z-0">
             {/* Left Side */}
             <div className="w-1/2 overflow-y-auto overflow-x-hidden no-scrollbar">
               {/* Profile Card */}
@@ -279,6 +287,7 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
+              {/* Bento Box of List Cinema */}
               {bento ? (
                 <div className="relative h-full w-full" ref={bentoRef}>
                   <Suspense fallback={<p>Loading feed...</p>}>
@@ -385,7 +394,11 @@ export default function Dashboard() {
                 </div>
               </div>
               {onProfile ? (
-                <OnProfile favTVShowSrc={currTVShowSrc} bio={bio} />
+                <OnProfile
+                  favTVShowSrc={currTVShowSrc}
+                  bio={bio}
+                  setShowSearch={setShowSearch}
+                />
               ) : null}
             </div>
           </div>
