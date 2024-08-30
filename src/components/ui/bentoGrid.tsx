@@ -24,7 +24,7 @@ export const BentoGrid = ({
   return (
     <div
       className={cn(
-        "grid md:auto-rows-min grid-cols-1 md:grid-cols-3 gap-4 max-w-8xl mx-auto bg-white/20 backdrop-blur-sm drop-shadow-lg",
+        "grid md:auto-rows-min grid-cols-4 gap-4 mx-auto bg-white/20 backdrop-blur-sm drop-shadow-lg",
         className
       )}
     >
@@ -126,7 +126,7 @@ export function BentoGridSearch({
   }, [query, currPage]);
 
   return data ? (
-    <BentoGrid className="absolute max-h-[75%] p-5 border-2 rounded-lg shadow-lg shadow-cyan-500/50 overflow-y-auto z-40">
+    <BentoGrid className="max-h-[75%] p-5 border-2 rounded-lg shadow-lg shadow-cyan-500/50 overflow-y-auto z-40 no-scrollbar">
       {data.map((item, i) => (
         <BentoGridItem
           key={i}

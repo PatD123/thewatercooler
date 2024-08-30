@@ -9,7 +9,7 @@ export default function Pagination({
 }) {
   if (currPage >= 5 && currPage <= totalPages - 4) {
     return (
-      <div className="join col-span-3 justify-center">
+      <div className="join col-span-4 justify-center">
         <button className="join-item btn" onClick={() => handlePagination(1)}>
           1
         </button>
@@ -53,7 +53,7 @@ export default function Pagination({
     );
   } else if (currPage > totalPages - 4) {
     return (
-      <div className="join col-span-3 justify-center">
+      <div className="join col-span-4 justify-center">
         <button className="join-item btn" onClick={() => handlePagination(1)}>
           1
         </button>
@@ -97,7 +97,7 @@ export default function Pagination({
     );
   } else {
     return (
-      <div className="join col-span-3 justify-center">
+      <div className="join col-span-4 justify-center">
         <button className="join-item btn" onClick={() => handlePagination(1)}>
           1
         </button>
