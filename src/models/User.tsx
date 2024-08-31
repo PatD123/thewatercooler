@@ -22,6 +22,7 @@ export interface UserDocument {
   following: [{ type: Schema.Types.ObjectId; ref: "User" }];
   followers: [{ type: Schema.Types.ObjectId; ref: "User" }];
   currTVShowBackdropSrc: string;
+  favMovies: [{ type: string }];
 }
 
 const UserSchema = new Schema<UserDocument>(
@@ -87,6 +88,10 @@ const UserSchema = new Schema<UserDocument>(
     },
     currTVShowBackdropSrc: {
       type: String,
+      required: false,
+    },
+    favMovies: {
+      type: [String],
       required: false,
     },
   },

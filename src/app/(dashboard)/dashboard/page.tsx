@@ -177,7 +177,7 @@ export default function Dashboard() {
 
   return (
     fullName && (
-      <div className="flex justify-center bg-white">
+      <div className="flex justify-center bg-white w-full h-full">
         {/* Adding fav movies and tv shows Search */}
         {showSearch ? <Search setShowSearch={setShowSearch} /> : null}
         {/* PROFILE */}

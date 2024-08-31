@@ -24,9 +24,11 @@ export default function Search({ setShowSearch }: { setShowSearch: any }) {
     };
   });
 
+  const addMovie = () => {};
+
   return (
     <div
-      className="absolute w-3/4 h-5/6 mt-16 bg-gray-300/30 border-2 border-gray-300 backdrop-blur-2xl rounded-lg shadow-xl z-10"
+      className="absolute w-[70%] h-5/6 mt-16 bg-gray-300/30 border-2 border-gray-300 backdrop-blur-2xl rounded-lg shadow-xl z-10"
       ref={searchRef}
     >
       <div className="flex justify-center mt-4 w-full">
@@ -48,11 +50,17 @@ export default function Search({ setShowSearch }: { setShowSearch: any }) {
           onClick={() => setBento(1)}
           required
         />
+        <button
+          className="ml-3 w-16 bg-sky-900 text-slate-300 rounded-lg hover:bg-sky-700 hover:border-2 hover:border-sky-900"
+          onClick={}
+        >
+          Add
+        </button>
       </div>
       <div className="flex justify-center mt-4 w-full h-full">
         {/* Bento Box of List Cinema */}
         {bento ? (
-          <div className="flex justify-center h-full w-5/6">
+          <div className="flex justify-center h-full w-[70%]">
             <BentoGridSearch
               query="The Joker"
               qtype="Favorite Movie"

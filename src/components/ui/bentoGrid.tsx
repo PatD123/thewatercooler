@@ -57,7 +57,7 @@ export const BentoGridItem = ({
   return (
     <div
       className={cn(
-        "relative row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input p-4 bg-white border border-transparent",
+        "relative row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input p-3 bg-white border border-transparent",
         className
       )}
       onClick={() => {
@@ -71,16 +71,19 @@ export const BentoGridItem = ({
     >
       {header}
       <div className="w-full group-hover/bento:translate-x-2 transition duration-200">
-        <Image
-          className="rounded-lg"
-          src={`https://image.tmdb.org/t/p/original${icon}`}
-          alt="Picture of the author"
-          height={250}
-          width={150}
-          style={{
-            objectFit: "contain",
-          }}
-        />
+        <div className="flex justify-center">
+          <Image
+            className="rounded-lg"
+            src={`https://image.tmdb.org/t/p/original${icon}`}
+            alt="Picture of the author"
+            height={250}
+            width={150}
+            style={{
+              objectFit: "contain",
+            }}
+          />
+        </div>
+
         <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-2 mt-2">
           {title}
         </div>
