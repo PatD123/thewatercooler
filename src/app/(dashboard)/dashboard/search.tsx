@@ -1,8 +1,15 @@
 import React, { useState, Suspense, useRef, useEffect } from "react";
 import { BentoGridSearch } from "@/components/ui/bentoGrid";
+import { addFavMovies, getUser } from "@/app/actions/editProfile";
 import Image from "next/image";
 
-export default function Search({ setShowSearch }: { setShowSearch: any }) {
+export default function Search({
+  setShowSearch,
+  userEmail,
+}: {
+  setShowSearch: any;
+  userEmail: any;
+}) {
   const [bento, setBento] = useState(0);
 
   const [cineName, setCineName] = useState("");
@@ -24,7 +31,16 @@ export default function Search({ setShowSearch }: { setShowSearch: any }) {
     };
   });
 
-  const addMovie = () => {};
+  const addMovie = async () => {
+    getUser(userEmail as string)
+      .then((user) => {
+        return user["_id"];
+      })
+      .then((id) => {
+        console.log(id);
+        addFavMovies(id, cineImgSrc);
+      });
+  };
 
   return (
     <div
@@ -49,10 +65,11 @@ export default function Search({ setShowSearch }: { setShowSearch: any }) {
           onChange={() => setBento(1)}
           onClick={() => setBento(1)}
           required
+          autoComplete="off"
         />
         <button
           className="ml-3 w-16 bg-sky-900 text-slate-300 rounded-lg hover:bg-sky-700 hover:border-2 hover:border-sky-900"
-          onClick={}
+          onClick={addMovie}
         >
           Add
         </button>

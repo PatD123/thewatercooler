@@ -76,3 +76,12 @@ export const editBio = async (email: string, bio: string) => {
     await user.save();
   }
 };
+
+export const getUser = async (userEmail: string) => {
+  const user = await User.findOne({ email: userEmail });
+  return JSON.parse(JSON.stringify(user));
+};
+
+export const addFavMovies = async (userID: string, movieSrc: string) => {
+  await User.findByIdAndUpdate(userID, { $addToSet: { favMovies: movieSrc } });
+};
