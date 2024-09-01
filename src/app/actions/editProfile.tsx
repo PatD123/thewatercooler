@@ -85,3 +85,7 @@ export const getUser = async (userEmail: string) => {
 export const addFavMovies = async (userID: string, movieSrc: string) => {
   await User.findByIdAndUpdate(userID, { $addToSet: { favMovies: movieSrc } });
 };
+
+export const addFavTVShows = async (userID: string, movieSrc: string) => {
+  await User.findByIdAndUpdate(userID, { $addToSet: { favTVShows: movieSrc } });
+};

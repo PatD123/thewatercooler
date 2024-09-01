@@ -66,21 +66,16 @@ export default function OnProfile({
                     style={{ objectFit: "cover" }}
                   />
                 </div>
-                <div
-                  className="rounded-lg"
-                  style={{
-                    position: "relative",
-                    height: "200px",
-                    width: "100px",
-                  }}
-                >
-                  <Image
-                    src={favTVShowSrc}
-                    alt="currTVShowPosterSrc"
-                    className="rounded-lg"
-                    fill
-                    style={{ objectFit: "cover" }}
-                  />
+                <div>
+                  <button onClick={() => setShowSearch(1)}>
+                    <Image
+                      src="/plus-sign.svg"
+                      className="h-10 w-10 invert-1 rounded-full mt-20 rotate-180 transition duration-300 hover:ease-out hover:scale-125"
+                      width={30}
+                      height={30}
+                      alt="Avatar"
+                    />
+                  </button>
                 </div>
               </div>
               <h1 className="text-slate-200 font-bold mt-2">Favorite Movies</h1>

@@ -1,6 +1,10 @@
 import React, { useState, Suspense, useRef, useEffect } from "react";
 import { BentoGridSearch } from "@/components/ui/bentoGrid";
-import { addFavMovies, getUser } from "@/app/actions/editProfile";
+import {
+  addFavMovies,
+  addFavTVShows,
+  getUser,
+} from "@/app/actions/editProfile";
 import Image from "next/image";
 
 export default function Search({
@@ -42,6 +46,17 @@ export default function Search({
       });
   };
 
+  const addTVShow = async () => {
+    getUser(userEmail as string)
+      .then((user) => {
+        return user["_id"];
+      })
+      .then((id) => {
+        console.log(id);
+        addFavTVShows(id, cineImgSrc);
+      });
+  };
+
   return (
     <div
       className="absolute w-[70%] h-5/6 mt-16 bg-gray-300/30 border-2 border-gray-300 backdrop-blur-2xl rounded-lg shadow-xl z-10"
@@ -69,7 +84,7 @@ export default function Search({
         />
         <button
           className="ml-3 w-16 bg-sky-900 text-slate-300 rounded-lg hover:bg-sky-700 hover:border-2 hover:border-sky-900"
-          onClick={addMovie}
+          onClick={addTVShow}
         >
           Add
         </button>
