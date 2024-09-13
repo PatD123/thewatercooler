@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, Suspense, useRef, useEffect } from "react";
 import { BentoGridSearch } from "@/components/ui/bentoGrid";
 import {
@@ -6,21 +8,30 @@ import {
   getUser,
 } from "@/app/actions/editProfile";
 import Image from "next/image";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function Search({
   setShowSearch,
   userEmail,
+  addCine,
 }: {
   setShowSearch: any;
   userEmail: any;
+  addCine: string;
 }) {
   const [bento, setBento] = useState(0);
+  const [query, setQuery] = useState("");
 
   const [cineName, setCineName] = useState("");
   const [currTVShowPosterSrc, setCurrTVShowPosterSrc] = useState("");
   const [cineImgSrc, setCineImgSrc] = useState("");
 
   const searchRef = useRef<any>(null);
+
+  const updateBento = useDebouncedCallback((event: any) => {
+    event.target.value === "" ? setBento(0) : setBento(1);
+    setQuery(event.target.value);
+  }, 300);
 
   const handleOutsideClick = (e: any) => {
     if (searchRef.current && !searchRef.current.contains(e.target)) {
@@ -41,8 +52,8 @@ export default function Search({
         return user["_id"];
       })
       .then((id) => {
-        console.log(id);
         addFavMovies(id, cineImgSrc);
+        location.reload();
       });
   };
 
@@ -52,8 +63,8 @@ export default function Search({
         return user["_id"];
       })
       .then((id) => {
-        console.log(id);
         addFavTVShows(id, cineImgSrc);
+        location.reload();
       });
   };
 
@@ -77,14 +88,16 @@ export default function Search({
           id="search-dropdown"
           className="w-1/2 text-sm text-black rounded-xl bg-slate-300/50 py-3 pl-6"
           placeholder="Search"
-          onChange={() => setBento(1)}
-          onClick={() => setBento(1)}
+          onChange={updateBento}
+          onClick={updateBento}
           required
           autoComplete="off"
         />
         <button
           className="ml-3 w-16 bg-sky-900 text-slate-300 rounded-lg hover:bg-sky-700 hover:border-2 hover:border-sky-900"
-          onClick={addTVShow}
+          onClick={() => {
+            addCine == "Favorite Movie" ? addMovie() : addTVShow();
+          }}
         >
           Add
         </button>
@@ -94,8 +107,8 @@ export default function Search({
         {bento ? (
           <div className="flex justify-center h-full w-[70%]">
             <BentoGridSearch
-              query="The Joker"
-              qtype="Favorite Movie"
+              query={query}
+              qtype={addCine}
               setCineName={setCineName}
               setCineImgSrc={setCineImgSrc}
               setCurrTVShowPosterSrc={setCurrTVShowPosterSrc}

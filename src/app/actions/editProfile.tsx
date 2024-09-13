@@ -1,6 +1,7 @@
 "use server";
 
 import User from "@/models/User";
+import { revalidatePath } from "next/cache";
 
 export const fetchProfile = async (email: string) => {
   const user = await User.findOne({ email });
@@ -17,6 +18,8 @@ export const fetchProfile = async (email: string) => {
     user.currTVShowBackdropSrc,
     user.followers,
     user.following,
+    user.favMovies,
+    user.favTVShows,
   ];
 };
 

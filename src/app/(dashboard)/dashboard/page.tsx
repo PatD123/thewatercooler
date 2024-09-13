@@ -15,10 +15,12 @@ import { BentoGridSearch } from "@/components/ui/bentoGrid";
 import { useDebouncedCallback } from "use-debounce";
 import OnProfile from "@/app/(dashboard)/dashboard/onProfile";
 import Search from "@/app/(dashboard)/dashboard/search";
+import { useRouter } from "next/navigation";
 
 // Dummy dashboard component with content
 export default function Dashboard() {
   const [initFetch, setInitFetch] = useState(0);
+  const router = useRouter();
 
   // User important info
   const [fullName, setFullName] = useState("");
@@ -48,11 +50,15 @@ export default function Dashboard() {
   const [cineCategory, setCineCategory] = useState("Favorite TV Show");
   const [cineImgSrc, setCineImgSrc] = useState("");
 
+  // Arrays
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [favMovies, setFavMovies] = useState<string[]>([]);
+  const [favTVShows, setFavTVShows] = useState<string[]>([]);
 
   // Adding Fav Shows and Movies on Right Side
   const [showSearch, setShowSearch] = useState(0);
+  const [addCine, setAddCine] = useState("Favorite TV Show"); // 1 for add Movie; 0 for add TV Show
 
   const bentoRef = useRef<any>(null);
 
@@ -122,21 +128,6 @@ export default function Dashboard() {
     pins[2].image = currTVShowSrc;
   }
 
-  function updateUserInfo(event: any) {
-    event.preventDefault();
-    const newUsername = document.getElementById("username")?.value.trim();
-    const newBio = document.getElementById("about")?.value.trim();
-    console.log(newBio);
-    if (!(newUsername === "")) {
-      editUsername(userEmail, newUsername);
-      setUsername(newUsername);
-    }
-    if (!(newBio.trim() === "")) {
-      setBio(newBio);
-      editBio(userEmail, newBio);
-    }
-  }
-
   const updateBento = useDebouncedCallback((event: any) => {
     event.target.value === "" ? setBento(0) : setBento(1);
     setQuery(event.target.value);
@@ -149,7 +140,8 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (session && !initFetch) {
+    console.log(session);
+    if (session) {
       const email = session?.user?.email as string;
       fetchProfile(email).then((response) => {
         setFullName(response[0]);
@@ -164,6 +156,8 @@ export default function Dashboard() {
         setBackdropSrc(response[9]);
         setFollowers(response[10]);
         setFollowing(response[11]);
+        setFavMovies(response[12]);
+        setFavTVShows(response[13]);
       });
       setInitFetch(1);
       setUserEmail(email);
@@ -173,14 +167,18 @@ export default function Dashboard() {
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  });
+  }, [initFetch]);
 
   return (
     fullName && (
       <div className="flex justify-center bg-white w-full h-full">
         {/* Adding fav movies and tv shows Search */}
         {showSearch ? (
-          <Search setShowSearch={setShowSearch} userEmail={userEmail} />
+          <Search
+            setShowSearch={setShowSearch}
+            userEmail={userEmail}
+            addCine={addCine}
+          />
         ) : null}
         {/* PROFILE */}
         <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 gap-2 flex-1 w-full h-full z-0">
@@ -389,6 +387,9 @@ export default function Dashboard() {
                   favTVShowSrc={currTVShowSrc}
                   bio={bio}
                   setShowSearch={setShowSearch}
+                  movies={favMovies}
+                  tvShows={favTVShows}
+                  setAddCine={setAddCine}
                 />
               ) : null}
             </div>
