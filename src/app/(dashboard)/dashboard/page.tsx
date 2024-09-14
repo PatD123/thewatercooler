@@ -19,11 +19,11 @@ export function Auth({
   children: React.ReactNode;
 }>) {
   // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
-  const { status } = useSession({ required: true });
+  const { status } = useSession();
 
-  if (status === "loading") {
-    return <div>Loading...</div>;
+  if (status === "authenticated") {
+    return children;
   }
 
-  return children;
+  return <div>Loading...</div>;
 }
