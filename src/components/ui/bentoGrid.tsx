@@ -43,6 +43,7 @@ export const BentoGridItem = ({
   setCineName,
   setCineImgSrc,
   setCurrTVShowPosterSrc,
+  setShowUserSearch,
 }: {
   className?: string;
   title?: string | React.ReactNode;
@@ -53,6 +54,7 @@ export const BentoGridItem = ({
   setCineName: any;
   setCineImgSrc: any;
   setCurrTVShowPosterSrc: any;
+  setShowUserSearch: any;
 }) => {
   return (
     <div
@@ -71,9 +73,9 @@ export const BentoGridItem = ({
     >
       {header}
       <div className="w-full group-hover/bento:translate-x-2 transition duration-200">
-        <div className="flex justify-center">
+        <div className="flex relative justify-center">
           <Image
-            className="rounded-lg"
+            className="rounded-lg z-0"
             src={`https://image.tmdb.org/t/p/original${icon}`}
             alt="Picture of the author"
             height={250}
@@ -82,13 +84,27 @@ export const BentoGridItem = ({
               objectFit: "contain",
             }}
           />
+
+          {/* Recommend a cinema */}
+          <button
+            className="flex bg-slate-200 absolute z-10 h-5 w-5 bottom-0.5 right-0.5 rounded-full justify-center items-center"
+            onClick={() => {
+              setShowUserSearch(1);
+              setCineImgSrc(`https://image.tmdb.org/t/p/original${icon}`);
+            }}
+          >
+            <Image
+              src="/send.svg"
+              className="h-4 w-4 rounded-full transition duration-200 hover:ease-out hover:scale-110"
+              width={8}
+              height={8}
+              alt="plus"
+            />
+          </button>
         </div>
 
         <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-2 mt-2">
           {title}
-        </div>
-        <div className="font-sans font-normal text-neutral-600 text-xs dark:text-neutral-300">
-          {description}
         </div>
       </div>
     </div>
@@ -101,12 +117,14 @@ export function BentoGridSearch({
   setCineName,
   setCineImgSrc,
   setCurrTVShowPosterSrc,
+  setShowUserSearch,
 }: {
   query: string;
   qtype: string;
   setCineName: any;
   setCineImgSrc: any;
   setCurrTVShowPosterSrc: any;
+  setShowUserSearch: any;
 }) {
   const [currPage, setCurrPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -143,6 +161,7 @@ export function BentoGridSearch({
           setCineName={setCineName}
           setCineImgSrc={setCineImgSrc}
           setCurrTVShowPosterSrc={setCurrTVShowPosterSrc}
+          setShowUserSearch={setShowUserSearch}
         />
       ))}
       {totalPages > 1 && (

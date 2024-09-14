@@ -2,7 +2,7 @@
 
 import { useDebouncedCallback } from "use-debounce";
 import React, { useState, useEffect, useRef } from "react";
-import UserList from "@/app/(dashboard)/friends/searchUser";
+import SearchUser from "@/app/(dashboard)/friends/searchUser";
 import ShowingUser from "@/app/(dashboard)/friends/showingUser";
 import FriendsCarousel from "@/app/(dashboard)/friends/friendsCarousel";
 
@@ -59,7 +59,7 @@ export default function Friends() {
           </div>
           {haveUserList ? (
             <>
-              <UserList
+              <SearchUser
                 queryUser={queryUser}
                 setShowingUser={setShowingUser}
                 setHaveUserList={setHaveUserList}
