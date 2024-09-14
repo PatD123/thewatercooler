@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Logo, LogoIcon } from "@/components/ui/logo";
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
