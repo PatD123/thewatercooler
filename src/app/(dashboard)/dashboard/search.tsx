@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import { useDebouncedCallback } from "use-debounce";
 
+// Search for user to add fav movies and tv shows
 export default function Search({
   setShowSearch,
   userEmail,
