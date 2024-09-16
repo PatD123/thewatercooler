@@ -16,10 +16,12 @@ export default function Recommend({
   setShowUserSearch,
   userEmail,
   cine,
+  friends,
 }: {
   setShowUserSearch: any;
   userEmail: any;
   cine: string;
+  friends: any;
 }) {
   const searchRef = useRef<any>(null);
 
@@ -79,6 +81,7 @@ export default function Recommend({
                 queryUser={queryUser}
                 cine={cine}
                 setShowUserSearch={setShowUserSearch}
+                friends={friends}
               />
             </>
           ) : null}

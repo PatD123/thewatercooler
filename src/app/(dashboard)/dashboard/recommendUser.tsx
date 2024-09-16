@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { getPossibleUsers } from "@/app/actions/getFriends";
 import { recommend } from "@/app/actions/recommend";
 import Image from "next/image";
@@ -7,10 +7,12 @@ export default function RecommendUser({
   queryUser,
   cine,
   setShowUserSearch,
+  friends,
 }: {
   queryUser: string;
   cine: string;
   setShowUserSearch: any;
+  friends: any;
 }) {
   const [prevUser, setPrevUser] = useState("");
   const [users, setUsers] = useState<any[]>([]);
@@ -18,7 +20,6 @@ export default function RecommendUser({
 
   const recommendToUsers = async () => {
     for (let i = 0; i < selectedUsers.length; i++) {
-      console.log(users[selectedUsers[i]]["_id"]);
       await recommend(users[selectedUsers[i]]["_id"], cine);
     }
     setShowUserSearch(0);
@@ -42,7 +43,10 @@ export default function RecommendUser({
 
     async function getUsers() {
       const users = await getPossibleUsers(queryUser);
-      if (users) setUsers(users);
+      const intersection = users.filter((user) =>
+        friends.includes(user["_id"])
+      );
+      if (users) setUsers(intersection);
     }
     getUsers();
   }, [queryUser]);

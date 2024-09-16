@@ -54,6 +54,7 @@ export default function Dashboard() {
   // Arrays
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
+  let friends = followers.filter((follower) => following.includes(follower));
   const [favMovies, setFavMovies] = useState<string[]>([]);
   const [favTVShows, setFavTVShows] = useState<string[]>([]);
 
@@ -182,6 +183,7 @@ export default function Dashboard() {
             setShowUserSearch={setShowUserSearch}
             userEmail={userEmail}
             cine={cineImgSrc}
+            friends={friends}
           />
         ) : null}
 
