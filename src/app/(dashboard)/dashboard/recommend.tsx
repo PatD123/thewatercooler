@@ -25,7 +25,6 @@ export default function Recommend({
 
   const [haveUserList, setHaveUserList] = useState(0);
   const [queryUser, setQueryUser] = useState("");
-  const [showingUser, setShowingUser] = useState("");
 
   const handleOutsideClick = (e: any) => {
     if (searchRef.current && !searchRef.current.contains(e.target)) {
@@ -76,7 +75,11 @@ export default function Recommend({
           {/* User Search List */}
           {haveUserList ? (
             <>
-              <RecommendUser queryUser={queryUser} />
+              <RecommendUser
+                queryUser={queryUser}
+                cine={cine}
+                setShowUserSearch={setShowUserSearch}
+              />
             </>
           ) : null}
         </div>

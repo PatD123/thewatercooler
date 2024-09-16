@@ -24,6 +24,7 @@ export interface UserDocument {
   currTVShowBackdropSrc: string;
   favMovies: [{ type: string }];
   favTVShows: [{ type: string }];
+  recommended: [{ type: string }];
 }
 
 const UserSchema = new Schema<UserDocument>(
@@ -96,6 +97,10 @@ const UserSchema = new Schema<UserDocument>(
       required: false,
     },
     favTVShows: {
+      type: [String],
+      required: false,
+    },
+    recommended: {
       type: [String],
       required: false,
     },
