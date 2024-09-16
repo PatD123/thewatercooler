@@ -2,18 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { getPossibleUsers } from "@/app/actions/getFriends";
 import Image from "next/image";
 
-export default function RecommendUser({
-  queryUser,
-  setShowingUser,
-  setHaveUserList,
-}: {
-  queryUser: string;
-  setShowingUser: any;
-  setHaveUserList: any;
-}) {
+export default function RecommendUser({ queryUser }: { queryUser: string }) {
+  const [prevUser, setPrevUser] = useState("");
   const [users, setUsers] = useState<any[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
-  const showUsersRef = useRef<any>(null);
 
   const toggleUserSelection = (id: number) => {
     setSelectedUsers(
@@ -22,31 +14,24 @@ export default function RecommendUser({
           ? prevSelectedUsers.filter((userId) => userId !== id) // Deselect if already selected
           : [...prevSelectedUsers, id] // Select if not already selected
     );
-    console.log(selectedUsers);
-  };
-
-  const handleOutsideClick = (e: any) => {
-    if (showUsersRef.current && !showUsersRef.current.contains(e.target)) {
-      setHaveUserList(0);
-    }
   };
 
   useEffect(() => {
+    if (prevUser !== queryUser) {
+      setPrevUser(queryUser);
+      setSelectedUsers([]);
+    }
+
     async function getUsers() {
       const users = await getPossibleUsers(queryUser);
       if (users) setUsers(users);
     }
     getUsers();
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
   }, [queryUser]);
 
   return users ? (
     <>
-      <div className="h-96 overflow-auto" ref={showUsersRef}>
+      <div className="h-96 overflow-auto">
         <div className="mt-2">
           {users.map((user, i) => (
             <div

@@ -76,11 +76,7 @@ export default function Recommend({
           {/* User Search List */}
           {haveUserList ? (
             <>
-              <RecommendUser
-                queryUser={queryUser}
-                setShowingUser={setShowingUser}
-                setHaveUserList={setHaveUserList}
-              />
+              <RecommendUser queryUser={queryUser} />
             </>
           ) : null}
         </div>
