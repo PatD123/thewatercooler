@@ -198,7 +198,7 @@ export default function Dashboard() {
 
         {/* PROFILE */}
         <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 gap-2 flex-1 w-full h-full z-0">
-          <div className="flex w-full h-full justify-evenly z-0">
+          <div className="flex w-full h-full justify-evenly z-0 pb-6">
             {/* Left Side */}
             <div className="w-1/2 overflow-y-auto overflow-x-hidden no-scrollbar">
               {/* Profile Card */}
@@ -312,7 +312,7 @@ export default function Dashboard() {
             {/*  Divider */}
             <div className="divider divider-horizontal"></div>
             {/*  Right Side */}
-            <div className="w-3/5 h-[95%] bg-slate-900 rounded-lg overflow-y-auto no-scrollbar">
+            <div className="w-3/5 bg-slate-900 rounded-lg overflow-y-auto no-scrollbar">
               <div
                 className="rounded-lg"
                 style={{ position: "relative", height: "300px" }}

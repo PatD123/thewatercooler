@@ -23,7 +23,7 @@ export default function OnProfile({
     <div className="mt-10 px-4 pb-2 w-full h-full">
       <div className="h-[95%]">
         <div className="bg-white/10 rounded-lg h-full text-white p-3">
-          <div className="flex">
+          <div className="flex pt-5">
             {/* Left Side */}
             <div className="flex-none h-full">
               {/* Fav TV Shows */}
@@ -71,7 +71,9 @@ export default function OnProfile({
               </div>
 
               {/* Fav Movies */}
-              <h1 className="text-slate-200 font-bold mt-2">Favorite Movies</h1>
+              <h1 className="text-slate-200 font-bold mt-10">
+                Favorite Movies
+              </h1>
               <div className="grid grid-rows-1 grid-cols-4 mt-2 gap-x-3">
                 {movies.map((vals, i) => (
                   <div
@@ -113,19 +115,6 @@ export default function OnProfile({
                   </div>
                 ) : null}
               </div>
-
-              {/* Tags */}
-              <h1 className="text-slate-200 font-bold mt-2">Tags</h1>
-              <div className="flex">
-                {[1, 2, 3, 4].map((vals, i) => (
-                  <span
-                    key={i}
-                    className="rounded-lg bg-green-400 px-2 py-2 text-xs text-green-700/70 mr-1 mt-2"
-                  >
-                    Fanatic
-                  </span>
-                ))}
-              </div>
             </div>
             {/* Divider */}
             <div className="divider divider-horizontal divider-info"></div>
@@ -133,6 +122,24 @@ export default function OnProfile({
             <div className="h-full">
               <div className="text-lg text-slate-200 font-bold">Bio</div>
               <div className="text-sm text-slate-300">{bio}</div>
+
+              {/* Tags */}
+              <h1 className="text-slate-200 font-bold mt-2">Tags</h1>
+              <div>
+                {[1, 2, 3, 4].map((vals, i) => (
+                  <p key={i} className="text-cyan h-5 w-5 text-xs">
+                    Fanatic
+                  </p>
+                ))}
+              </div>
+
+              {/* Activity */}
+              <h1 className="text-slate-200 font-bold mt-2">Activity</h1>
+              <div className="grid grid-rows-auto grid-cols-7 gap-1">
+                {[...Array(30).keys()].map((vals, i) => (
+                  <div className="bg-green-300 h-6 w-6 rounded-lg"></div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
