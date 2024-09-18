@@ -9,6 +9,7 @@ import {
   editFavMovie,
   editFavTVShow,
   editActivity,
+  addTagToUser,
 } from "@/app/actions/editProfile";
 import { BentoGridSearch } from "@/components/ui/bentoGrid";
 import { useDebouncedCallback } from "use-debounce";
@@ -29,6 +30,7 @@ export default function Dashboard() {
   const [userEmail, setUserEmail] = useState("");
   const [userId, setUserId] = useState("");
   const [bio, setBio] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
   const [activity, setActivity] = useState<boolean[]>([]);
   // User profile info
   const [favMovie, setFavMovie] = useState("");
@@ -167,6 +169,14 @@ export default function Dashboard() {
     editActivity(id, newActivity);
   }
 
+  function addTag(event: any) {
+    console.log(tags);
+    if (event.key === "Enter") {
+      setTags((prevTags) => [...prevTags, event.target.value]);
+      addTagToUser(userId, event.target.value);
+    }
+  }
+
   useEffect(() => {
     console.log(status);
     if (session) {
@@ -189,6 +199,7 @@ export default function Dashboard() {
         setRecs(response[14]);
         setUserId(response[15]);
         dailyCheckIn(response[15], response[16]);
+        setTags(response[17]);
       });
       setInitFetch(1);
       setUserEmail(email);
@@ -413,6 +424,8 @@ export default function Dashboard() {
                   movies={favMovies}
                   tvShows={favTVShows}
                   setAddCine={setAddCine}
+                  tags={tags}
+                  addTag={addTag}
                 />
               ) : (
                 <OnRecs recs={recs} setRecs={setRecs} userId={userId} />

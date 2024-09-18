@@ -23,6 +23,7 @@ export const fetchProfile = async (email: string) => {
     user.recommended,
     user._id,
     user.activity,
+    user.tags,
   ];
 };
 
@@ -100,4 +101,8 @@ export const editActivity = async (userID: string, activity: boolean[]) => {
   const user = await User.findOne({ _id: userID });
   user.activity = activity;
   await user.save();
+};
+
+export const addTagToUser = async (userID: string, tag: string) => {
+  await User.findByIdAndUpdate(userID, { $addToSet: { tags: tag } });
 };

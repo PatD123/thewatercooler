@@ -9,6 +9,8 @@ export default function OnProfile({
   movies,
   tvShows,
   setAddCine,
+  tags,
+  addTag,
 }: {
   activity: boolean[];
   bio: string;
@@ -16,6 +18,8 @@ export default function OnProfile({
   movies: string[];
   tvShows: string[];
   setAddCine: any;
+  tags: string[];
+  addTag: any;
 }) {
   const monthNames = [
     "January",
@@ -31,6 +35,11 @@ export default function OnProfile({
     "November",
     "December",
   ];
+
+  useEffect(() => {
+    const tagging = document.getElementById("addTag");
+    tagging?.addEventListener("keyup", addTag);
+  }, []);
 
   return (
     <div className="mt-5 px-4 pb-2 w-full">
@@ -134,12 +143,24 @@ export default function OnProfile({
             <div className="text-sm text-slate-300">{bio}</div>
 
             {/* Tags */}
-            <h1 className="text-cyan-500 font-bold mt-2">Tags</h1>
-            <div>
-              {[1, 2, 3, 4].map((vals, i) => (
-                <p key={i} className="text-cyan h-5 w-5 text-xs">
-                  Fanatic
-                </p>
+            <div className="flex mt-3">
+              <h1 className="text-cyan-500 font-bold">Tags</h1>
+              <input
+                type="text"
+                id="addTag"
+                placeholder="Add a tag"
+                className="ml-2 p-0.5 w-full text-xs text-black border-2 border-black rounded-lg"
+              />
+            </div>
+
+            <div className="mt-2">
+              {tags?.map((vals, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs text-green-700 ring-1 ring-inset ring-green-600/20 mr-2 mt-1"
+                >
+                  {tags[i]}
+                </span>
               ))}
             </div>
 

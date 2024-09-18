@@ -26,6 +26,7 @@ export interface UserDocument {
   favTVShows: [{ type: string }];
   recommended: [{ type: string }];
   activity: [{ type: boolean }];
+  tags: [{ type: string }];
 }
 
 const UserSchema = new Schema<UserDocument>(
@@ -107,6 +108,10 @@ const UserSchema = new Schema<UserDocument>(
     },
     activity: {
       type: [Boolean],
+      required: false,
+    },
+    tags: {
+      type: [String],
       required: false,
     },
   },
