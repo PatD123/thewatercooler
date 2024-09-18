@@ -134,7 +134,7 @@ export default function OnProfile({
             <h1 className="text-slate-200 font-bold mt-2">Activity</h1>
             <div className="grid grid-rows-auto grid-cols-7 gap-1">
               {[...Array(30).keys()].map((vals, i) => (
-                <div className="bg-green-300 h-6 w-6 rounded-lg"></div>
+                <div key={i} className="bg-green-300 h-6 w-6 rounded-lg"></div>
               ))}
             </div>
           </div>

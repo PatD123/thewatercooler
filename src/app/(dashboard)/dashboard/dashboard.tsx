@@ -28,6 +28,7 @@ export default function Dashboard() {
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [userId, setUserId] = useState("");
   const [bio, setBio] = useState("");
   // User profile info
   const [favMovie, setFavMovie] = useState("");
@@ -164,6 +165,7 @@ export default function Dashboard() {
         setFavMovies(response[12]);
         setFavTVShows(response[13]);
         setRecs(response[14]);
+        setUserId(response[15]);
       });
       setInitFetch(1);
       setUserEmail(email);
@@ -251,14 +253,14 @@ export default function Dashboard() {
                   {/* Dropdown */}
                   <div className="dropdown dropdown-hover join-item">
                     <div
-                      tabindex="0"
+                      tabIndex="0"
                       role="button"
                       className="btn btn-info rounded-full join-item h-full w-full hover:bg-blue-800"
                     >
                       {cineCategory}
                     </div>
                     <ul
-                      tabindex="0"
+                      tabIndex="0"
                       className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow"
                     >
                       <li onClick={() => setCineCategory("Favorite TV Show")}>
@@ -390,7 +392,7 @@ export default function Dashboard() {
                   setAddCine={setAddCine}
                 />
               ) : (
-                <OnRecs recs={recs} />
+                <OnRecs recs={recs} setRecs={setRecs} userId={userId} />
               )}
             </div>
           </div>

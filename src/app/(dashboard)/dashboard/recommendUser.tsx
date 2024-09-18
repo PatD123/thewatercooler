@@ -3,6 +3,7 @@ import { getPossibleUsers } from "@/app/actions/getFriends";
 import { recommend } from "@/app/actions/recommend";
 import Image from "next/image";
 
+// Recommender UI
 export default function RecommendUser({
   queryUser,
   cine,
