@@ -51,6 +51,14 @@ export const register = async (values: any) => {
     });
   };
 
+  function daysInMonth(month: number, year: number) {
+    return new Date(year, month, 0).getDate();
+  }
+
+  let date = new Date();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+
   try {
     await connectDB();
     const userFound = await User.findOne({ email });
@@ -76,6 +84,7 @@ export const register = async (values: any) => {
       favTVShowSrc: "",
       cineImgSrc: "",
       bio: "I got to UCLA, 26'",
+      activity: Array<boolean>(daysInMonth(month, year)).fill(false),
     });
     const savedUser = await user.save();
     console.log(name);

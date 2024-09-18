@@ -22,6 +22,7 @@ export const fetchProfile = async (email: string) => {
     user.favTVShows,
     user.recommended,
     user._id,
+    user.activity,
   ];
 };
 
@@ -93,4 +94,10 @@ export const addFavMovies = async (userID: string, movieSrc: string) => {
 
 export const addFavTVShows = async (userID: string, movieSrc: string) => {
   await User.findByIdAndUpdate(userID, { $addToSet: { favTVShows: movieSrc } });
+};
+
+export const editActivity = async (userID: string, activity: boolean[]) => {
+  const user = await User.findOne({ _id: userID });
+  user.activity = activity;
+  await user.save();
 };

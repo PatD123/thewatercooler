@@ -8,8 +8,7 @@ import {
   editCurrTVShow,
   editFavMovie,
   editFavTVShow,
-  editUsername,
-  editBio,
+  editActivity,
 } from "@/app/actions/editProfile";
 import { BentoGridSearch } from "@/components/ui/bentoGrid";
 import { useDebouncedCallback } from "use-debounce";
@@ -30,6 +29,7 @@ export default function Dashboard() {
   const [userEmail, setUserEmail] = useState("");
   const [userId, setUserId] = useState("");
   const [bio, setBio] = useState("");
+  const [activity, setActivity] = useState<boolean[]>([]);
   // User profile info
   const [favMovie, setFavMovie] = useState("");
   const [favMovieSrc, setFavMovieSrc] = useState("");
@@ -145,6 +145,28 @@ export default function Dashboard() {
     }
   };
 
+  function dailyCheckIn(id: string, activity: boolean[]) {
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let daysInMonth = new Date(year, month, 0).getDate();
+    let newActivity;
+    if (day == 1) {
+      newActivity = new Array<boolean>(daysInMonth);
+      newActivity.fill(false);
+      newActivity[0] = true;
+    } else {
+      newActivity = activity.map((active, i) => {
+        if (day - 1 == i) return true;
+        else return active;
+      });
+    }
+
+    setActivity(newActivity);
+    editActivity(id, newActivity);
+  }
+
   useEffect(() => {
     console.log(status);
     if (session) {
@@ -166,6 +188,7 @@ export default function Dashboard() {
         setFavTVShows(response[13]);
         setRecs(response[14]);
         setUserId(response[15]);
+        dailyCheckIn(response[15], response[16]);
       });
       setInitFetch(1);
       setUserEmail(email);
@@ -175,7 +198,7 @@ export default function Dashboard() {
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [initFetch]);
+  }, []);
 
   return (
     fullName && (
@@ -384,7 +407,7 @@ export default function Dashboard() {
               </div>
               {onProfile ? (
                 <OnProfile
-                  favTVShowSrc={currTVShowSrc}
+                  activity={activity}
                   bio={bio}
                   setShowSearch={setShowSearch}
                   movies={favMovies}

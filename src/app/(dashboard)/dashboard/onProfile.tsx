@@ -1,23 +1,36 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { editActivity } from "@/app/actions/editProfile";
 
 export default function OnProfile({
-  favTVShowSrc,
+  activity,
   bio,
   setShowSearch,
   movies,
   tvShows,
   setAddCine,
 }: {
-  favTVShowSrc: string;
+  activity: boolean[];
   bio: string;
   setShowSearch: any;
   movies: string[];
   tvShows: string[];
   setAddCine: any;
 }) {
-  const [favMovies, setFavMovies] = useState([]);
-  const [favTVShows, setFavTVShows] = useState([]);
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   return (
     <div className="mt-5 px-4 pb-2 w-full">
@@ -26,7 +39,7 @@ export default function OnProfile({
           {/* Left Side */}
           <div className="flex-none h-full">
             {/* Fav TV Shows */}
-            <h1 className="text-slate-200 font-bold">Favorite TV Shows</h1>
+            <h1 className="text-cyan-500 font-bold">Favorite TV Shows</h1>
             <div className="grid grid-rows-1 grid-cols-4 mt-2 gap-x-3">
               {tvShows.map((vals, i) => (
                 <div
@@ -70,7 +83,7 @@ export default function OnProfile({
             </div>
 
             {/* Fav Movies */}
-            <h1 className="text-slate-200 font-bold mt-5">Favorite Movies</h1>
+            <h1 className="text-cyan-500 font-bold mt-5">Favorite Movies</h1>
             <div className="grid grid-rows-1 grid-cols-4 mt-2 gap-x-3">
               {movies.map((vals, i) => (
                 <div
@@ -117,11 +130,11 @@ export default function OnProfile({
           <div className="divider divider-horizontal divider-info"></div>
           {/* Right Side */}
           <div className="h-full">
-            <div className="text-lg text-slate-200 font-bold">Bio</div>
+            <div className="text-lg text-cyan-500 font-bold">Bio</div>
             <div className="text-sm text-slate-300">{bio}</div>
 
             {/* Tags */}
-            <h1 className="text-slate-200 font-bold mt-2">Tags</h1>
+            <h1 className="text-cyan-500 font-bold mt-2">Tags</h1>
             <div>
               {[1, 2, 3, 4].map((vals, i) => (
                 <p key={i} className="text-cyan h-5 w-5 text-xs">
@@ -131,10 +144,17 @@ export default function OnProfile({
             </div>
 
             {/* Activity */}
-            <h1 className="text-slate-200 font-bold mt-2">Activity</h1>
-            <div className="grid grid-rows-auto grid-cols-7 gap-1">
-              {[...Array(30).keys()].map((vals, i) => (
-                <div key={i} className="bg-green-300 h-6 w-6 rounded-lg"></div>
+            <h1 className="text-cyan-500 font-bold mt-2">{`Activity (${
+              monthNames[new Date().getMonth()]
+            })`}</h1>
+            <div className="grid grid-rows-auto grid-cols-7 gap-1 mt-2">
+              {activity.map((val, i) => (
+                <div
+                  key={i}
+                  className={`h-6 w-6 rounded-lg ${
+                    !val ? "bg-slate-300" : "bg-green-300"
+                  }`}
+                ></div>
               ))}
             </div>
           </div>
