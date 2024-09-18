@@ -20,6 +20,7 @@ export const fetchProfile = async (email: string) => {
     user.following,
     user.favMovies,
     user.favTVShows,
+    user.recommended,
   ];
 };
 

@@ -14,6 +14,7 @@ import {
 import { BentoGridSearch } from "@/components/ui/bentoGrid";
 import { useDebouncedCallback } from "use-debounce";
 import OnProfile from "@/app/(dashboard)/dashboard/onProfile";
+import OnRecs from "./onRecs";
 import Search from "@/app/(dashboard)/dashboard/search";
 import { useRouter } from "next/navigation";
 import Recommend from "./recommend";
@@ -40,8 +41,6 @@ export default function Dashboard() {
 
   // Editing Right-side Profile
   const [onProfile, setOnProfile] = useState(1);
-  const [onAllShows, setOnAllShows] = useState(0);
-  const [onRecs, setOnRecs] = useState(0);
 
   // For Search Bento Boxes
   const [bento, setBento] = useState(0);
@@ -64,6 +63,7 @@ export default function Dashboard() {
 
   // Recommending Shows/Movies
   const [showUserSearch, setShowUserSearch] = useState(0);
+  const [recs, setRecs] = useState<string[]>([]);
 
   const bentoRef = useRef<any>(null);
 
@@ -163,6 +163,7 @@ export default function Dashboard() {
         setFollowing(response[11]);
         setFavMovies(response[12]);
         setFavTVShows(response[13]);
+        setRecs(response[14]);
       });
       setInitFetch(1);
       setUserEmail(email);
@@ -359,41 +360,21 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
-              <div className="text-white w-full pl-20 pr-20 mt-3">
+              <div className="text-white pl-48 pr-48 mt-3 p-5">
                 <div className="flex justify-around border border-cyan-700 rounded-lg">
                   <button
                     className={`${
                       onProfile ? "text-cyan-500" : "text-slate-500"
                     } hover:text-cyan-500`}
-                    onClick={() => {
-                      setOnProfile(1);
-                      setOnAllShows(0);
-                      setOnRecs(0);
-                    }}
+                    onClick={() => setOnProfile(1)}
                   >
                     Profile
                   </button>
                   <button
                     className={`${
-                      onAllShows ? "text-cyan-500" : "text-slate-500"
+                      !onProfile ? "text-cyan-500" : "text-slate-500"
                     } hover:text-cyan-500`}
-                    onClick={() => {
-                      setOnProfile(0);
-                      setOnAllShows(1);
-                      setOnRecs(0);
-                    }}
-                  >
-                    All TV Shows
-                  </button>
-                  <button
-                    className={`${
-                      onRecs ? "text-cyan-500" : "text-slate-500"
-                    } hover:text-cyan-500`}
-                    onClick={() => {
-                      setOnProfile(0);
-                      setOnAllShows(0);
-                      setOnRecs(1);
-                    }}
+                    onClick={() => setOnProfile(0)}
                   >
                     Your Recommendations
                   </button>
@@ -408,7 +389,9 @@ export default function Dashboard() {
                   tvShows={favTVShows}
                   setAddCine={setAddCine}
                 />
-              ) : null}
+              ) : (
+                <OnRecs recs={recs} />
+              )}
             </div>
           </div>
         </div>
