@@ -36,6 +36,7 @@ export default function OnProfile({
     "December",
   ];
 
+  // Add tag on enter keypress
   useEffect(() => {
     const tagging = document.getElementById("addTag");
     tagging?.addEventListener("keyup", addTag);

@@ -15,6 +15,7 @@ export default function OnRecs({
 
   let selected = new Array<number>();
 
+  // Deleting a recommendation after user has watched or smth.
   async function deleteRec() {
     selected.sort((a, b) => b - a);
     for (let i of selected) {

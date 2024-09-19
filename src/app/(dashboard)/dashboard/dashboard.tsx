@@ -21,9 +21,6 @@ import Recommend from "./recommend";
 
 // Dummy dashboard component with content
 export default function Dashboard() {
-  const [initFetch, setInitFetch] = useState(0);
-  const router = useRouter();
-
   // User important info
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
@@ -147,6 +144,7 @@ export default function Dashboard() {
     }
   };
 
+  // Get calendar activity
   function dailyCheckIn(id: string, activity: boolean[]) {
     let date = new Date();
     let day = date.getDate();
@@ -169,6 +167,7 @@ export default function Dashboard() {
     editActivity(id, newActivity);
   }
 
+  // Adding tags to profile
   function addTag(event: any) {
     console.log(tags);
     if (event.key === "Enter") {
@@ -201,7 +200,6 @@ export default function Dashboard() {
         dailyCheckIn(response[15], response[16]);
         setTags(response[17]);
       });
-      setInitFetch(1);
       setUserEmail(email);
     }
 
