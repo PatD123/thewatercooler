@@ -18,7 +18,7 @@ import {
 export default function Home() {
   const router = useRouter();
   return (
-    <div>
+    <div className="bg-transparent">
       <div>
         <div className="flex relative w-full h-full">
           <Accordion />
@@ -96,9 +96,8 @@ export function Accordion() {
   const { scrollYProgress } = useScroll({
     target: targetRef,
   });
-  const escale = useTransform(scrollYProgress, [0.9, 0.3], [0.35, 2]);
-  const physics = { stiffness: 100, damping: 30, restDelta: 0.001, mass: 2 }; // easing of smooth scroll
-  const spring = useSpring(escale, physics);
+  const escale = useTransform(scrollYProgress, [0, 1], [0.5, 2]);
+  const slowScroll = useTransform(scrollYProgress, [0, 1], [0, 1000]);
 
   const [shows, setShows] = useState([]);
 
@@ -112,10 +111,13 @@ export function Accordion() {
   return (
     <div className="relative bg-black z-0 w-full h-full overflow-hidden">
       <div>
-        <motion.div ref={targetRef} style={{ scale: escale, y: spring }}>
-          <div className="relative mt-48">
-            <div className="absolute border-black border-b-[100px] z-10 w-full h-48 rounded-[70%] -mt-24"></div>
-            <div className="absolute border-black border-t-[100px] z-10 w-full h-48 rounded-[70%] bottom-0 left-0 -mb-24"></div>
+        <motion.div
+          style={{ scale: escale, y: slowScroll }}
+          initial={{ scale: 0 }}
+        >
+          <div className="relative mt-16">
+            <div className="absolute border-black border-b-[100px] z-10 w-full h-48 rounded-[70%] -mt-24 ml-10"></div>
+            <div className="absolute border-black border-t-[100px] z-10 w-full h-48 rounded-[70%] bottom-0 left-0 -mb-24 ml-10"></div>
             <div className="grid grid-cols-10 z-1">
               {shows.map((show, i) => (
                 <div
