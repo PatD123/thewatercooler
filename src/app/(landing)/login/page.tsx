@@ -25,27 +25,25 @@ export default function Login() {
   };
 
   return (
-    <section className="w-full h-screen flex items-center justify-center">
+    <div className="relative w-full h-screen flex items-center justify-center bg-gradient-to-b from-cyan-500 to-blue-500 ">
+      <div className="absolute w-full h-full bg-fit bg-[url('/dashboard_icon.svg')]"></div>
       <form
-        className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2 
-        border border-solid border-black bg-white rounded"
+        className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2 bg-slate-300/50 backdrop-blur-md rounded-lg drop-shadow-lg	"
         onSubmit={handleSubmit}
       >
         {error && <div className="text-black">{error}</div>}
         <h1 className="mb-5 w-full text-2xl font-bold">Sign In</h1>
-        <label className="w-full text-sm">Email</label>
+        <label className="w-full text-sm font-bold">Email</label>
         <input
           type="email"
-          placeholder="Email"
-          className="w-full h-8 border border-solid border-black rounded p-2"
+          className="w-full h-8 border border-solid border-black rounded p-2 bg-slate-300/0"
           name="email"
         />
-        <label className="w-full text-sm">Password</label>
+        <label className="w-full text-sm font-bold">Password</label>
         <div className="flex w-full">
           <input
             type="password"
-            placeholder="Password"
-            className="w-full h-8 border border-solid border-black rounded p-2"
+            className="w-full h-8 border border-solid border-black rounded p-2 bg-slate-300/0"
             name="password"
           />
         </div>
@@ -60,6 +58,6 @@ export default function Login() {
           Don't have an account?
         </Link>
       </form>
-    </section>
+    </div>
   );
 }
