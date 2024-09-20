@@ -31,6 +31,7 @@ export default function BuildProfile({ nextStep }: { nextStep: any }) {
   return (
     <div className="pb-8">
       <div className="flex w-full justify-center mt-8">
+        {/* Left Side */}
         <div className="flex justify-center items-center mt-10 w-[45%]">
           <div
             className="rounded-lg"
@@ -48,6 +49,7 @@ export default function BuildProfile({ nextStep }: { nextStep: any }) {
 
         <div className="divider divider-horizontal"></div>
 
+        {/* Right Side */}
         <div className="w-[45%]">
           <form ref={ref} action={handleSubmit}>
             {error && <div className="">{error}</div>}
