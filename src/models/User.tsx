@@ -21,6 +21,7 @@ export interface UserDocument {
   bio: string;
   following: [{ type: Schema.Types.ObjectId; ref: "User" }];
   followers: [{ type: Schema.Types.ObjectId; ref: "User" }];
+  pending: [{ type: Schema.Types.ObjectId; ref: "User" }];
   currTVShowBackdropSrc: string;
   favMovies: [{ type: string }];
   favTVShows: [{ type: string }];
@@ -58,6 +59,7 @@ const UserSchema = new Schema<UserDocument>(
     },
     following: [{ type: Schema.Types.ObjectId, ref: "User" }],
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    pending: [{ type: Schema.Types.ObjectId, ref: "User" }],
     isValid: {
       type: Boolean,
       required: true,

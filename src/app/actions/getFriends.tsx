@@ -23,5 +23,27 @@ export const getFriendCarousel = async (id: string) => {
 
 export const followUser = async (fromID: string, toID: string) => {
   await User.findByIdAndUpdate(fromID, { $addToSet: { following: toID } });
-  await User.findByIdAndUpdate(toID, { $addToSet: { followers: fromID } });
+  await User.findByIdAndUpdate(toID, {
+    $addToSet: { pending: fromID, followers: fromID },
+  });
+};
+
+export const followBack = async (fromID: string, toID: string) => {
+  await User.findByIdAndUpdate(fromID, {
+    $addToSet: { following: toID },
+    $pull: { pending: toID },
+  });
+  await User.findByIdAndUpdate(toID, {
+    $addToSet: { followers: fromID },
+  });
+};
+
+export const getPendingFollowers = async (email: string) => {
+  const user = await User.findOne({ email: email });
+  return JSON.parse(JSON.stringify(user["pending"]));
+};
+
+export const getNameByID = async (id: string) => {
+  const user = await User.findOne({ _id: id });
+  return user["name"];
 };

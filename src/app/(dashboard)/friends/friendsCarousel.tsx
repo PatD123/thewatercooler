@@ -115,6 +115,7 @@ export default function FriendsCarousel({
       {followingUsers.slice(left, right).map((user, i) =>
         i === 2 && appear ? (
           <motion.div
+            key={i}
             className="flex"
             variants={moveDir ? variantsMoveRight : variantsMoveLeft}
             initial="enter"
