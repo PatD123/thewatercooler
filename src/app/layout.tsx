@@ -16,10 +16,7 @@ export default function RootLayout({
 }>) {
   const router = useRouter();
   return (
-    <html
-      lang="en"
-      className="scroll-smooth bg-gradient-to-b from-cyan-500 to-blue-500"
-    >
+    <html lang="en">
       <SessionProvider>
         <body className={poppins.className}>{children}</body>
       </SessionProvider>

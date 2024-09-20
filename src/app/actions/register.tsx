@@ -6,7 +6,7 @@ import nodemailer from "nodemailer";
 const { EMAIL_FROM, EMAIL_TO, EMAIL_PASS } = process.env;
 
 export const register = async (values: any) => {
-  const { email, password, name } = values;
+  const { username, email, password, name, bio } = values;
 
   const randString = () => {
     const len = 10;
@@ -72,18 +72,18 @@ export const register = async (values: any) => {
     const uniqueStr = randString();
     const user = new User({
       name: name,
-      username: "thebigjuicyd",
+      username: username,
       email: email,
       password: hashedPassword,
       isValid: false,
       verifStr: uniqueStr,
-      favMovie: "Pulp Fiction",
-      favTVShow: "Downton Abbey",
-      currTVShow: "Downton Abbey",
+      favMovie: "",
+      favTVShow: "",
+      currTVShow: "",
       favMovieSrc: "",
       favTVShowSrc: "",
       cineImgSrc: "",
-      bio: "I got to UCLA, 26'",
+      bio: bio,
       activity: Array<boolean>(daysInMonth(month, year)).fill(false),
     });
     const savedUser = await user.save();

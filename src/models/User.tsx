@@ -54,7 +54,7 @@ const UserSchema = new Schema<UserDocument>(
     },
     bio: {
       type: String,
-      required: true,
+      required: false,
     },
     following: [{ type: Schema.Types.ObjectId, ref: "User" }],
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
@@ -68,7 +68,7 @@ const UserSchema = new Schema<UserDocument>(
     },
     favMovie: {
       type: String,
-      required: true,
+      required: false,
     },
     favMovieSrc: {
       type: String,
@@ -76,7 +76,7 @@ const UserSchema = new Schema<UserDocument>(
     },
     favTVShow: {
       type: String,
-      required: true,
+      required: false,
     },
     favTVShowSrc: {
       type: String,

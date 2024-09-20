@@ -82,7 +82,10 @@ export default function Home() {
                   <p className="text-4xl text-white">Enjoy it together.</p>
                 </div>
                 <div className="py-5">
-                  <button className="bg-cyan-300 btn-lg rounded-lg">
+                  <button
+                    className="bg-cyan-300 btn-lg rounded-lg"
+                    onClick={() => router.push("/get-started")}
+                  >
                     Get Started
                   </button>
                 </div>
@@ -172,7 +175,7 @@ export default function Home() {
         </CardContainer>
       </div>
 
-      <div className="flex justify-center mt-48 pb-5">
+      <div className="flex justify-center mt-40 pb-5">
         <h1 className="text-white text-5xl">You'll just know.</h1>
       </div>
     </div>

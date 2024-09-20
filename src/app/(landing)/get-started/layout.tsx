@@ -4,7 +4,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="justify-center">
+    <div className="h-fit bg-gradient-to-b from-cyan-500 to-blue-500">
       {/* Include shared UI here e.g. a header or sidebar */}
       <div className="flex justify-center">
         <progress
@@ -15,6 +15,6 @@ export default function DashboardLayout({
       </div>
 
       {children}
-    </section>
+    </div>
   );
 }

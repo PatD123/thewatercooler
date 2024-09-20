@@ -2,7 +2,7 @@
 
 import Welcome from "@/app/(landing)/get-started/Welcome";
 import BuildProfile from "@/app/(landing)/get-started/BuildProfile";
-import PreviewProfile from "@/app/(landing)/get-started/PreviewProfile";
+import VerifyEmail from "@/app/(landing)/get-started/verifyEmail";
 import { useState } from "react";
 
 export default function GetStarted() {
@@ -15,8 +15,8 @@ export default function GetStarted() {
   const getStartedComps = [
     <Welcome nextStep={nextStep} />,
     <BuildProfile nextStep={nextStep} />,
-    <PreviewProfile />,
+    <VerifyEmail />,
   ];
 
-  return <div>{getStartedComps[currComp]}</div>;
+  return <div className="no-scrollbar">{getStartedComps[currComp]}</div>;
 }
