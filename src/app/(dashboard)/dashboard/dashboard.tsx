@@ -211,228 +211,228 @@ export default function Dashboard() {
     };
   }, []);
 
-  return (
-    fullName && (
-      <div className="flex justify-center bg-white w-full h-full">
-        {/* Recommending movies and tv shows */}
-        {showUserSearch ? (
-          <Recommend
-            setShowUserSearch={setShowUserSearch}
-            userEmail={userEmail}
-            cine={cineImgSrc}
-            friends={friends}
-          />
-        ) : null}
+  return fullName ? (
+    <div className="flex justify-center bg-white w-full h-full">
+      {/* Recommending movies and tv shows */}
+      {showUserSearch ? (
+        <Recommend
+          setShowUserSearch={setShowUserSearch}
+          userEmail={userEmail}
+          cine={cineImgSrc}
+          friends={friends}
+        />
+      ) : null}
 
-        {/* Adding fav movies and tv shows Search */}
-        {showSearch ? (
-          <Search
-            setShowSearch={setShowSearch}
-            userEmail={userEmail}
-            addCine={addCine}
-          />
-        ) : null}
+      {/* Adding fav movies and tv shows Search */}
+      {showSearch ? (
+        <Search
+          setShowSearch={setShowSearch}
+          userEmail={userEmail}
+          addCine={addCine}
+        />
+      ) : null}
 
-        {/* PROFILE */}
-        <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 gap-2 flex-1 w-full h-full z-0">
-          <div className="flex w-full h-full justify-evenly z-0 pb-6">
-            {/* Left Side */}
-            <div className="w-1/2 overflow-y-auto overflow-x-hidden no-scrollbar">
-              {/* Profile Card */}
-              <div className="flex place-content-center">
+      {/* PROFILE */}
+      <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 gap-2 flex-1 w-full h-full z-0">
+        <div className="flex w-full h-full justify-evenly z-0 pb-6">
+          {/* Left Side */}
+          <div className="w-1/2 overflow-y-auto overflow-x-hidden no-scrollbar">
+            {/* Profile Card */}
+            <div className="flex place-content-center">
+              <div
+                className="flex rounded-2xl overflow-hidden bg-white/20 shadow-lg ring-1 ring-black/5"
+                style={{
+                  position: "relative",
+                  width: "500px",
+                  height: "300px",
+                }}
+              >
                 <div
-                  className="flex rounded-2xl overflow-hidden bg-white/20 shadow-lg ring-1 ring-black/5"
+                  className="fixed flex-none inset-0"
                   style={{
                     position: "relative",
-                    width: "500px",
+                    width: "200px",
                     height: "300px",
                   }}
                 >
-                  <div
-                    className="fixed flex-none inset-0"
-                    style={{
-                      position: "relative",
-                      width: "200px",
-                      height: "300px",
-                    }}
-                  >
-                    <Image
-                      src={`https://image.tmdb.org/t/p/original${currTVShowSrc}`}
-                      alt="Picture of the author"
-                      fill
-                      style={{
-                        objectFit: "contain",
-                      }}
-                    />
-                  </div>
-                  <div className="card-body">
-                    <div className="w-full h-1/2">
-                      <h2 className="card-title text-sky-600 text-2xl mt-5">
-                        {username}
-                        <p className="text-xs">({fullName})</p>
-                      </h2>
-                    </div>
-
-                    <div className="w-full h-1/2 flex-none">
-                      <h2 className="card-title">Bio</h2>
-                      <p className="whitespace-pre-wrap text-xs">{bio}</p>
-                    </div>
-                    <AnimatedTooltipPreview pins={pins} />
-                  </div>
-                </div>
-              </div>
-              {/* Search Bar */}
-              <div className="w-full mx-auto my-8">
-                <div className="join w-full">
-                  {/* Dropdown */}
-                  <div className="dropdown dropdown-hover join-item">
-                    <div
-                      tabIndex="0"
-                      role="button"
-                      className="btn btn-info rounded-full join-item h-full w-full hover:bg-blue-800"
-                    >
-                      {cineCategory}
-                    </div>
-                    <ul
-                      tabIndex="0"
-                      className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow"
-                    >
-                      <li onClick={() => setCineCategory("Favorite TV Show")}>
-                        <a>Favorite TV Show</a>
-                      </li>
-                      <li onClick={() => setCineCategory("Favorite Movie")}>
-                        <a>Favorite Movie</a>
-                      </li>
-                      <li onClick={() => setCineCategory("Current TV Show")}>
-                        <a>Current TV Show</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="relative w-full join">
-                    <input
-                      type="search"
-                      id="search-dropdown"
-                      className="p-4 w-full join-item text-sm text-gray-900 bg-gray-50 rounded-e-full border-s-gray-50 border-s-2 border border-gray-300"
-                      placeholder="What are you watching at the moment?"
-                      onChange={updateBento}
-                      onClick={updateBento}
-                      required
-                    />
-                    <button
-                      type="submit"
-                      className="join-item top-0 end-0 p-4 font-medium text-white bg-info rounded-e-full hover:bg-blue-800 focus:ring-2"
-                      onClick={updateCine}
-                    >
-                      Edit
-                      <span className="sr-only">Search</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              {/* Bento Box of List Cinema */}
-              {bento ? (
-                <div className="relative h-full w-full" ref={bentoRef}>
-                  <Suspense fallback={<p>Loading feed...</p>}>
-                    {" "}
-                    <BentoGridSearch
-                      query={query}
-                      qtype={cineCategory}
-                      setCineName={setCineName}
-                      setCineImgSrc={setCineImgSrc}
-                      setCurrTVShowPosterSrc={setCurrTVShowPosterSrc}
-                      setShowUserSearch={setShowUserSearch}
-                    />
-                  </Suspense>
-                </div>
-              ) : null}
-            </div>
-            {/*  Divider */}
-            <div className="divider divider-horizontal"></div>
-            {/*  Right Side */}
-            <div className="w-3/5 bg-slate-900 rounded-lg overflow-y-auto no-scrollbar">
-              <div
-                className="rounded-lg"
-                style={{ position: "relative", height: "300px" }}
-              >
-                <Image
-                  src={backdropSrc}
-                  alt="currTVShowPosterSrc"
-                  className="rounded-lg"
-                  fill
-                  style={{ objectFit: "cover" }}
-                />
-                <div className="absolute rounded-lg inset-0 bg-gradient-to-r from-slate-900 via-transparent to-slate-900" />
-                <div className="absolute rounded-lg inset-0 bg-gradient-to-t from-slate-900 via-transparent to-slate-900" />
-              </div>
-              <div className="flex">
-                <div
-                  className="flex-none rounded-log ml-3"
-                  style={{
-                    position: "relative",
-                    height: "60px",
-                    width: "60px",
-                  }}
-                >
                   <Image
-                    src={avatar}
-                    className="rounded-full"
+                    src={`https://image.tmdb.org/t/p/original${currTVShowSrc}`}
+                    alt="Picture of the author"
                     fill
-                    alt="Avatar"
-                    style={{ objectFit: "cover" }}
+                    style={{
+                      objectFit: "contain",
+                    }}
                   />
                 </div>
-                <div className="flex-none text-slate-200 font-bold p-2 text-2xl">
-                  {username}
-                </div>
-                <div className="flex w-full justify-end pb-7 pt-3 mr-3">
-                  <div className="divider divider-horizontal divider-info"></div>
-                  <div className="text-sm text-white">
-                    {followers.length} Followers
+                <div className="card-body">
+                  <div className="w-full h-1/2">
+                    <h2 className="card-title text-sky-600 text-2xl mt-5">
+                      {username}
+                      <p className="text-xs">({fullName})</p>
+                    </h2>
                   </div>
-                  <div className="divider divider-horizontal divider-info"></div>
-                  <div className="text-sm text-white">
-                    {following.length} Following
+
+                  <div className="w-full h-1/2 flex-none">
+                    <h2 className="card-title">Bio</h2>
+                    <p className="whitespace-pre-wrap text-xs">{bio}</p>
                   </div>
+                  <AnimatedTooltipPreview pins={pins} />
                 </div>
               </div>
-              <div className="text-white pl-48 pr-48 mt-3 p-5">
-                <div className="flex justify-around border border-cyan-700 rounded-lg">
-                  <button
-                    className={`${
-                      onProfile ? "text-cyan-500" : "text-slate-500"
-                    } hover:text-cyan-500`}
-                    onClick={() => setOnProfile(1)}
-                  >
-                    Profile
-                  </button>
-                  <button
-                    className={`${
-                      !onProfile ? "text-cyan-500" : "text-slate-500"
-                    } hover:text-cyan-500`}
-                    onClick={() => setOnProfile(0)}
-                  >
-                    Your Recommendations
-                  </button>
-                </div>
-              </div>
-              {onProfile ? (
-                <OnProfile
-                  activity={activity}
-                  bio={bio}
-                  setShowSearch={setShowSearch}
-                  movies={favMovies}
-                  tvShows={favTVShows}
-                  setAddCine={setAddCine}
-                  tags={tags}
-                  addTag={addTag}
-                />
-              ) : (
-                <OnRecs recs={recs} setRecs={setRecs} userId={userId} />
-              )}
             </div>
+            {/* Search Bar */}
+            <div className="w-full mx-auto my-8">
+              <div className="join w-full">
+                {/* Dropdown */}
+                <div className="dropdown dropdown-hover join-item">
+                  <div
+                    tabIndex="0"
+                    role="button"
+                    className="btn btn-info rounded-full join-item h-full w-full hover:bg-blue-800"
+                  >
+                    {cineCategory}
+                  </div>
+                  <ul
+                    tabIndex="0"
+                    className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow"
+                  >
+                    <li onClick={() => setCineCategory("Favorite TV Show")}>
+                      <a>Favorite TV Show</a>
+                    </li>
+                    <li onClick={() => setCineCategory("Favorite Movie")}>
+                      <a>Favorite Movie</a>
+                    </li>
+                    <li onClick={() => setCineCategory("Current TV Show")}>
+                      <a>Current TV Show</a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="relative w-full join">
+                  <input
+                    type="search"
+                    id="search-dropdown"
+                    className="p-4 w-full join-item text-sm text-gray-900 bg-gray-50 rounded-e-full border-s-gray-50 border-s-2 border border-gray-300"
+                    placeholder="What are you watching at the moment?"
+                    onChange={updateBento}
+                    onClick={updateBento}
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="join-item top-0 end-0 p-4 font-medium text-white bg-info rounded-e-full hover:bg-blue-800 focus:ring-2"
+                    onClick={updateCine}
+                  >
+                    Edit
+                    <span className="sr-only">Search</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            {/* Bento Box of List Cinema */}
+            {bento ? (
+              <div className="relative h-full w-full" ref={bentoRef}>
+                <Suspense fallback={<p>Loading feed...</p>}>
+                  {" "}
+                  <BentoGridSearch
+                    query={query}
+                    qtype={cineCategory}
+                    setCineName={setCineName}
+                    setCineImgSrc={setCineImgSrc}
+                    setCurrTVShowPosterSrc={setCurrTVShowPosterSrc}
+                    setShowUserSearch={setShowUserSearch}
+                  />
+                </Suspense>
+              </div>
+            ) : null}
+          </div>
+          {/*  Divider */}
+          <div className="divider divider-horizontal"></div>
+          {/*  Right Side */}
+          <div className="w-3/5 bg-slate-900 rounded-lg overflow-y-auto no-scrollbar">
+            <div
+              className="rounded-lg"
+              style={{ position: "relative", height: "300px" }}
+            >
+              <Image
+                src={backdropSrc}
+                alt="currTVShowPosterSrc"
+                className="rounded-lg"
+                fill
+                style={{ objectFit: "cover" }}
+              />
+              <div className="absolute rounded-lg inset-0 bg-gradient-to-r from-slate-900 via-transparent to-slate-900" />
+              <div className="absolute rounded-lg inset-0 bg-gradient-to-t from-slate-900 via-transparent to-slate-900" />
+            </div>
+            <div className="flex">
+              <div
+                className="flex-none rounded-log ml-3"
+                style={{
+                  position: "relative",
+                  height: "60px",
+                  width: "60px",
+                }}
+              >
+                <Image
+                  src={avatar}
+                  className="rounded-full"
+                  fill
+                  alt="Avatar"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+              <div className="flex-none text-slate-200 font-bold p-2 text-2xl">
+                {username}
+              </div>
+              <div className="flex w-full justify-end pb-7 pt-3 mr-3">
+                <div className="divider divider-horizontal divider-info"></div>
+                <div className="text-sm text-white">
+                  {followers.length} Followers
+                </div>
+                <div className="divider divider-horizontal divider-info"></div>
+                <div className="text-sm text-white">
+                  {following.length} Following
+                </div>
+              </div>
+            </div>
+            <div className="text-white pl-48 pr-48 mt-3 p-5">
+              <div className="flex justify-around border border-cyan-700 rounded-lg">
+                <button
+                  className={`${
+                    onProfile ? "text-cyan-500" : "text-slate-500"
+                  } hover:text-cyan-500`}
+                  onClick={() => setOnProfile(1)}
+                >
+                  Profile
+                </button>
+                <button
+                  className={`${
+                    !onProfile ? "text-cyan-500" : "text-slate-500"
+                  } hover:text-cyan-500`}
+                  onClick={() => setOnProfile(0)}
+                >
+                  Your Recommendations
+                </button>
+              </div>
+            </div>
+            {onProfile ? (
+              <OnProfile
+                activity={activity}
+                bio={bio}
+                setShowSearch={setShowSearch}
+                movies={favMovies}
+                tvShows={favTVShows}
+                setAddCine={setAddCine}
+                tags={tags}
+                addTag={addTag}
+              />
+            ) : (
+              <OnRecs recs={recs} setRecs={setRecs} userId={userId} />
+            )}
           </div>
         </div>
       </div>
-    )
+    </div>
+  ) : (
+    <div>Not logged in.</div>
   );
 }

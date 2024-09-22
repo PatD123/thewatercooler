@@ -22,7 +22,7 @@ export function Auth({
   const { status } = useSession();
 
   if (status === "authenticated") {
-    return children;
+    return <div>{children}</div>;
   }
 
   return <div>Loading...</div>;
