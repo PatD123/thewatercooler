@@ -14,7 +14,7 @@ export default function BuildProfile({ nextStep }: { nextStep: any }) {
   const [formState, formAction] = useFormState(handleSubmit, initialState);
 
   useEffect(() => {
-    if (formState && formState?.message === "good") nextStep();
+    // if (formState && formState?.message === "good") nextStep();
   }, [formState]);
 
   return (

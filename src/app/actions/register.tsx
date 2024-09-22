@@ -83,6 +83,8 @@ export const register = async (values: any) => {
       },
     });
 
+    console.log(EMAIL_FROM, EMAIL_PASS, email);
+
     // Email data
     const mailOptions = {
       from: EMAIL_FROM,
