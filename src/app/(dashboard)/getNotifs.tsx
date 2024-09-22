@@ -49,7 +49,10 @@ export default function GetNotifs() {
     <div className="bg-gray-200 rounded-lg p-2 mt-2">
       {pendingFollowers.length > 0 ? (
         pendingFollowers.map((user, i) => (
-          <div className="bg-cyan-100 drop-shadow-lg rounded-lg p-3 mt-2">
+          <div
+            key={i}
+            className="bg-cyan-100 drop-shadow-lg rounded-lg p-3 mt-2"
+          >
             <div className="flex justify-between items-center">
               <div key={i} className="text-sm">
                 {user.name}

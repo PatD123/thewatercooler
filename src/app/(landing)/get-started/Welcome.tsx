@@ -84,7 +84,7 @@ export default function Welcome({ nextStep }: { nextStep: any }) {
       </CardContainer>
 
       <div className="mt-8 text-md font-bold">
-        In the next steps, you'll be building a profile like the ones above
+        In the next steps, you&apos;ll be building a profile like the ones above
       </div>
 
       <div className="py-8">

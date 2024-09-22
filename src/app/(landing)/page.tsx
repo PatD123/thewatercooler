@@ -113,21 +113,21 @@ export default function Home() {
         <div className="text-3xl text-white rounded-lg bg-slate-300/40 p-8">
           <div>
             <div className="flex">
-              <p>You're reconnecting with a college friend.</p>
+              <p>You&apos;re reconnecting with a college friend.</p>
               <p className="flex-none ml-8 text-black font-bold	line-through">
-                "What have you been watching lately?"
+                &quot;What have you been watching lately?&quot;
               </p>
             </div>
             <div className="flex mt-8">
-              <p>You're hitting it off with a stranger.</p>
+              <p>You&apos;re hitting it off with a stranger.</p>
               <p className="flex-none ml-8 text-black font-bold	line-through">
-                "What have you been watching lately?"
+                &quot;What have you been watching lately?&quot;
               </p>
             </div>
             <div className="flex mt-8">
               <p>Or perhaps, just hanging out.</p>
               <p className="flex-none ml-8 text-black font-bold	line-through">
-                "What have you been watching lately?"
+                &quot;What have you been watching lately?&quot;
               </p>
             </div>
           </div>
@@ -182,7 +182,7 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center mt-40 pb-5">
-        <h1 className="text-white text-5xl">You'll just know.</h1>
+        <h1 className="text-white text-5xl">You&apos;ll just know.</h1>
       </div>
     </div>
   );
@@ -219,6 +219,7 @@ export function Accordion() {
               {shows.map((show, i) => (
                 <div
                   className="mx-10"
+                  key={i}
                   style={{
                     position: "relative",
                     width: "150px",

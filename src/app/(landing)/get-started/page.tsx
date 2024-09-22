@@ -13,9 +13,9 @@ export default function GetStarted() {
     }
   }
   const getStartedComps = [
-    <Welcome nextStep={nextStep} />,
-    <BuildProfile nextStep={nextStep} />,
-    <VerifyEmail />,
+    <Welcome key="0" nextStep={nextStep} />,
+    <BuildProfile key="1" nextStep={nextStep} />,
+    <VerifyEmail key="2" />,
   ];
 
   return <div className="no-scrollbar">{getStartedComps[currComp]}</div>;
