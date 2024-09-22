@@ -26,14 +26,6 @@ const getNewFilename = (bytes = 32) =>
 export const handleSubmit = async (prevState: any, formData: FormData) => {
   const file: File = formData.get("file-upload") as File;
   const newFilename = getNewFilename() + file.name;
-  const params = {
-    Bucket: BUCKET_NAME,
-    Key: newFilename,
-    Body: Buffer.from(await file.arrayBuffer()),
-    ContentType: file.type,
-  };
-  const cmd = new PutObjectCommand(params);
-  await s3.send(cmd);
 
   const r = await register({
     username: formData.get("username"),
@@ -49,6 +41,15 @@ export const handleSubmit = async (prevState: any, formData: FormData) => {
       message: r.error,
     };
   }
+
+  const params = {
+    Bucket: BUCKET_NAME,
+    Key: newFilename,
+    Body: Buffer.from(await file.arrayBuffer()),
+    ContentType: file.type,
+  };
+  const cmd = new PutObjectCommand(params);
+  await s3.send(cmd);
 
   return {
     message: "good",
