@@ -49,7 +49,7 @@ export const handleSubmit = async (prevState: any, formData: FormData) => {
     ContentType: file.type,
   };
   const cmd = new PutObjectCommand(params);
-  await s3.send(cmd);
+  // await s3.send(cmd);
 
   return {
     message: "good",
@@ -91,6 +91,8 @@ export const register = async (values: any) => {
       html: `Press <a href=https://thewatercooler.vercel.app/verify/${verifStr}> here </a>
              to verify your email!`,
     };
+
+    console.log(transporter);
 
     // Send the email
     transporter.sendMail(mailOptions, (error, info) => {

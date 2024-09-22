@@ -14,7 +14,7 @@ export default function BuildProfile({ nextStep }: { nextStep: any }) {
   const [formState, formAction] = useFormState(handleSubmit, initialState);
 
   useEffect(() => {
-    // if (formState && formState?.message === "good") nextStep();
+    if (formState && formState?.message === "good") nextStep();
   }, [formState]);
 
   return (
@@ -23,11 +23,11 @@ export default function BuildProfile({ nextStep }: { nextStep: any }) {
         {/* Left Side */}
         <div className="flex justify-center items-center mt-10 w-[45%]">
           <div>
-            {formState && formState?.message !== "good" && (
+            {formState && formState?.message !== "good" ? (
               <div className="text-rose-900 text-2xl font-bold">
                 {formState.message}
               </div>
-            )}
+            ) : null}
             <div
               className="rounded-lg mt-4 w-full"
               style={{ position: "relative", width: "200px", height: "200px" }}
