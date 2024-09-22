@@ -79,9 +79,6 @@ export const register = async (values: any) => {
         user: EMAIL_FROM,
         pass: EMAIL_PASS,
       },
-      tls: {
-        rejectUnauthorized: false,
-      },
     });
 
     // Email data
