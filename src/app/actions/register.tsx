@@ -6,7 +6,7 @@ import nodemailer from "nodemailer";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import crypto from "crypto";
 
-const AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY ?? "";
+const AWS_ACCESS_KEY = process.env.AWS_ACCESS_K ?? "";
 const AWS_PASSWORD = process.env.AWS_PASSWORD ?? "";
 const BUCKET_NAME = process.env.BUCKET_NAME;
 const BUCKET_REGION = process.env.BUCKET_REGION;
