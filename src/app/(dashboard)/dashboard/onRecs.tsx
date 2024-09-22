@@ -29,8 +29,8 @@ export default function OnRecs({
 
   return (
     <div className="mt-5 px-4 pb-2 w-full">
-      <div className="">
-        <div className="bg-white/10 rounded-lg h-full text-white p-3">
+      <div className="w-full">
+        <div className="bg-white/10 rounded-lg h-full text-white p-3 w-full">
           <div className="flex justify-end">
             <button
               className="p-1 border-2 border-slate-900 rounded-lg text-xs hover:ease-in-out duration-300 hover:scale-110"

@@ -22,7 +22,7 @@ function Auth({
   const { status } = useSession();
 
   if (status === "authenticated") {
-    return <div>{children}</div>;
+    return <div className="w-full h-full">{children}</div>;
   }
 
   return <div>Loading...</div>;

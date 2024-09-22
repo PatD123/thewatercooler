@@ -17,27 +17,27 @@ export default function ShowingUser({ showingUser }: { showingUser: string }) {
   let pins = [
     {
       id: 1,
-      name: "",
+      name: user["favMovie"],
       designation: "Favorite Movie",
-      image: "",
+      image: user["favMovieSrc"],
     },
     {
       id: 2,
-      name: "",
+      name: user["favTVShow"],
       designation: "Favorite TV Show",
-      image: "",
+      image: user["favTVShowSrc"],
     },
     {
       id: 3,
-      name: "",
+      name: user["currTVShow"],
       designation: "Current TV Show",
-      image: "",
+      image: user["cineImgSrc"],
     },
     {
       id: 4,
       name: "Avatar",
       designation: "Avatar",
-      image: "",
+      image: user["avatar"],
     },
   ];
 
@@ -53,15 +53,7 @@ export default function ShowingUser({ showingUser }: { showingUser: string }) {
 
     async function getUser(showingUser: string) {
       const user = await getShowingUser(showingUser);
-      if (user) {
-        setUser(user);
-        pins[0].name = user["favMovie"];
-        pins[0].image = user["favMovieSrc"];
-        pins[1].name = user["favTVShow"];
-        pins[1].image = user["favTVShowSrc"];
-        pins[2].name = user["currTVShow"];
-        pins[2].image = user["currTVShowSrc"];
-      }
+      setUser(user);
     }
     getUser(showingUser);
   }, [showingUser]);
