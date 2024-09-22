@@ -81,13 +81,19 @@ export default function Home() {
                   <p className="text-4xl text-cyan-700">Watch it together.</p>
                   <p className="text-4xl text-white">Enjoy it together.</p>
                 </div>
-                <div className="py-5">
-                  <button
-                    className="bg-cyan-300 btn-lg rounded-lg"
-                    onClick={() => router.push("/get-started")}
+                <div className="flex py-5">
+                  <Link
+                    className="flex justify-center items-center bg-cyan-300 btn-lg rounded-lg text-lg"
+                    href="/get-started"
                   >
                     Get Started
-                  </button>
+                  </Link>
+                  <Link
+                    className="flex justify-center items-center text-lg bg-cyan-500 ml-4 btn-lg rounded-lg w-40"
+                    href="/login"
+                  >
+                    Login
+                  </Link>
                 </div>
               </div>
               <div className="absolute bottom-0 right-0">
