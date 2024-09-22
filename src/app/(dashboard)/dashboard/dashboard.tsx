@@ -385,7 +385,6 @@ export default function Dashboard() {
                   {username}
                 </div>
                 <div className="flex w-full justify-end pb-7 pt-3 mr-3">
-                  <div className="text-sm text-white">23 TV Shows</div>
                   <div className="divider divider-horizontal divider-info"></div>
                   <div className="text-sm text-white">
                     {followers.length} Followers

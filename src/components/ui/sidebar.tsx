@@ -5,6 +5,7 @@ import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import GetNotifs from "@/app/(dashboard)/getNotifs";
+import { signOut } from "next-auth/react";
 
 interface Links {
   label: string;
@@ -170,7 +171,10 @@ export const SidebarLink = ({
   return (
     <Link
       href={link.href}
-      onClick={() => setNotifs(!notifs)}
+      onClick={() => {
+        setNotifs(!notifs);
+        if (link.label === "Logout") signOut({ callbackUrl: "/" });
+      }}
       className={cn("group/sidebar py-2", className)}
       {...props}
     >
