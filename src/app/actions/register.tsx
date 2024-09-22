@@ -92,10 +92,11 @@ export const register = async (values: any) => {
              to verify your email!`,
     };
 
-    console.log(transporter);
+    console.log("Sending Email...");
 
     // Send the email
     transporter.sendMail(mailOptions, (error, info) => {
+      console.log(error, info);
       if (error) {
         console.log("Hi");
         console.log(error);
@@ -105,6 +106,7 @@ export const register = async (values: any) => {
         console.log("Email sent:", info.response);
       }
     });
+    console.log("Email sent!");
   };
 
   function daysInMonth(month: number, year: number) {
