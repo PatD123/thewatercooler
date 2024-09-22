@@ -72,8 +72,9 @@ export const register = async (values: any) => {
   const sendEmail = async (emailTo: String, verifStr: String) => {
     // Create a transporter using SMTP transport
     const transporter = nodemailer.createTransport({
-      service: "gmail",
-      // DELETE THESE
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
         user: EMAIL_FROM,
         pass: EMAIL_PASS,
@@ -95,18 +96,7 @@ export const register = async (values: any) => {
     console.log("Sending Email...");
 
     // Send the email
-    await new Promise((resolve, reject) => {
-      // send mail
-      transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-          console.error(err);
-          reject(err);
-        } else {
-          console.log(info);
-          resolve(info);
-        }
-      });
-    });
+    await transporter.sendMail(mailOptions);
     console.log("Email sent!");
   };
 
