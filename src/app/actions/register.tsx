@@ -29,7 +29,7 @@ export const handleSubmit = async (prevState: any, formData: FormData) => {
   const params = {
     Bucket: BUCKET_NAME,
     Key: newFilename,
-    Body: await file.arrayBuffer(),
+    Body: Buffer.from(await file.arrayBuffer()),
     ContentType: file.type,
   };
   const cmd = new PutObjectCommand(params);
