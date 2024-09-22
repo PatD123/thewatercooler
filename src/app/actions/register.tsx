@@ -79,6 +79,8 @@ export const register = async (values: any) => {
         user: EMAIL_FROM,
         pass: EMAIL_PASS,
       },
+      logger: true,
+      debug: true,
     });
 
     // Email data
