@@ -69,7 +69,7 @@ export const register = async (values: any) => {
     return randStr;
   };
 
-  const sendEmail = (emailTo: String, verifStr: String) => {
+  const sendEmail = async (emailTo: String, verifStr: String) => {
     // Create a transporter using SMTP transport
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -95,17 +95,7 @@ export const register = async (values: any) => {
     console.log("Sending Email...");
 
     // Send the email
-    transporter.sendMail(mailOptions, (error, info) => {
-      console.log(error, info);
-      if (error) {
-        console.log("Hi");
-        console.log(error);
-        console.error("Error sending email:", error);
-      } else {
-        console.log("Email is good");
-        console.log("Email sent:", info.response);
-      }
-    });
+    await transporter.sendMail(mailOptions);
     console.log("Email sent!");
   };
 
