@@ -3,7 +3,7 @@ import { connectDB } from "@/app/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
-const { EMAIL_FROM, EMAIL_TO, EMAIL_PASS } = process.env;
+const { EMAIL_FROM, EMAIL_PASS } = process.env;
 
 export const register = async (values: any) => {
   const { username, email, password, name, bio, avatar } = values;
