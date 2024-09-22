@@ -4,21 +4,52 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { register } from "@/app/actions/register";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import crypto from "crypto";
+
+const AWS_ACCESS_KEY = process.env.NEXT_PUBLIC_AWS_ACCESS_KEY ?? "";
+const AWS_PASSWORD = process.env.NEXT_PUBLIC_AWS_PASSWORD ?? "";
+const BUCKET_NAME = process.env.NEXT_PUBLIC_BUCKET_NAME;
+const BUCKET_REGION = process.env.NEXT_PUBLIC_BUCKET_REGION;
+
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: AWS_ACCESS_KEY,
+    secretAccessKey: AWS_PASSWORD,
+  },
+  region: BUCKET_REGION,
+});
 
 export default function BuildProfile({ nextStep }: { nextStep: any }) {
   const [error, setError] = useState<string>();
+  const [file, setFile] = useState(0);
   const router = useRouter();
   const ref = useRef<HTMLFormElement>(null);
 
+  const getNewFilename = (bytes = 32) =>
+    crypto.randomBytes(bytes).toString("hex");
+
   const handleSubmit = async (formData: FormData) => {
+    const file: File = formData.get("file-upload") as File;
+    const newFilename = getNewFilename() + file.name;
+    const params = {
+      Bucket: BUCKET_NAME,
+      Key: newFilename,
+      Body: file,
+      ContentType: file.type,
+    };
+    const cmd = new PutObjectCommand(params);
+    await s3.send(cmd);
+
     const r = await register({
       username: formData.get("username"),
       email: formData.get("email"),
       password: formData.get("password"),
       name: formData.get("name"),
       bio: formData.get("bio"),
+      avatar: "https://d1xfvzhogq09o0.cloudfront.net/" + newFilename,
     });
-    console.log(formData.get("bio"));
+
     ref.current?.reset();
     if (r?.error) {
       setError(r.error);
@@ -183,13 +214,16 @@ export default function BuildProfile({ nextStep }: { nextStep: any }) {
                               name="file-upload"
                               type="file"
                               className="sr-only"
+                              onChange={() => setFile(1)}
                             />
                           </label>
                           <p className="ml-1">or drag and drop</p>
                         </div>
-                        <p className="text-xs leading-5 text-gray-600">
-                          PNG, JPG, GIF up to 10MB
-                        </p>
+                        {file ? (
+                          <p className="text-xs text-cyan-200 leading-5 text-gray-600">
+                            File Uploaded
+                          </p>
+                        ) : null}
                       </div>
                     </div>
                   </div>

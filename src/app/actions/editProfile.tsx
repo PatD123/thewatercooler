@@ -24,6 +24,7 @@ export const fetchProfile = async (email: string) => {
     user._id,
     user.activity,
     user.tags,
+    user.avatar,
   ];
 };
 

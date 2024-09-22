@@ -27,6 +27,7 @@ export default function Dashboard() {
   const [userEmail, setUserEmail] = useState("");
   const [userId, setUserId] = useState("");
   const [bio, setBio] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [activity, setActivity] = useState<boolean[]>([]);
   // User profile info
@@ -94,7 +95,7 @@ export default function Dashboard() {
       id: 4,
       name: "Avatar",
       designation: "",
-      image: "/pulp.webp",
+      image: avatar,
     },
   ];
 
@@ -199,6 +200,7 @@ export default function Dashboard() {
         setUserId(response[15]);
         dailyCheckIn(response[15], response[16]);
         setTags(response[17]);
+        setAvatar(response[18]);
       });
       setUserEmail(email);
     }
@@ -372,7 +374,7 @@ export default function Dashboard() {
                   }}
                 >
                   <Image
-                    src="/pulp.webp"
+                    src={avatar}
                     className="rounded-full"
                     fill
                     alt="Avatar"

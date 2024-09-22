@@ -6,7 +6,7 @@ import nodemailer from "nodemailer";
 const { EMAIL_FROM, EMAIL_TO, EMAIL_PASS } = process.env;
 
 export const register = async (values: any) => {
-  const { username, email, password, name, bio } = values;
+  const { username, email, password, name, bio, avatar } = values;
 
   const randString = () => {
     const len = 10;
@@ -75,6 +75,7 @@ export const register = async (values: any) => {
       username: username,
       email: email,
       password: hashedPassword,
+      avatar: avatar,
       isValid: false,
       verifStr: uniqueStr,
       favMovie: "",
