@@ -95,7 +95,18 @@ export const register = async (values: any) => {
     console.log("Sending Email...");
 
     // Send the email
-    await transporter.sendMail(mailOptions);
+    await new Promise((resolve, reject) => {
+      // send mail
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          console.log(info);
+          resolve(info);
+        }
+      });
+    });
     console.log("Email sent!");
   };
 
