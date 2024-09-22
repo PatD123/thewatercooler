@@ -286,14 +286,14 @@ export default function Dashboard() {
                 {/* Dropdown */}
                 <div className="dropdown dropdown-hover join-item">
                   <div
-                    tabIndex="0"
+                    tabIndex={0}
                     role="button"
                     className="btn btn-info rounded-full join-item h-full w-full hover:bg-blue-800"
                   >
                     {cineCategory}
                   </div>
                   <ul
-                    tabIndex="0"
+                    tabIndex={1}
                     className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow"
                   >
                     <li onClick={() => setCineCategory("Favorite TV Show")}>

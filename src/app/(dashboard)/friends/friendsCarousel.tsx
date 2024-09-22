@@ -10,7 +10,7 @@ export default function FriendsCarousel({
   setShowingUser: any;
 }) {
   // Sliding window with left and right pointers.
-  const [followingUsers, setFollowingUsers] = useState([]);
+  const [followingUsers, setFollowingUsers] = useState<any[]>([]);
   const [left, setLeft] = useState(0);
   const [right, setRight] = useState(5);
 

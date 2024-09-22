@@ -188,7 +188,7 @@ export default function Home() {
   );
 }
 
-export function Accordion() {
+function Accordion() {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,

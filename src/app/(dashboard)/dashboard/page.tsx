@@ -13,7 +13,7 @@ export default function Home() {
   );
 }
 
-export function Auth({
+function Auth({
   children,
 }: Readonly<{
   children: React.ReactNode;

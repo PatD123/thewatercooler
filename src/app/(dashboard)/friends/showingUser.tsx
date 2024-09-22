@@ -9,7 +9,7 @@ import { AnimatedTooltipPreview } from "@/components/ui/animated-tooltip";
 
 export default function ShowingUser({ showingUser }: { showingUser: string }) {
   // The user you want to show
-  const [user, setUser] = useState<(typeof User)[]>([]);
+  const [user, setUser] = useState<{ [key: string]: any }>({});
   // The logged-in user
   const [seshUserEmail, setSeshUserEmail] = useState("");
   const { data: session, status } = useSession();
@@ -17,27 +17,27 @@ export default function ShowingUser({ showingUser }: { showingUser: string }) {
   let pins = [
     {
       id: 1,
-      name: user["favMovie"],
+      name: "",
       designation: "Favorite Movie",
-      image: user["favMovieSrc"],
+      image: "",
     },
     {
       id: 2,
-      name: user["favTVShow"],
+      name: "",
       designation: "Favorite TV Show",
-      image: user["favTVShowSrc"],
+      image: "",
     },
     {
       id: 3,
-      name: user["currTVShow"],
+      name: "",
       designation: "Current TV Show",
-      image: user["cineImgSrc"],
+      image: "",
     },
     {
       id: 4,
       name: "Avatar",
       designation: "Avatar",
-      image: user["avatar"],
+      image: "",
     },
   ];
 
@@ -48,7 +48,7 @@ export default function ShowingUser({ showingUser }: { showingUser: string }) {
     // {name: 'Patrick Dai', email: 'thetofulion@gmail.com'}
     if (session) {
       const email = session?.user?.email;
-      setSeshUserEmail(email);
+      setSeshUserEmail(email as string);
     }
 
     async function getUser(showingUser: string) {

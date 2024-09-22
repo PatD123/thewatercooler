@@ -46,7 +46,7 @@ export const BentoGridItem = ({
   setShowUserSearch,
 }: {
   className?: string;
-  title?: string | React.ReactNode;
+  title: string;
   description?: string | React.ReactNode;
   header?: React.ReactNode;
   icon?: string | React.ReactNode;
@@ -63,7 +63,8 @@ export const BentoGridItem = ({
         className
       )}
       onClick={() => {
-        document.getElementById("search-dropdown")!.value = title;
+        (document.getElementById("search-dropdown") as HTMLInputElement).value =
+          title;
         setCineName(title);
         setCineImgSrc(`https://image.tmdb.org/t/p/original${icon}`);
         setCurrTVShowPosterSrc(
@@ -124,7 +125,7 @@ export function BentoGridSearch({
   setCineName: any;
   setCineImgSrc: any;
   setCurrTVShowPosterSrc: any;
-  setShowUserSearch: any;
+  setShowUserSearch?: any;
 }) {
   const [currPage, setCurrPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
