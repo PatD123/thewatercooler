@@ -35,7 +35,7 @@ export const register = async (values: any) => {
     // Email data
     const mailOptions = {
       from: EMAIL_FROM,
-      to: EMAIL_TO,
+      to: email,
       subject: "Node.js Email Tutorial",
       html: `Press <a href=http://localhost:3000/verify/${verifStr}> here </a>
              to verify your email!`,
