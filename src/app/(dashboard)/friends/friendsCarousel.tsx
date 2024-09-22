@@ -153,7 +153,7 @@ export default function FriendsCarousel({
                 onClick={() => setShowingUser(user["email"])}
               >
                 <Image
-                  src="/pulp.webp"
+                  src={user["avatar"]}
                   className="h-10 w-10 rounded-full m-2"
                   width={50}
                   height={50}
@@ -206,7 +206,7 @@ export default function FriendsCarousel({
                     <div className="w-full h-full place-content-center">
                       <div className="flex justify-center w-full">
                         <Image
-                          src="/pulp.webp"
+                          src={user["avatar"]}
                           className="h-10 w-10 rounded-full m-2"
                           width={50}
                           height={50}

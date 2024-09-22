@@ -37,7 +37,7 @@ export default function ShowingUser({ showingUser }: { showingUser: string }) {
       id: 4,
       name: "Avatar",
       designation: "Avatar",
-      image: "/pulp.webp",
+      image: user["avatar"],
     },
   ];
 
