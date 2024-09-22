@@ -83,8 +83,6 @@ export const register = async (values: any) => {
       },
     });
 
-    console.log(EMAIL_FROM, EMAIL_PASS, email);
-
     // Email data
     const mailOptions = {
       from: EMAIL_FROM,
@@ -97,8 +95,11 @@ export const register = async (values: any) => {
     // Send the email
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
+        console.log("Hi");
+        console.log(error);
         console.error("Error sending email:", error);
       } else {
+        console.log("Email is good");
         console.log("Email sent:", info.response);
       }
     });
