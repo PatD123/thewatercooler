@@ -3,7 +3,57 @@ import { connectDB } from "@/app/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import crypto from "crypto";
+
+const AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY ?? "";
+const AWS_PASSWORD = process.env.AWS_PASSWORD ?? "";
+const BUCKET_NAME = process.env.BUCKET_NAME;
+const BUCKET_REGION = process.env.BUCKET_REGION;
+
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: AWS_ACCESS_KEY,
+    secretAccessKey: AWS_PASSWORD,
+  },
+  region: BUCKET_REGION,
+});
 const { EMAIL_FROM, EMAIL_PASS } = process.env;
+
+const getNewFilename = (bytes = 32) =>
+  crypto.randomBytes(bytes).toString("hex");
+
+export const handleSubmit = async (prevState: any, formData: FormData) => {
+  const file: File = formData.get("file-upload") as File;
+  const newFilename = getNewFilename() + file.name;
+  const params = {
+    Bucket: BUCKET_NAME,
+    Key: newFilename,
+    Body: await file.arrayBuffer(),
+    ContentType: file.type,
+  };
+  const cmd = new PutObjectCommand(params);
+  await s3.send(cmd);
+
+  const r = await register({
+    username: formData.get("username"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    name: formData.get("name"),
+    bio: formData.get("bio"),
+    avatar: "https://d1xfvzhogq09o0.cloudfront.net/" + newFilename,
+  });
+
+  if (r?.error) {
+    return {
+      message: r.error,
+    };
+  }
+
+  return {
+    message: "good",
+  };
+};
 
 export const register = async (values: any) => {
   const { username, email, password, name, bio, avatar } = values;
@@ -88,7 +138,6 @@ export const register = async (values: any) => {
       activity: Array<boolean>(daysInMonth(month, year)).fill(false),
     });
     const savedUser = await user.save();
-    console.log(name);
 
     sendEmail(email, uniqueStr);
   } catch (e) {

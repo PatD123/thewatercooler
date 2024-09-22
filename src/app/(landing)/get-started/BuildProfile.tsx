@@ -1,80 +1,45 @@
 "use client";
-import { FormEvent, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { useFormState } from "react-dom";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { register } from "@/app/actions/register";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import crypto from "crypto";
+import { handleSubmit } from "@/app/actions/register";
 
-const AWS_ACCESS_KEY = process.env.NEXT_PUBLIC_AWS_ACCESS_KEY ?? "";
-const AWS_PASSWORD = process.env.NEXT_PUBLIC_AWS_PASSWORD ?? "";
-const BUCKET_NAME = process.env.NEXT_PUBLIC_BUCKET_NAME;
-const BUCKET_REGION = process.env.NEXT_PUBLIC_BUCKET_REGION;
-
-const s3 = new S3Client({
-  credentials: {
-    accessKeyId: AWS_ACCESS_KEY,
-    secretAccessKey: AWS_PASSWORD,
-  },
-  region: BUCKET_REGION,
-});
+const initialState = {
+  message: "",
+};
 
 export default function BuildProfile({ nextStep }: { nextStep: any }) {
   const [error, setError] = useState<string>();
   const [file, setFile] = useState(0);
-  const router = useRouter();
-  const ref = useRef<HTMLFormElement>(null);
+  const [formState, formAction] = useFormState(handleSubmit, initialState);
 
-  const getNewFilename = (bytes = 32) =>
-    crypto.randomBytes(bytes).toString("hex");
-
-  const handleSubmit = async (formData: FormData) => {
-    const file: File = formData.get("file-upload") as File;
-    const newFilename = getNewFilename() + file.name;
-    const params = {
-      Bucket: BUCKET_NAME,
-      Key: newFilename,
-      Body: file,
-      ContentType: file.type,
-    };
-    const cmd = new PutObjectCommand(params);
-    await s3.send(cmd);
-
-    const r = await register({
-      username: formData.get("username"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-      name: formData.get("name"),
-      bio: formData.get("bio"),
-      avatar: "https://d1xfvzhogq09o0.cloudfront.net/" + newFilename,
-    });
-
-    ref.current?.reset();
-    if (r?.error) {
-      setError(r.error);
-      return;
-    } else {
-      nextStep();
-    }
-  };
+  useEffect(() => {
+    if (formState.message === "good") nextStep();
+  }, [formState]);
 
   return (
     <div className="pb-8">
       <div className="flex w-full justify-center mt-8">
         {/* Left Side */}
         <div className="flex justify-center items-center mt-10 w-[45%]">
-          <div
-            className="rounded-lg"
-            style={{ position: "relative", width: "200px", height: "200px" }}
-          >
-            <Image
-              src="/dashboard_icon.ico"
-              alt="currTVShowPosterSrc"
-              className="rounded-lg"
-              fill
-              style={{ objectFit: "contain" }}
-            />
+          <div>
+            {formState.message !== "good" && (
+              <div className="text-rose-900 text-2xl font-bold">
+                {formState.message}
+              </div>
+            )}
+            <div
+              className="rounded-lg mt-4 w-full"
+              style={{ position: "relative", width: "200px", height: "200px" }}
+            >
+              <Image
+                src="/dashboard_icon.ico"
+                alt="currTVShowPosterSrc"
+                className="rounded-lg"
+                fill
+                style={{ objectFit: "contain" }}
+              />
+            </div>
           </div>
         </div>
 
@@ -82,8 +47,7 @@ export default function BuildProfile({ nextStep }: { nextStep: any }) {
 
         {/* Right Side */}
         <div className="w-[45%]">
-          <form ref={ref} action={handleSubmit}>
-            {error && <div className="">{error}</div>}
+          <form action={formAction}>
             <div className="space-y-12">
               <div>
                 <h1 className="text-4xl font-bold leading-7 text-gray-900">

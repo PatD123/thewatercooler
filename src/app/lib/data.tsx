@@ -1,8 +1,10 @@
+"use server";
+
 const options = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB}`,
+    Authorization: `Bearer ${process.env.TMDB}`,
   },
 };
 
@@ -11,6 +13,7 @@ export const fetchTMDBPage = async (
   qtype: string,
   page?: number
 ) => {
+  console.log(process.env.TMDB);
   if (!page) page = 1;
   let url = "";
   if (qtype === "Favorite TV Show" || qtype === "Current TV Show")
