@@ -88,7 +88,7 @@ export const register = async (values: any) => {
       from: EMAIL_FROM,
       to: email,
       subject: "Node.js Email Tutorial",
-      html: `Press <a href=http://localhost:3000/verify/${verifStr}> here </a>
+      html: `Press <a href=https://thewatercooler.vercel.app/${verifStr}> here </a>
              to verify your email!`,
     };
 
