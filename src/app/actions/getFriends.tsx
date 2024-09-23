@@ -1,6 +1,7 @@
 "use server";
 
 import User from "@/models/User";
+import { connectDB } from "../lib/mongodb";
 
 export const getPossibleUsers = async (name: string) => {
   const users = await User.find({
@@ -17,6 +18,8 @@ export const getShowingUser = async (showingUser: string) => {
 };
 
 export const getFriendCarousel = async (id: string) => {
+  await connectDB();
+
   const user = await User.findOne({ _id: id });
   return JSON.parse(JSON.stringify(user));
 };
