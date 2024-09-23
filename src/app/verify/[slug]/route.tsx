@@ -8,12 +8,12 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   const slug = params.slug;
-  console.log(slug);
   const user = await User.findOne({ verifStr: slug });
   if (user) {
     user.isValid = true;
     await user.save();
-    redirect("/login");
+    console.log(slug);
+    return redirect("/login");
   } else {
     const myBlob = new Blob();
     const myOptions = {
