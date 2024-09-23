@@ -21,7 +21,6 @@ export default function OnRecs({
     for (let i of selected) {
       await unrecommend(userId, recs[i]);
       recs.splice(i, 1);
-      console.log(recs);
     }
     setRecs(recs);
     setSelect(0);

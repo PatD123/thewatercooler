@@ -39,7 +39,6 @@ export default function GetNotifs() {
           return pendingUsers;
         })
         .then((users) => {
-          console.log(users);
           setPendingFollowers(users);
         });
     });

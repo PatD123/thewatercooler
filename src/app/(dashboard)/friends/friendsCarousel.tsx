@@ -56,7 +56,6 @@ export default function FriendsCarousel({
   // Shuffle following list
   const shuffle = (users: any[]) => {
     let currentIndex = users.length;
-    console.log("HI");
 
     // While there remain elements to shuffle...
     while (currentIndex != 0) {
@@ -91,7 +90,6 @@ export default function FriendsCarousel({
             users.unshift(null, null);
             users.push(null, null);
             setFollowingUsers(users);
-            console.log(users);
           });
       }
     }

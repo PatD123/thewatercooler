@@ -200,7 +200,6 @@ function Accordion() {
 
   useEffect(() => {
     getPopular().then((json) => {
-      console.log(json);
       setShows(json["results"].slice(0, 10));
     });
   }, []);

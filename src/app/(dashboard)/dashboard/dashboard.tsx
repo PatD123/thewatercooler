@@ -170,7 +170,6 @@ export default function Dashboard() {
 
   // Adding tags to profile
   function addTag(event: any) {
-    console.log(tags);
     if (event.key === "Enter") {
       setTags((prevTags) => [...prevTags, event.target.value]);
       addTagToUser(userId, event.target.value);
