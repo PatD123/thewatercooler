@@ -72,15 +72,15 @@ export const register = async (values: any) => {
   const sendEmail = async (emailTo: String, verifStr: String) => {
     // Create a transporter using SMTP transport
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      service: "gmail",
+      // DELETE THESE
       auth: {
         user: EMAIL_FROM,
         pass: EMAIL_PASS,
       },
-      logger: true,
-      debug: true,
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
     // Email data
@@ -118,6 +118,8 @@ export const register = async (values: any) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const uniqueStr = randString();
+    await sendEmail(email, uniqueStr);
+
     const user = new User({
       name: name,
       username: username,
@@ -136,8 +138,6 @@ export const register = async (values: any) => {
       activity: Array<boolean>(daysInMonth(month, year)).fill(false),
     });
     const savedUser = await user.save();
-
-    sendEmail(email, uniqueStr);
   } catch (e) {
     console.log(e);
   }
