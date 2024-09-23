@@ -8,6 +8,7 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   const slug = params.slug;
+  console.log(slug);
   const user = await User.findOne({ verifStr: slug });
   if (user) {
     user.isValid = true;
