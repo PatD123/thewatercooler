@@ -25,5 +25,7 @@ function Auth({
     return <div className="w-full h-full">{children}</div>;
   }
 
-  return <div>Loading...</div>;
+  return (
+    <div>Loading...Possibly click to a different tab for faster loading</div>
+  );
 }
