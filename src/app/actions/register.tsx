@@ -69,7 +69,7 @@ export const register = async (values: any) => {
     return randStr;
   };
 
-  const sendEmail = (emailTo: String, verifStr: String) => {
+  const sendEmail = async (emailTo: String, verifStr: String) => {
     // Create a transporter using SMTP transport
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -93,13 +93,7 @@ export const register = async (values: any) => {
     };
 
     // Send the email
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("Error sending email:", error);
-      } else {
-        console.log("Email sent:", info.response);
-      }
-    });
+    await transporter.sendMail(mailOptions);
   };
 
   function daysInMonth(month: number, year: number) {
@@ -140,7 +134,7 @@ export const register = async (values: any) => {
     });
     const savedUser = await user.save();
 
-    sendEmail(email, uniqueStr);
+    await sendEmail(email, uniqueStr);
   } catch (e) {
     console.log(e);
   }
