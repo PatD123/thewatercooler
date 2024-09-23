@@ -13,7 +13,6 @@ export const fetchTMDBPage = async (
   qtype: string,
   page?: number
 ) => {
-  console.log(process.env.TMDB);
   if (!page) page = 1;
   let url = "";
   if (qtype === "Favorite TV Show" || qtype === "Current TV Show")

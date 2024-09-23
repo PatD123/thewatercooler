@@ -14,7 +14,6 @@ export async function GET(
   if (user) {
     user.isValid = true;
     await user.save();
-    console.log(slug);
     return redirect("/login");
   } else {
     const myBlob = new Blob();

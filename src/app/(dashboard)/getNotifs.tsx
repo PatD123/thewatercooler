@@ -33,13 +33,11 @@ export default function GetNotifs() {
         .then((names) => {
           const pendingUsers = names.map((name, i) => {
             const user: User = { name: name, id: users[i] };
-            console.log(user);
             return user;
           });
           return pendingUsers;
         })
         .then((users) => {
-          console.log(users);
           setPendingFollowers(users);
         });
     });
