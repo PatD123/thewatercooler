@@ -2,8 +2,11 @@
 
 import User from "@/models/User";
 import { revalidatePath } from "next/cache";
+import { connectDB } from "../lib/mongodb";
 
 export const fetchProfile = async (email: string) => {
+  await connectDB();
+
   const user = await User.findOne({ email });
   return [
     user.name,
